@@ -20,7 +20,7 @@ class slideWindow:public QObject
     Q_OBJECT
 
 public:
-    slideWindow(QObject *parent = 0, QString PATH="", QList<QWidget*> screenList={}, int x0=0, int totalWidth=1920, QString filename="", int deltax=1);
+    slideWindow(QObject *parent = 0, QString PATH="", QList<QWidget*> screenList={}, int x0=0, int totalWidth=1920, QString filename="", int deltax=1,int id=0);
     ~slideWindow();
 
 
@@ -34,6 +34,8 @@ private:
     int totalWidth;
     QString filename;
     int deltax;
+    int id;
+    void redraw();
 private slots:
     void mv();
 

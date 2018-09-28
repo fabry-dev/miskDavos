@@ -11,12 +11,16 @@
 
 #define PATH (QString)"/home/fred/Dropbox/Taf/Cassiopee/falcon/files/"
 
-#define imgCount 4
-#define speed (-15)
+#define imgCount 5
+#define speed (15)
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    QCursor cursor(Qt::BlankCursor);
+    a.setOverrideCursor(cursor);
+    a.changeOverrideCursor(cursor);
 
     //new RFIDReader(NULL);
     serialWatcher * serialwatch = new serialWatcher(NULL);
@@ -58,6 +62,7 @@ int main(int argc, char *argv[])
         buf.load(filename);
         buf = buf.scaledToHeight(1080);
         x0s.push_back(totalWidth);
+        qDebug()<<totalWidth;
         totalWidth+= buf.width();
         names.push_back((QString)"img"+QString::number(i)+".jpg");
     }
@@ -65,22 +70,22 @@ int main(int argc, char *argv[])
     int videoWidth = 1920;
     int videoPos = totalWidth;
     QString videoName = PATH+"video0.avi";
-    totalWidth+=videoWidth;
+   totalWidth+=videoWidth;
 
 
 
 
-    if(totalWidth<3*1920)
-        totalWidth = 3*1920;
+    if(totalWidth<widgetList.size()*1920)
+        totalWidth = widgetList.size()*1920;
 
     for(int i =0;i<imgCount;i++)
     {
-        slideWindow *sw =   new slideWindow(NULL,PATH,widgetList,x0s.at(i),totalWidth,names.at(i),speed);
+        slideWindow *sw =   new slideWindow(NULL,PATH,widgetList,x0s.at(i),totalWidth,names.at(i),speed,i);
         a.connect(serialwatch,SIGNAL(goForward()),sw,SLOT(mv()));
 
     }
-    slidevideo *sv = new slidevideo(NULL,PATH,widgetList,videoPos,videoWidth,totalWidth,videoName,speed);
-    a.connect(serialwatch,SIGNAL(goForward()),sv,SLOT(mv()));
+   slidevideo *sv = new slidevideo(NULL,PATH,widgetList,videoPos,videoWidth,totalWidth,videoName,speed);
+  a.connect(serialwatch,SIGNAL(goForward()),sv,SLOT(mv()));
 
 
     return a.exec();

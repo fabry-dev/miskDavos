@@ -33,6 +33,7 @@ private:
     int totalWidth;
     QString filename;
     int deltax;
+    void redraw();
 
 private slots:
     void mv();

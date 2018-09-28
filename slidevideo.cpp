@@ -12,7 +12,7 @@ slidevideo::slidevideo(QObject *parent, QString PATH, QList<QWidget *> screenLis
     //bgImg = bgImg.scaledToHeight(1080);
 
 
-    x0=0;
+
 
     //resize(bgImg.size());
     videoPlayer *lbl;
@@ -31,11 +31,9 @@ slidevideo::slidevideo(QObject *parent, QString PATH, QList<QWidget *> screenLis
 
 
 
-    mvTimer = new QTimer(this);
-    connect(mvTimer,SIGNAL(timeout()),this,SLOT(mvPic()));
-    mvTimer->start(1000/36);
 
-    mv();
+
+    redraw();
 
 }
 
@@ -48,12 +46,20 @@ void slidevideo::mv()
 {
 
     x0+=deltax;
+
     if(x0>totalWidth)
-        x0 = 0;
+        x0 -= totalWidth;
     if(x0<0)
-        x0 = totalWidth;
+        x0 += totalWidth;
 
 
+    redraw();
+
+
+}
+
+void slidevideo::redraw()
+{
 
     if(lbls.size()==2)//2screens
     {
@@ -113,6 +119,7 @@ void slidevideo::mv()
     {
 
 
+
         if(x0<1920) //start on first screen
         {
             if(x0+w0<1920)//fits on first screen
@@ -120,6 +127,7 @@ void slidevideo::mv()
                 lbls[0]->move(x0,0);
                 lbls[0]->show();
                 lbls[1]->hide();
+                lbls[2]->hide();
             }
             else //shows on both screen
             {
@@ -127,6 +135,7 @@ void slidevideo::mv()
                 lbls[0]->show();
                 lbls[1]->move(x0-1920,0);
                 lbls[1]->show();
+                lbls[2]->hide();
             }
 
         }
@@ -137,6 +146,7 @@ void slidevideo::mv()
                 lbls[1]->move(x0-1920,0);
                 lbls[1]->show();
                 lbls[0]->hide();
+                lbls[2]->hide();
             }
             else //shows on both screen
             {
@@ -155,18 +165,22 @@ void slidevideo::mv()
                 lbls[2]->move(x0-2*1920,0);
                 lbls[2]->show();
                 lbls[1]->hide();
+                lbls[0]->hide();
             }
             else //shows on both screen
             {
                 lbls[1]->hide();
                 lbls[2]->move(x0-2*1920,0);
                 lbls[2]->show();
+
                 if(x0+w0>totalWidth)//goes back to first screen
                 {
                     lbls[0]->move(x0-totalWidth,0);
                     lbls[0]->show();
 
                 }
+                else
+                    lbls[0]->hide();
             }
 
         }
@@ -188,8 +202,6 @@ void slidevideo::mv()
 
 
     }
-
-
 }
 
 

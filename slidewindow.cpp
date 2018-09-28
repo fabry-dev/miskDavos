@@ -4,7 +4,7 @@
 
 #define FPS 24
 
-slideWindow::slideWindow(QObject *parent, QString PATH, QList<QWidget *> screenList,int x0,int totalWidth,QString filename,int deltax):QObject(parent),PATH(PATH),screenList(screenList),x0(x0),totalWidth(totalWidth),filename(filename),deltax(deltax)
+slideWindow::slideWindow(QObject *parent, QString PATH, QList<QWidget *> screenList, int x0, int totalWidth, QString filename, int deltax, int id):QObject(parent),PATH(PATH),screenList(screenList),x0(x0),totalWidth(totalWidth),filename(filename),deltax(deltax),id(id)
 {
 
 
@@ -28,7 +28,7 @@ slideWindow::slideWindow(QObject *parent, QString PATH, QList<QWidget *> screenL
     }
 
 
-    mv();
+    redraw();
 
 }
 
@@ -42,11 +42,18 @@ void slideWindow::mv()
 
     x0+=deltax;
     if(x0>totalWidth)
-        x0 = 0;
+        x0 -=totalWidth;
     if(x0<0)
-        x0 = totalWidth;
+        x0 += totalWidth;
 
 
+    redraw();
+
+}
+
+
+void slideWindow::redraw()
+{
     if(lbls.size()==2)//2screens
     {
 
@@ -112,6 +119,11 @@ void slideWindow::mv()
                 lbls[0]->move(x0,0);
                 lbls[0]->show();
                 lbls[1]->hide();
+                lbls[2]->hide();
+
+
+
+
             }
             else //shows on both screen
             {
@@ -119,16 +131,23 @@ void slideWindow::mv()
                 lbls[0]->show();
                 lbls[1]->move(x0-1920,0);
                 lbls[1]->show();
+                lbls[2]->hide();
+
+
+
             }
 
         }
-        else if(x0<2*1920) //start on first screen
+        else if(x0<2*1920) //start on second screen
         {
             if(x0+bgImg.width()<1920*2)//fits on second screen
             {
                 lbls[1]->move(x0-1920,0);
                 lbls[1]->show();
                 lbls[0]->hide();
+                lbls[2]->hide();
+
+
             }
             else //shows on both screen
             {
@@ -137,6 +156,7 @@ void slideWindow::mv()
                 lbls[1]->show();
                 lbls[2]->move(x0-2*1920,0);
                 lbls[2]->show();
+
             }
 
         }
@@ -147,6 +167,8 @@ void slideWindow::mv()
                 lbls[2]->move(x0-2*1920,0);
                 lbls[2]->show();
                 lbls[1]->hide();
+
+
             }
             else //shows on both screen
             {
@@ -158,7 +180,10 @@ void slideWindow::mv()
                     lbls[0]->move(x0-totalWidth,0);
                     lbls[0]->show();
 
+
                 }
+
+
             }
 
         }
@@ -169,10 +194,15 @@ void slideWindow::mv()
 
             lbls[1]->hide();
             lbls[2]->hide();
+
+
             if(x0+bgImg.width()>totalWidth)//goes back to first screen
             {
                 lbls[0]->move(x0-totalWidth,0);
                 lbls[0]->show();
+
+
+
 
             }
 
@@ -183,7 +213,6 @@ void slideWindow::mv()
 
 
 }
-
 
 
 
