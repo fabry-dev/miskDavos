@@ -9,10 +9,10 @@
 #include "rfidreader.h"
 #include "serialwatcher.h"
 
-#define PATH (QString)"/home/fred/Dropbox/Taf/Cassiopee/falcon/files/"
+#define PATH_DEFAULT (QString)"/home/fred/Dropbox/Taf/Cassiopee/falcon/files/"
 
 #define imgCount 5
-#define speed (55)
+#define defaultSpeed (55)
 
 int main(int argc, char *argv[])
 {
@@ -21,6 +21,64 @@ int main(int argc, char *argv[])
     QCursor cursor(Qt::BlankCursor);
     a.setOverrideCursor(cursor);
     a.changeOverrideCursor(cursor);
+
+
+    QString PATH;
+    QStringList params = a.arguments();
+    if(params.size()>1)
+        PATH = params[1];
+    else
+        PATH=PATH_DEFAULT;
+
+
+    int speed = defaultSpeed;
+
+
+    QFile file(PATH+"config.cfg");
+    if(!file.open(QIODevice::ReadOnly)) {
+        qDebug()<<"no config file";
+
+    }
+    else
+    {
+
+        QTextStream in(&file);
+
+        QString  line;
+        QString paramName,paramValue;
+        QStringList params;
+
+        while(!in.atEnd()) {
+            line = in.readLine();
+            line = (line.split("#"))[0];
+            params = line.split("=");
+            if(params.size()>=2)
+            {
+                paramName = params[0];
+                paramValue = params[1];
+
+                if (paramName=="SPEED")
+                {
+                    bool test;
+                    speed = paramValue.toInt(&test);
+                    if(!test)
+                        speed = defaultSpeed;
+                }
+                else
+                    qDebug()<<paramName<<" - "<<paramValue;
+            }
+        }
+        file.close();
+
+    }
+
+
+
+
+
+
+
+
 
     //new RFIDReader(NULL);
     serialWatcher * serialwatch = new serialWatcher(NULL);
@@ -37,14 +95,6 @@ int main(int argc, char *argv[])
     w2.setAttribute(Qt::WA_DeleteOnClose);
 
 
-    a.connect(&w1,SIGNAL(destroyed(QObject*)),&w2,SLOT(destroyLater()));
-    a.connect(&w0,SIGNAL(destroyed(QObject*)),&w2,SLOT(destroyLater()));
-
-    a.connect(&w2,SIGNAL(destroyed(QObject*)),&w1,SLOT(destroyLater()));
-    a.connect(&w0,SIGNAL(destroyed(QObject*)),&w1,SLOT(destroyLater()));
-
-    a.connect(&w1,SIGNAL(destroyed(QObject*)),&w0,SLOT(destroyLater()));
-    a.connect(&w2,SIGNAL(destroyed(QObject*)),&w0,SLOT(destroyLater()));
 
 
 
@@ -105,9 +155,9 @@ int main(int argc, char *argv[])
 
 
     }
-   slidevideo *sv = new slidevideo(NULL,PATH,widgetList,videoPos,videoWidth,totalWidth,videoName,speed);
-  a.connect(serialwatch,SIGNAL(goForward()),sv,SLOT(goForward()));
-  a.connect(serialwatch,SIGNAL(goBackward()),sv,SLOT(goBackward()));
+    slidevideo *sv = new slidevideo(NULL,PATH,widgetList,videoPos,videoWidth,totalWidth,videoName,speed);
+    a.connect(serialwatch,SIGNAL(goForward()),sv,SLOT(goForward()));
+    a.connect(serialwatch,SIGNAL(goBackward()),sv,SLOT(goBackward()));
 
 
     return a.exec();
