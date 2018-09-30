@@ -6,7 +6,7 @@
 #include "qdebug.h"
 #include "videoplayer.h"
 #include "slidevideo.h"
-#include "rfidreader.h"
+#include "showrunner.h"
 #include "serialwatcher.h"
 
 #define PATH_DEFAULT (QString)"/home/fred/Dropbox/Taf/Cassiopee/falcon/files/"
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
 
 
 
-    //new RFIDReader(NULL);
+
     serialWatcher * serialwatch = new serialWatcher(NULL);
 
     //
@@ -114,51 +114,8 @@ int main(int argc, char *argv[])
     widgetList.append(&w1);
     widgetList.append(&w0);
     widgetList.append(&w2);
-    w0.showFullScreen();
-    w1.showFullScreen();
-    w2.showFullScreen();
 
-    std::vector<int> x0s;
-    QStringList names;
-    QImage buf;
-    int totalWidth = 0;
-
-
-    for(int i =0;i<imgCount;i++)
-    {
-        QString filename = PATH+"img"+QString::number(i)+".jpg";
-        buf.load(filename);
-        buf = buf.scaledToHeight(1080);
-        x0s.push_back(totalWidth);
-        qDebug()<<totalWidth;
-        totalWidth+= buf.width();
-        names.push_back((QString)"img"+QString::number(i)+".jpg");
-    }
-
-    int videoWidth = 1920;
-    int videoPos = totalWidth;
-    QString videoName = PATH+"video0.mp4";
-    totalWidth+=videoWidth;
-
-
-
-
-    if(totalWidth<widgetList.size()*1920)
-        totalWidth = widgetList.size()*1920;
-
-    for(int i =0;i<imgCount;i++)
-    {
-        slideWindow *sw =   new slideWindow(NULL,PATH,widgetList,x0s.at(i),totalWidth,names.at(i),speed,i);
-        a.connect(serialwatch,SIGNAL(goBackward()),sw,SLOT(goBackward()));
-        a.connect(serialwatch,SIGNAL(goForward()),sw,SLOT(goForward()));
-
-
-
-    }
-    slidevideo *sv = new slidevideo(NULL,PATH,widgetList,videoPos,videoWidth,totalWidth,videoName,speed);
-    a.connect(serialwatch,SIGNAL(goForward()),sv,SLOT(goForward()));
-    a.connect(serialwatch,SIGNAL(goBackward()),sv,SLOT(goBackward()));
-
+     new showRunner(NULL,widgetList,PATH,speed,serialwatch);
 
     return a.exec();
 }

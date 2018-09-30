@@ -237,6 +237,8 @@ void slideWindow::redraw()
 slideWindow::~slideWindow()
 {
     qDebug()<<"closed showindow";
+    for(auto lbl:lbls)
+        lbl->deleteLater();
 
 }
 

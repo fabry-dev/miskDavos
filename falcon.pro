@@ -17,15 +17,15 @@ SOURCES += main.cpp \
     slidewindow.cpp \
     slidevideo.cpp \
     videoplayer.cpp \
-    rfidreader.cpp \
-    serialwatcher.cpp
+    serialwatcher.cpp \
+    showrunner.cpp
 
 HEADERS  += \
     slidewindow.h \
     slidevideo.h \
     videoplayer.h \
-    rfidreader.h \
-    serialwatcher.h
+    serialwatcher.h \
+    showrunner.h
 
 FORMS    +=
 

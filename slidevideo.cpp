@@ -225,6 +225,8 @@ void slidevideo::redraw()
 
 slidevideo::~slidevideo()
 {
+    for(auto lbl:lbls)
+        lbl->deleteLater();
     qDebug()<<"closed showindow";
 
 }
