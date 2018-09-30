@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
 
 
 
-
+    qDebug()<<a.screens().size()<<" screens detected";
 
     QScreen* screen0 = a.screens().at(0);
     QScreen* screen1 = a.screens().at(1);
