@@ -36,7 +36,8 @@ private:
     void redraw();
 
 private slots:
-    void mv();
+    void goBackward();
+    void goForward();
 
 };
 

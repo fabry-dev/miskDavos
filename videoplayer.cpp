@@ -66,7 +66,7 @@ videoPlayer::videoPlayer( QWidget *parent , QString videoFile ):QWidget(parent)
 
 void videoPlayer::restart(void)
 {
-    qDebug()<<"restart";
+
     libvlc_media_player_set_media(videoMp,videoM );
 
     libvlc_media_player_play (videoMp);

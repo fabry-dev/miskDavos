@@ -36,10 +36,15 @@ void serialWatcher::readData()
 {
  const QByteArray data = port->readAll();
  uchar b = data.at(0);
- if(b==255)
+ if(b==155)
  {
-     //qDebug()<<"top";
+    // qDebug()<<"+";
      emit goForward();
+ }
+ else if(b==255)
+ {
+     //qDebug()<<"-";
+     emit goBackward();
  }
 
 }

@@ -12,7 +12,7 @@
 #define PATH (QString)"/home/fred/Dropbox/Taf/Cassiopee/falcon/files/"
 
 #define imgCount 5
-#define speed (15)
+#define speed (55)
 
 int main(int argc, char *argv[])
 {
@@ -30,6 +30,24 @@ int main(int argc, char *argv[])
     QWidget w1;
     QWidget w2;
     QWidget w0;
+
+
+    w1.setAttribute(Qt::WA_DeleteOnClose);
+    w0.setAttribute(Qt::WA_DeleteOnClose);
+    w2.setAttribute(Qt::WA_DeleteOnClose);
+
+
+    a.connect(&w1,SIGNAL(destroyed(QObject*)),&w2,SLOT(destroyLater()));
+    a.connect(&w0,SIGNAL(destroyed(QObject*)),&w2,SLOT(destroyLater()));
+
+    a.connect(&w2,SIGNAL(destroyed(QObject*)),&w1,SLOT(destroyLater()));
+    a.connect(&w0,SIGNAL(destroyed(QObject*)),&w1,SLOT(destroyLater()));
+
+    a.connect(&w1,SIGNAL(destroyed(QObject*)),&w0,SLOT(destroyLater()));
+    a.connect(&w2,SIGNAL(destroyed(QObject*)),&w0,SLOT(destroyLater()));
+
+
+
 
     QScreen* screen0 = a.screens().at(0);
     QScreen* screen1 = a.screens().at(1);
@@ -69,8 +87,8 @@ int main(int argc, char *argv[])
 
     int videoWidth = 1920;
     int videoPos = totalWidth;
-    QString videoName = PATH+"video0.avi";
-   totalWidth+=videoWidth;
+    QString videoName = PATH+"video0.mp4";
+    totalWidth+=videoWidth;
 
 
 
@@ -81,11 +99,15 @@ int main(int argc, char *argv[])
     for(int i =0;i<imgCount;i++)
     {
         slideWindow *sw =   new slideWindow(NULL,PATH,widgetList,x0s.at(i),totalWidth,names.at(i),speed,i);
-        a.connect(serialwatch,SIGNAL(goForward()),sw,SLOT(mv()));
+        a.connect(serialwatch,SIGNAL(goBackward()),sw,SLOT(goBackward()));
+        a.connect(serialwatch,SIGNAL(goForward()),sw,SLOT(goForward()));
+
+
 
     }
    slidevideo *sv = new slidevideo(NULL,PATH,widgetList,videoPos,videoWidth,totalWidth,videoName,speed);
-  a.connect(serialwatch,SIGNAL(goForward()),sv,SLOT(mv()));
+  a.connect(serialwatch,SIGNAL(goForward()),sv,SLOT(goForward()));
+  a.connect(serialwatch,SIGNAL(goBackward()),sv,SLOT(goBackward()));
 
 
     return a.exec();

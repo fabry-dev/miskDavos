@@ -39,10 +39,22 @@ slidevideo::slidevideo(QObject *parent, QString PATH, QList<QWidget *> screenLis
 
 
 
+void slidevideo::goBackward()
+{
+
+    x0-=deltax;
+
+    if(x0>totalWidth)
+        x0 -= totalWidth;
+    if(x0<0)
+        x0 += totalWidth;
 
 
+    redraw();
 
-void slidevideo::mv()
+
+}
+void slidevideo::goForward()
 {
 
     x0+=deltax;
@@ -57,6 +69,8 @@ void slidevideo::mv()
 
 
 }
+
+
 
 void slidevideo::redraw()
 {

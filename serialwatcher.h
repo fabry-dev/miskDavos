@@ -24,6 +24,7 @@ private slots:
 
 signals:
     void goForward();
+    void goBackward();
 };
 
 #endif // serialWatcher_H

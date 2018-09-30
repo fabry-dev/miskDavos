@@ -37,10 +37,26 @@ slideWindow::slideWindow(QObject *parent, QString PATH, QList<QWidget *> screenL
 
 
 
-void slideWindow::mv()
+void slideWindow::goForward()
 {
 
     x0+=deltax;
+    if(x0>totalWidth)
+        x0 -=totalWidth;
+    if(x0<0)
+        x0 += totalWidth;
+
+
+    redraw();
+
+}
+
+
+
+void slideWindow::goBackward()
+{
+
+    x0-=deltax;
     if(x0>totalWidth)
         x0 -=totalWidth;
     if(x0<0)
