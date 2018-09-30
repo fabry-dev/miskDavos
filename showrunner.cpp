@@ -92,6 +92,9 @@ void showRunner::startShow()
         w->showFullScreen();
         w->showFullScreen();
         w->showFullScreen();
+        w->show();
+        w->show();
+        w->show();
     }
     std::vector<int> x0s;
     QStringList names;
