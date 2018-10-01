@@ -22,7 +22,7 @@ slideWindow::slideWindow(QObject *parent, QString PATH, QList<QWidget *> screenL
         lbl->resize(bgImg.size());
         lbl->setPixmap(bgImg);
         lbl->move(x0,0);
-      //  lbl->setStyleSheet("border: 1px solid black");
+        //  lbl->setStyleSheet("border: 1px solid black");
         lbls.append(lbl);
 
 
@@ -89,14 +89,32 @@ void slideWindow::redraw()
 
 
         }
-        else //shows on both screen
+        else if(x0+bgImg.width()<2*1920) //shows on both screen
         {
+
+
+
             lbls[0]->move(x0,0);
-            lbls[0]->show();
+
             lbls[1]->move(x0-1920,0);
+            lbls[0]->show();
             lbls[1]->show();
             lbls[2]->hide();
-            if(id==1)qDebug()<<"ble";
+
+
+        }
+        else
+        {
+
+
+
+            lbls[0]->move(x0,0);
+
+            lbls[1]->move(x0-1920,0);
+            lbls[2]->move(x0-2*1920,0);
+            lbls[0]->show();
+            lbls[1]->show();
+            lbls[2]->show();
 
 
         }
@@ -111,7 +129,7 @@ void slideWindow::redraw()
             lbls[0]->hide();
             lbls[2]->hide();
 
-
+            if(id==0)qDebug()<<"test1";
 
 
 
@@ -123,7 +141,7 @@ void slideWindow::redraw()
             lbls[1]->show();
             lbls[2]->move(x0-2*1920,0);
             lbls[2]->show();
-
+            if(id==0)qDebug()<<"test2";
 
         }
 
@@ -172,7 +190,7 @@ void slideWindow::redraw()
                 lbls[0]->show();
                 lbls[1]->move(x0-totalWidth-1920,0);
                 lbls[1]->show();
-                if(id==1)qDebug()<<"ble2";
+
             }
 
             else if(x0-totalWidth<1920) //fits on first screen
@@ -181,7 +199,7 @@ void slideWindow::redraw()
                 lbls[2]->hide();
                 lbls[0]->move(x0-totalWidth,0);
                 lbls[0]->show();
-                if(id==1)qDebug()<<"ble1";
+
             }
 
 

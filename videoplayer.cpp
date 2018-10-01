@@ -39,9 +39,9 @@ videoPlayer::videoPlayer( QWidget *parent , QString videoFile ):QWidget(parent)
     videoM = libvlc_media_new_path (videoInst,videoFile.toStdString().c_str());
     //libvlc_media_add_option(videoM, "input-repeat=-1");
     libvlc_media_add_option(videoM, ":no-audio");
-    libvlc_media_add_option(videoM,":avcodec-hw=none");
-    libvlc_media_add_option(videoM,":avcodec-fast");
-    libvlc_media_add_option(videoM,"--sout-avcodec-pre-me");
+    libvlc_media_add_option(videoM,":avcodec-hw=any");
+    //libvlc_media_add_option(videoM,":avcodec-fast");
+   // libvlc_media_add_option(videoM,"--sout-avcodec-pre-me");
 
 
 
