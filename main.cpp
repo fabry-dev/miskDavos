@@ -65,6 +65,7 @@ int main(int argc, char *argv[])
                     if(!test)
                         speed = defaultSpeed;
                 }
+
                 else
                     qDebug()<<paramName<<" - "<<paramValue;
             }
@@ -108,7 +109,6 @@ int main(int argc, char *argv[])
     w0.setGeometry(screen0->geometry().x(),screen0->geometry().y(),1920,1080);
     w1.setGeometry(screen1->geometry().x(),screen1->geometry().y(),1920,1080);
     w2.setGeometry(screen2->geometry().x(),screen2->geometry().y(),1920,1080);
-
 
     QList <QWidget*> widgetList;
 

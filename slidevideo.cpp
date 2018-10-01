@@ -24,7 +24,7 @@ slidevideo::slidevideo(QObject *parent, QString PATH, QList<QWidget *> screenLis
         lbls.append(lbl);
 
 
-        connect(lbls[0],SIGNAL(endReached()),lbl,SLOT(restart()));
+
 
 
     }

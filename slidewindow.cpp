@@ -129,7 +129,6 @@ void slideWindow::redraw()
             lbls[0]->hide();
             lbls[2]->hide();
 
-            if(id==0)qDebug()<<"test1";
 
 
 
@@ -141,7 +140,7 @@ void slideWindow::redraw()
             lbls[1]->show();
             lbls[2]->move(x0-2*1920,0);
             lbls[2]->show();
-            if(id==0)qDebug()<<"test2";
+
 
         }
 

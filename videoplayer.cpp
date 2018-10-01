@@ -2,7 +2,7 @@
 #include "qdebug.h"
 #include "mainwindow.h"
 
-
+#define HW true
 
 
 
@@ -38,6 +38,12 @@ videoPlayer::videoPlayer( QWidget *parent , QString videoFile ):QWidget(parent)
     check_error(mpv_set_option(mpv, "wid", MPV_FORMAT_INT64, &wid));
     check_error(mpv_set_option_string(mpv, "input-default-bindings", "yes"));
     check_error(mpv_set_option_string(mpv, "input-vo-keyboard", "no"));
+
+    if(HW)
+    {
+    check_error(mpv_set_option_string(mpv, "vo", "opengl"));
+    check_error(mpv_set_option_string(mpv, "hwdec", "auto"));
+    }
     int val = 0;
     check_error(mpv_set_option(mpv, "osc", MPV_FORMAT_FLAG, &val));
     mpv_set_option_string( mpv, "loop", "inf");
