@@ -50,8 +50,6 @@ videoPlayer::videoPlayer( QWidget *parent , QString videoFile ):QWidget(parent)
     check_error(mpv_command(mpv, cmd));
 
 
-
-    qDebug()<<"done ";
 }
 
 
@@ -59,15 +57,6 @@ videoPlayer::videoPlayer( QWidget *parent , QString videoFile ):QWidget(parent)
 
 
 
-
-
-void videoPlayer::restart(void)
-{
-    qDebug()<<"restart";
-
-
-
-}
 
 
 
@@ -75,7 +64,7 @@ void videoPlayer::restart(void)
 
 videoPlayer::~videoPlayer()
 {
-
+ mpv_terminate_destroy(mpv);
 
 
 

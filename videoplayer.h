@@ -18,10 +18,8 @@ public:
 private:
 
     mpv_handle *mpv;
-signals:
-    void endReached();
-private slots:
-    void restart();
+
+
 
 
 };
