@@ -40,6 +40,10 @@ videoPlayer::videoPlayer( QWidget *parent , QString videoFile ):QWidget(parent)
     //libvlc_media_add_option(videoM, "input-repeat=-1");
     libvlc_media_add_option(videoM, ":no-audio");
     libvlc_media_add_option(videoM,":avcodec-hw=none");
+    libvlc_media_add_option(videoM,":avcodec-fast");
+    libvlc_media_add_option(videoM,"--sout-avcodec-pre-me");
+
+
 
 
     // Create a media player playing environement
