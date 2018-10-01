@@ -107,7 +107,7 @@ void showRunner::startShow()
 
     int videoWidth = 1920;
     int videoPos = totalWidth;
-    QString videoName = PATH+"video.mp4";
+    QString videoName = PATH+"video0.mp4";
     totalWidth+=videoWidth;
 
 
