@@ -7,65 +7,51 @@
 
 
 
-void callbacks( const libvlc_event_t* event, void* ptr )
+
+
+static inline void check_error(int status)
 {
-    videoPlayer *self = reinterpret_cast<videoPlayer*>( ptr );
-    switch ( event->type )
-    {
-    case libvlc_MediaPlayerEndReached:
-        emit (self->endReached());
-
-        break;
-    default:
-        break;
+    if (status < 0) {
+        qDebug()<<"mpv API error: "<<mpv_error_string(status);
+        exit(1);
     }
-
-
 }
-
-
 
 videoPlayer::videoPlayer( QWidget *parent , QString videoFile ):QWidget(parent)
 {
 
-
-    // Load the VLC engine
-    videoInst = libvlc_new(0, NULL);
-
-    // Create a new item
-
-
-    //videoFile = PATH+"video.mov";
-    videoM = libvlc_media_new_path (videoInst,videoFile.toStdString().c_str());
-    //libvlc_media_add_option(videoM, "input-repeat=-1");
-    libvlc_media_add_option(videoM, ":no-audio");
-    libvlc_media_add_option(videoM,":avcodec-hw=any");
-    //libvlc_media_add_option(videoM,":avcodec-fast");
-   // libvlc_media_add_option(videoM,"--sout-avcodec-pre-me");
-
-
-
-
-    // Create a media player playing environement
-    videoMp = libvlc_media_player_new_from_media (videoM);
-    m_eventMgr = libvlc_media_player_event_manager( videoMp );
-    libvlc_event_attach( m_eventMgr, libvlc_MediaPlayerEndReached,      callbacks, this );
-
-
-
-    //    libvlc_media_player_event_manager()
-    libvlc_video_set_mouse_input(videoMp, false);
-    libvlc_media_player_set_xwindow(videoMp, this->winId());
-
-    setWindowState(Qt::WindowFullScreen);
-    // setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
-
-    //QWidget::show()
     this->show();
     this->raise();
     resize(QSize(1920,1080));
-    libvlc_media_player_play (videoMp);
 
+
+    std::setlocale(LC_NUMERIC, "C");
+    mpv_handle *mpv = mpv_create();
+    if (!mpv) {
+       qDebug()<<"failed creating context";
+    return;
+    }
+
+
+
+    int64_t wid = this->winId();
+    check_error(mpv_set_option(mpv, "wid", MPV_FORMAT_INT64, &wid));
+    check_error(mpv_set_option_string(mpv, "input-default-bindings", "yes"));
+    check_error(mpv_set_option_string(mpv, "input-vo-keyboard", "no"));
+    int val = 0;
+    check_error(mpv_set_option(mpv, "osc", MPV_FORMAT_FLAG, &val));
+    mpv_set_option_string( mpv, "loop", "inf");
+    check_error(mpv_initialize(mpv));
+
+    QByteArray ba = videoFile.toLatin1();
+    const char *videoFile2 = ba.data();
+    const char *cmd[] = {"loadfile", videoFile2, NULL};
+
+    check_error(mpv_command(mpv, cmd));
+
+
+
+    qDebug()<<"done ";
 }
 
 
@@ -79,9 +65,7 @@ void videoPlayer::restart(void)
 {
     qDebug()<<"restart";
 
-   libvlc_media_player_set_media(videoMp,videoM );
 
-    libvlc_media_player_play (videoMp);
 
 }
 
@@ -92,10 +76,7 @@ void videoPlayer::restart(void)
 videoPlayer::~videoPlayer()
 {
 
-    libvlc_media_release (videoM);
-    libvlc_media_player_release (videoMp);
-   libvlc_release (videoInst);
-    qDebug()<<"video player stopped";
+
 
 
 }
