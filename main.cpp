@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
     QScreen* screen2 = a.screens().at(2);
 
 
-    w0.setGeometry(screen0->geometry().x(),screen0->geometry().y(),1920*2,1079);
+    w0.setGeometry(screen0->geometry().x(),screen0->geometry().y(),1920,1080);
     w1.setGeometry(screen1->geometry().x(),screen1->geometry().y(),1920,1080);
     w2.setGeometry(screen2->geometry().x(),screen2->geometry().y(),1920,1080);
 

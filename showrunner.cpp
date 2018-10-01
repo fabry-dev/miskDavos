@@ -43,7 +43,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
 
     testTimer = new QTimer(this);
-    testTimer->start(300);
+    //testTimer->start(500);
 
 
 
@@ -80,7 +80,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
 
 
-#define imgCount 4
+#define imgCount 3
 
 void showRunner::startShow()
 {
@@ -88,7 +88,7 @@ void showRunner::startShow()
     {
         lbl->hide();
     }
-  //  RFIDtimeout->start(timeout);
+    //  RFIDtimeout->start(timeout);
 
     for(auto w:widgetList)
     {
@@ -132,12 +132,14 @@ void showRunner::startShow()
         slideWindow *sw =   new slideWindow(NULL,PATH,widgetList,x0s.at(i),totalWidth,names.at(i),speed,i);
         connect(serialwatch,SIGNAL(goBackward()),sw,SLOT(goBackward()));
         connect(serialwatch,SIGNAL(goForward()),sw,SLOT(goForward()));
-         connect(testTimer,SIGNAL(timeout()),sw,SLOT(goForward()));
+        connect(testTimer,SIGNAL(timeout()),sw,SLOT(goForward()));
         photos.push_back(sw);
 
     }
     slidevideo *sv = new slidevideo(NULL,PATH,widgetList,videoPos,videoWidth,totalWidth,videoName,speed);
     videos.push_back(sv);
+
+
     connect(serialwatch,SIGNAL(goForward()),sv,SLOT(goForward()));
     connect(serialwatch,SIGNAL(goBackward()),sv,SLOT(goBackward()));
     connect(testTimer,SIGNAL(timeout()),sv,SLOT(goForward()));
@@ -167,7 +169,7 @@ void showRunner::stopShow()
     photos.clear();
     videos.clear();
 
-  //  restartGame->start(timeout);
+    //  restartGame->start(timeout);
 
 
 }
