@@ -8,7 +8,7 @@
 #include "slidevideo.h"
 #include "showrunner.h"
 #include "serialwatcher.h"
-
+#include "videoplayer.h"
 #define PATH_DEFAULT (QString)"/home/fred/Dropbox/Taf/Cassiopee/falcon/files/"
 
 #define imgCount 5

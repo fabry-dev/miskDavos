@@ -39,7 +39,9 @@ videoPlayer::videoPlayer( QWidget *parent , QString videoFile ):QWidget(parent)
     videoM = libvlc_media_new_path (videoInst,videoFile.toStdString().c_str());
     //libvlc_media_add_option(videoM, "input-repeat=-1");
     libvlc_media_add_option(videoM, ":no-audio");
-    libvlc_media_add_option(videoM,":avcodec-hw=none");
+    libvlc_media_add_option(videoM,":avcodec-hw=any");
+    libvlc_media_add_option(videoM,":avcodec-threads=0");
+
     // Create a media player playing environement
     videoMp = libvlc_media_player_new_from_media (videoM);
     m_eventMgr = libvlc_media_player_event_manager( videoMp );
@@ -64,11 +66,16 @@ videoPlayer::videoPlayer( QWidget *parent , QString videoFile ):QWidget(parent)
 
 
 
+
+
+
+
+
 void videoPlayer::restart(void)
 {
     qDebug()<<"restart";
 
-    libvlc_media_player_set_media(videoMp,videoM );
+   libvlc_media_player_set_media(videoMp,videoM );
 
     libvlc_media_player_play (videoMp);
 
@@ -83,7 +90,7 @@ videoPlayer::~videoPlayer()
 
     libvlc_media_release (videoM);
     libvlc_media_player_release (videoMp);
-    libvlc_release (videoInst);
+   libvlc_release (videoInst);
     qDebug()<<"video player stopped";
 
 

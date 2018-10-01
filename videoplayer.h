@@ -5,9 +5,9 @@
 #include <vlc/vlc.h>
 #include "qevent.h"
 #include <QObject>
-
-
-
+#include "qmediaplayer.h"
+#include "qmediaplaylist.h"
+#include "QVideoWidget"
 
 class videoPlayer : public QWidget
    {
@@ -26,6 +26,9 @@ class videoPlayer : public QWidget
        libvlc_instance_t * videoInst;
        libvlc_media_player_t *videoMp;
        libvlc_media_t *videoM;
+       QMediaPlayer *player;
+       QMediaPlaylist *playlist;
+       QVideoWidget *videoWidget;
     signals:
         void endReached();
     private slots:
