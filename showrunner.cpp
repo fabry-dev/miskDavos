@@ -69,7 +69,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
 
 
-#define imgCount 0
+#define imgCount 5
 
 void showRunner::startShow()
 {
