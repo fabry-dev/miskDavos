@@ -42,6 +42,9 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
     connect(restartGame,SIGNAL(timeout()),this,SLOT(startShow()));
 
 
+    testTimer = new QTimer(this);
+    testTimer->start(300);
+
 
 
 
@@ -129,6 +132,7 @@ void showRunner::startShow()
         slideWindow *sw =   new slideWindow(NULL,PATH,widgetList,x0s.at(i),totalWidth,names.at(i),speed,i);
         connect(serialwatch,SIGNAL(goBackward()),sw,SLOT(goBackward()));
         connect(serialwatch,SIGNAL(goForward()),sw,SLOT(goForward()));
+         connect(testTimer,SIGNAL(timeout()),sw,SLOT(goForward()));
         photos.push_back(sw);
 
     }
@@ -136,6 +140,7 @@ void showRunner::startShow()
     videos.push_back(sv);
     connect(serialwatch,SIGNAL(goForward()),sv,SLOT(goForward()));
     connect(serialwatch,SIGNAL(goBackward()),sv,SLOT(goBackward()));
+    connect(testTimer,SIGNAL(timeout()),sv,SLOT(goForward()));
 }
 
 

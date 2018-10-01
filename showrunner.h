@@ -28,6 +28,7 @@ class showRunner
     std::vector<slideWindow*> photos;
     std::vector<QLabel *> bgLbls;
     QPixmap bgImg;
+    QTimer *testTimer;
 
 public:
     explicit showRunner(QObject *parent = nullptr, QList <QWidget*> widgetList={}, QString PATH="", int speed=10, serialWatcher *serialwatch=NULL);
