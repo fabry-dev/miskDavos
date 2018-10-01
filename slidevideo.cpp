@@ -76,6 +76,7 @@ void slidevideo::redraw()
 {
 
 
+
     if(x0<1920) //start on first screen
     {
 
@@ -85,6 +86,8 @@ void slidevideo::redraw()
             lbls[0]->show();
             lbls[1]->hide();
             lbls[2]->hide();
+            qDebug()<<"test1";
+
 
 
 
@@ -92,11 +95,16 @@ void slidevideo::redraw()
         }
         else //shows on both screen
         {
+
+
+
             lbls[0]->move(x0,0);
-            lbls[0]->show();
+
             lbls[1]->move(x0-1920,0);
+            lbls[0]->show();
             lbls[1]->show();
             lbls[2]->hide();
+            qDebug()<<"test2";
 
 
 
@@ -111,6 +119,7 @@ void slidevideo::redraw()
             lbls[1]->show();
             lbls[0]->hide();
             lbls[2]->hide();
+            qDebug()<<"test3";
 
 
 
@@ -124,6 +133,7 @@ void slidevideo::redraw()
             lbls[1]->show();
             lbls[2]->move(x0-2*1920,0);
             lbls[2]->show();
+            qDebug()<<"test4";
 
 
         }
@@ -136,6 +146,7 @@ void slidevideo::redraw()
             lbls[2]->move(x0-2*1920,0);
             lbls[2]->show();
             lbls[1]->hide();
+            qDebug()<<"test5";
 
 
         }
@@ -151,6 +162,7 @@ void slidevideo::redraw()
 
 
             }
+            qDebug()<<"test6";
 
 
         }
@@ -173,6 +185,7 @@ void slidevideo::redraw()
                 lbls[0]->show();
                 lbls[1]->move(x0-totalWidth-1920,0);
                 lbls[1]->show();
+                qDebug()<<"test7";
 
             }
 
@@ -183,6 +196,7 @@ void slidevideo::redraw()
                 lbls[0]->move(x0-totalWidth,0);
                 lbls[0]->show();
 
+                qDebug()<<"test8";
             }
 
 

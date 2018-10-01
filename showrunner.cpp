@@ -61,17 +61,6 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
 
 
-
-
-
-
-
-
-
-
-
-
-
     startShow();
 
 }
@@ -80,7 +69,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
 
 
-#define imgCount 3
+#define imgCount 0
 
 void showRunner::startShow()
 {
