@@ -239,8 +239,7 @@ void showRunner::handle_readNotification(int /*socket*/)
         if((ev.code == 96)||(ev.code == 28))
         {
             qDebug()<<"enter";
-            for(auto b:codeBuf)
-                qDebug()<<(int)b;
+
 
             if(codeBuf == code0)
                 qDebug()<<"code0";
@@ -248,7 +247,11 @@ void showRunner::handle_readNotification(int /*socket*/)
                 qDebug()<<"code1";
             else if(codeBuf == code2)
                 qDebug()<<"code2";
-
+            else
+            {
+                for(auto b:codeBuf)
+                    qDebug()<<(int)b;
+            }
 
             codeBuf.clear();
         }
