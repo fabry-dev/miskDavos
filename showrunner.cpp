@@ -3,15 +3,26 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <qstringlist.h>
+#include <linux/input.h>
+#include "qbytearray.h"
 
 
 #define timeout 3000
 
-QStringList rfidTags = QStringList() << "12345" << "234567" << "789765";
+
 
 showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PATH, int speed, serialWatcher *serialwatch)
     : QObject(parent),widgetList(widgetList),PATH(PATH),speed(speed),serialwatch(serialwatch)
 {
+
+
+    codeBuf.clear();
+    code0.clear();
+    code0.push_back(82);
+    code0.push_back(79);
+    code0.push_back(80);
+    code0.push_back(81);
+
     auto file = new QFile();
     file->setFileName(fileName);
 
@@ -62,7 +73,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
     }
 
 
-    //stopShow();
+    // stopShow();
     //startShow(2);
 
 }
@@ -75,7 +86,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
 void showRunner::startShow(int show)
 {
-
+    codeBuf.clear();
     if(show>2)
         return;
     if(show<0)
@@ -148,7 +159,7 @@ void showRunner::startShow(int show)
 
 void showRunner::stopShow()
 {
-
+    codeBuf.clear();
     for(auto w:widgetList)
     {
         w->showFullScreen();
@@ -207,24 +218,56 @@ void showRunner::onTimeout()
 
 
 
-
 void showRunner::handle_readNotification(int /*socket*/)
 {
-    //qDebug()<<"notifs";
+    // qDebug()<<"notifs";
 
-    uchar buf;
-    while( read(fd,&buf,sizeof(buf))>0 ){
-        qDebug()<<"RFID:";
-        qDebug()<<buf;
 
-        for(int i = 0;i<rfidTags.size();i++)
+
+
+
+    struct input_event ev;
+
+
+    read(fd, &ev, sizeof(struct input_event));
+
+    if((ev.type == 1)&&(ev.value==0))
+    {
+        if((ev.code == 96)||(ev.code == 28))
         {
-            if((QString)buf == rfidTags[i])
-            {
-                qDebug()<<"start "<<i;
-            }
+            qDebug()<<"enter";
+            for(auto b:codeBuf)
+                qDebug()<<(int)b;
+
+            if(codeBuf == code0)
+                qDebug()<<"code0";
+            else if(codeBuf == code1)
+                qDebug()<<"code1";
+            else if(codeBuf == code2)
+                qDebug()<<"code2";
+
+
+            codeBuf.clear();
         }
-
-
+        else
+        {
+            uchar buf = ev.code;
+            codeBuf.push_back(buf);
+        }
     }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
