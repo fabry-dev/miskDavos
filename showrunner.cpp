@@ -16,7 +16,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 {
 
 
-    activeShow = -1;
+
     codeBuf.clear();
     code0.clear();
     code1.clear();
@@ -90,7 +90,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
 
     stopShow();
-    //startShow(2);
+   // startShow(2);
 
 }
 
@@ -193,6 +193,9 @@ void showRunner::startShow(int show)
 
 void showRunner::stopShow()
 {
+    if(activeShow == -1)
+        return;
+
     activeShow = -1;
     codeBuf.clear();
     for(auto w:widgetList)

@@ -229,7 +229,7 @@ slidevideo::~slidevideo()
 {
     for(auto lbl:lbls)
         lbl->deleteLater();
-    qDebug()<<"closed showindow";
+    qDebug()<<"closed video window";
 
 }
 

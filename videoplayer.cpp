@@ -26,7 +26,7 @@ videoPlayer::videoPlayer( QWidget *parent , QString videoFile ):QWidget(parent)
 
 
     std::setlocale(LC_NUMERIC, "C");
-    mpv_handle *mpv = mpv_create();
+    mpv = mpv_create();
     if (!mpv) {
        qDebug()<<"failed creating context";
     return;
