@@ -18,10 +18,13 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
     codeBuf.clear();
     code0.clear();
-    code0.push_back(82);
-    code0.push_back(79);
-    code0.push_back(80);
-    code0.push_back(81);
+
+
+    static const int arr[] = {11,11,11,5,42,33,42,33,4,10,42,30,3,42,18,42,32,5,42,46,9,11};
+    std::vector<uchar> vec (arr, arr + sizeof(arr) / sizeof(arr[0]) );
+    code0=vec;
+
+
 
     auto file = new QFile();
     file->setFileName(fileName);
