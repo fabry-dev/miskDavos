@@ -13,24 +13,61 @@ slidevideo::slidevideo(QObject *parent, QString PATH, QList<QWidget *> screenLis
 
 
 
-    //resize(bgImg.size());
+
+
+    //resize(w0());
     videoPlayer *lbl;
     lbls.clear();
+
+
     for (int i = 0;i<screenList.size();i++)
     {
         lbl = new videoPlayer(screenList.at(i),filename);
-       lbl->resize(w0,1080);
-       lbl->move(x0,0);
+        lbl->resize(w0,1080);
+        lbl->move(x0,0);
         lbls.push_back(lbl);
-
-
     }
 
-  //  connect(lbl,SIGNAL(destroyed(QObject*)),this,SLOT(deleteLater()));
+  /*  lbl = new videoPlayer(screenList.at(0),filename);
+
+
+    lbl->resize(w0,1080);
+
+
+    lbl->move(x0,0);
+    lbls.push_back(lbl);
+
+    lbl = new videoPlayer(screenList.at(0),filename);
+    lbl->resize(w0,1080);
+    lbl->move(x0,0);
+    lbls.push_back(lbl);
+
+    lbl = new videoPlayer(screenList.at(1),filename);
+    lbl->resize(w0,1080);
+    lbl->move(x0,0);
+    lbls.push_back(lbl);
+
+    lbl = new videoPlayer(screenList.at(1),filename);
+    lbl->resize(w0,1080);
+    lbl->move(x0,0);
+    lbls.push_back(lbl);
+
+    lbl = new videoPlayer(screenList.at(2),filename);
+    lbl->resize(w0,1080);
+    lbl->move(x0,0);
+    lbls.push_back(lbl);
+
+    lbl = new videoPlayer(screenList.at(2),filename);
+    lbl->resize(w0,1080);
+    lbl->move(x0,0);
+    lbls.push_back(lbl);
+*/
+
+    //  connect(lbl,SIGNAL(destroyed(QObject*)),this,SLOT(deleteLater()));
 
 
 
-  redraw();
+    redraw();
 
 }
 
@@ -69,36 +106,123 @@ void slidevideo::redraw()
 
     if(closed)
     {
-     //   qDebug()<<"-----------------LOCKED---------------------------";
+        //   qDebug()<<"-----------------LOCKED---------------------------";
         return;
     }
 
 
+
+/*
+    if(x0<1920) //Starts on 1st screen
+    {
+        lbls[0]->move(x0,0);
+        lbls[1]->move(x0-totalWidth,0);
+        lbls[2]->move(x0-1920,0);
+        lbls[4]->move(x0-2*1920,0);
+
+        lbls[0]->show();
+        lbls[1]->show();
+
+        lbls[2]->show();
+        lbls[3]->hide();
+
+        lbls[4]->show();
+        lbls[5]->hide();
+    }
+    else if(x0<2*1920) //Starts on 2nd screen
+    {
+        //lbls[0]->move(x0,0);
+        lbls[1]->move(x0-totalWidth,0);
+
+        lbls[2]->move(x0-1920,0);
+        lbls[3]->move(x0-totalWidth-1920,0);
+
+        lbls[4]->move(x0-2*1920,0);
+
+
+        lbls[0]->hide();
+        lbls[1]->show();
+
+        lbls[2]->show();
+        lbls[3]->show();
+
+        lbls[4]->show();
+        lbls[5]->hide();
+
+    }
+    else if(x0<3*1920) //Starts on 2nd screen
+    {
+        //lbls[0]->move(x0,0);
+        lbls[1]->move(x0-totalWidth,0);
+
+
+        lbls[2]->move(x0-totalWidth-1920,0);
+
+
+        lbls[4]->move(x0-2*1920,0);
+        lbls[5]->move(x0-2*1920-totalWidth,0);
+
+        lbls[0]->hide();
+        lbls[1]->show();
+
+        lbls[2]->show();
+        lbls[3]->hide();
+
+        lbls[4]->show();
+        lbls[5]->show();
+
+    }
+*/
+
+
+
+
+
+
+
+
     if(x0<1920) //start on first screen
     {
+
         if(x0+w0<1920)//fits on first screen
         {
             lbls[0]->move(x0,0);
             lbls[0]->show();
             lbls[1]->hide();
             lbls[2]->hide();
+
+
+
+
         }
         else if(x0+w0<2*1920) //shows on both screen
         {
+
+
+
             lbls[0]->move(x0,0);
+
             lbls[1]->move(x0-1920,0);
             lbls[0]->show();
             lbls[1]->show();
             lbls[2]->hide();
+
+
         }
         else
         {
+
+
+
             lbls[0]->move(x0,0);
+
             lbls[1]->move(x0-1920,0);
             lbls[2]->move(x0-2*1920,0);
             lbls[0]->show();
             lbls[1]->show();
             lbls[2]->show();
+
+
         }
 
     }
@@ -111,11 +235,6 @@ void slidevideo::redraw()
             lbls[0]->hide();
             lbls[2]->hide();
 
-
-
-
-
-
         }
         else //shows on both screen
         {
@@ -124,7 +243,6 @@ void slidevideo::redraw()
             lbls[1]->show();
             lbls[2]->move(x0-2*1920,0);
             lbls[2]->show();
-
 
 
         }
@@ -139,7 +257,6 @@ void slidevideo::redraw()
             lbls[1]->hide();
 
 
-
         }
         else //shows on both screen
         {
@@ -151,24 +268,32 @@ void slidevideo::redraw()
                 lbls[0]->move(x0-totalWidth,0);
                 lbls[0]->show();
 
-
             }
-
 
 
         }
 
     }
+
+
     else//starts outside any screen
     {
-
-
-
 
         if(x0+w0>totalWidth)//goes back to first screen
         {
 
-            if(x0-totalWidth<2*1920) //both screens
+            if(x0-totalWidth<3*1920) //every screens
+            {
+                lbls[0]->move(x0-totalWidth,0);
+                lbls[0]->show();
+                lbls[1]->move(x0-totalWidth-1920,0);
+                lbls[1]->show();
+                lbls[2]->move(x0-totalWidth-2*1920,0);
+                lbls[2]->show();
+
+            }
+
+            else if(x0-totalWidth<2*1920) //both screens
             {
                 lbls[0]->move(x0-totalWidth,0);
                 lbls[0]->show();
@@ -184,7 +309,6 @@ void slidevideo::redraw()
                 lbls[0]->move(x0-totalWidth,0);
                 lbls[0]->show();
 
-
             }
 
 
@@ -192,6 +316,17 @@ void slidevideo::redraw()
         }
 
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

@@ -12,7 +12,7 @@ static inline void check_error(int status)
 {
     if (status < 0) {
         qDebug()<<"mpv API error: "<<mpv_error_string(status);
-      //  exit(1);
+        //  exit(1);
     }
 }
 
@@ -45,7 +45,7 @@ videoPlayer::videoPlayer( QWidget *parent , QString videoFile ):QWidget(parent)
 
     setAttribute(Qt::WA_DontCreateNativeAncestors);
     setAttribute(Qt::WA_NativeWindow);
-    resize(QSize(1920,1080));
+    //resize(QSize(1920,1080));
 
 
     std::setlocale(LC_NUMERIC, "C");
@@ -72,7 +72,7 @@ videoPlayer::videoPlayer( QWidget *parent , QString videoFile ):QWidget(parent)
     mpv_set_option_string( mpv, "loop", "inf");
 
 
-   /* connect(this, SIGNAL(mpv_events()), this, SLOT(on_mpv_events()),
+    /* connect(this, SIGNAL(mpv_events()), this, SLOT(on_mpv_events()),
             Qt::QueuedConnection);
 
 
@@ -88,7 +88,7 @@ videoPlayer::videoPlayer( QWidget *parent , QString videoFile ):QWidget(parent)
     const char *videoFile2 = ba.data();
     const char *cmd[] = {"loadfile", videoFile2, NULL};
 
-    check_error(mpv_command(mpv, cmd));
+    qDebug()<<"load "<<mpv_command(mpv, cmd);
 
 
 }

@@ -79,12 +79,6 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
 
 
-
-
-
-
-
-
     for(int i = 0;i<widgetList.size();i++)
     {
         bgImg.load(PATH+"insert"+QString::number(i)+".png");
@@ -96,9 +90,9 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
     }
 
 
-
-    //startShow(2);
     stopShow();
+    startShow(0);
+    // stopShow();
 
 }
 
@@ -106,7 +100,9 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
 
 
-#define imgCount 5
+#define imgCount 0
+
+#define videoCount 2
 
 void showRunner::startShow(int show)
 {
@@ -145,16 +141,16 @@ void showRunner::startShow(int show)
     {
         lbl->hide();
     }
-  //  RFIDtimeout->start(timeout);
+    //  RFIDtimeout->start(timeout);
 
     for(auto w:widgetList)
     {
         w->showFullScreen();
         w->showFullScreen();
-         w->showFullScreen();
-       // w->show();
-       // w->show();
-       // w->show();
+        w->showFullScreen();
+        // w->show();
+        // w->show();
+        // w->show();
     }
     std::vector<int> x0s;
     QStringList names;
@@ -174,13 +170,29 @@ void showRunner::startShow(int show)
     }
 
 
-    int videoPos = totalWidth;
-    QString videoName = PATH+contentPath+"video0.mp4";
 
 
-    int videoWidth = getVideoWidth(videoName);
-    qDebug()<<"video width"<<videoWidth;
-    totalWidth+=videoWidth;
+
+    std::vector<int>videoPos;
+    std::vector<int>videoWidth;
+
+    std::vector<QString>videoNames;
+
+    for (int i = 0;i<videoCount;i++)
+    {
+        videoPos.push_back(totalWidth);
+        QString videoName = PATH+contentPath+"video"+QString::number(i)+".mov";
+        videoNames.push_back(videoName);
+        videoWidth.push_back(getVideoWidth(videoName));
+        totalWidth+=videoWidth.at(i);
+
+        qDebug()<<videoName<<videoPos.at(i);
+    }
+
+
+
+
+
 
 
 
@@ -199,14 +211,21 @@ void showRunner::startShow(int show)
     }
 
 
-    slidevideo *sv = new slidevideo(NULL,PATH,widgetList,videoPos,videoWidth,totalWidth,videoName,speed);
-    videos.push_back(sv);
+    for (int i = 0;i<videoCount;i++)
+    {
+        slidevideo *sv1 = new slidevideo(NULL,PATH,widgetList,videoPos.at(i),videoWidth.at(i),totalWidth,videoNames.at(i),speed);
+        videos.push_back(sv1);
+        connect(serialwatch,SIGNAL(goForward()),sv1,SLOT(goForward()));
+        connect(serialwatch,SIGNAL(goBackward()),sv1,SLOT(goBackward()));
+
+    }
 
 
-    connect(serialwatch,SIGNAL(goForward()),sv,SLOT(goForward()));
-    connect(serialwatch,SIGNAL(goBackward()),sv,SLOT(goBackward()));
+
+
 
 }
+
 
 void showRunner::restart()
 {
@@ -225,11 +244,11 @@ void showRunner::stopShow()
     codeBuf.clear();
     for(auto w:widgetList)
     {
-         w->showFullScreen();
-          w->showFullScreen();
-         w->showFullScreen();
+        w->showFullScreen();
+        w->showFullScreen();
+        w->showFullScreen();
         // w->show();
-       //  w->show();
+        //  w->show();
         // w->show();
     }
 

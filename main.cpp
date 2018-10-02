@@ -114,7 +114,8 @@ int main(int argc, char *argv[])
     widgetList.append(&w0);
     widgetList.append(&w2);
 
-    new showRunner(NULL,widgetList,PATH,speed,serialwatch);
+
+ new showRunner(NULL,widgetList,PATH,speed,serialwatch);
 
     return a.exec();
 }
