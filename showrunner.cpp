@@ -18,11 +18,23 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
     codeBuf.clear();
     code0.clear();
+    code1.clear();
+    code2.clear();
+
+    static const int arr0[] = {11,11,11,5,42,33,42,33,4,10,42,30,3,42,18,42,32,5,42,46,9,11};
+    static const int arr1[] = {11,11,11,5,10,2,42,18,8,42,30,3,42,18,42,32,5,42,46,9,11};
+    static const int arr2[] = {11,11,11,5,8,4,10,6,42,30,3,42,18,42,32,5,42,46,9,11};
 
 
-    static const int arr[] = {11,11,11,5,42,33,42,33,4,10,42,30,3,42,18,42,32,5,42,46,9,11};
-    std::vector<uchar> vec (arr, arr + sizeof(arr) / sizeof(arr[0]) );
-    code0=vec;
+    std::vector<uchar> vec0 (arr0, arr0 + sizeof(arr0) / sizeof(arr0[0]) );
+    std::vector<uchar> vec1 (arr1, arr1 + sizeof(arr1) / sizeof(arr1[0]) );
+    std::vector<uchar> vec2 (arr2, arr2 + sizeof(arr2) / sizeof(arr2[0]) );
+
+
+
+    code0=vec0;
+    code1=vec1;
+    code2=vec2;
 
 
 
