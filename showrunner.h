@@ -40,7 +40,7 @@ public slots:
 
 private slots:
     void onTimeout(void);
-    void startShow();
+    void startShow(int show);
     void stopShow();
 
 
