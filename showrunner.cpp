@@ -97,8 +97,8 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
 
 
-    startShow(1);
-
+    //startShow(2);
+    stopShow();
 
 }
 
@@ -106,7 +106,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
 
 
-#define imgCount 0
+#define imgCount 5
 
 void showRunner::startShow(int show)
 {
@@ -145,7 +145,7 @@ void showRunner::startShow(int show)
     {
         lbl->hide();
     }
-    RFIDtimeout->start(timeout);
+  //  RFIDtimeout->start(timeout);
 
     for(auto w:widgetList)
     {
@@ -179,7 +179,7 @@ void showRunner::startShow(int show)
 
 
     int videoWidth = getVideoWidth(videoName);
-
+    qDebug()<<"video width"<<videoWidth;
     totalWidth+=videoWidth;
 
 
@@ -211,7 +211,7 @@ void showRunner::startShow(int show)
 void showRunner::restart()
 {
     qDebug()<<"restarting ";
-    startShow(1);
+    startShow(2);
 }
 
 
@@ -254,9 +254,7 @@ void showRunner::stopShow()
     videos.clear();
 
 
-    qDebug()<<"show stopped";
 
-    QTimer::singleShot(4000,this,SLOT(restart()));
 
 
 }
@@ -309,7 +307,7 @@ void showRunner::handle_readNotification(int /*socket*/)
 
 
 
-    return;
+
 
     struct input_event ev;
 

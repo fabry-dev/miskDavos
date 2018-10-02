@@ -2,7 +2,6 @@
 #include "qdebug.h"
 #include "qtimer.h"
 
-#define FPS 24
 
 slidevideo::slidevideo(QObject *parent, QString PATH, QList<QWidget *> screenList,int x0,int w0,int totalWidth,QString filename,int deltax):QObject(parent),PATH(PATH),screenList(screenList),x0(x0),w0(w0),totalWidth(totalWidth),filename(filename),deltax(deltax)
 {
@@ -20,8 +19,8 @@ slidevideo::slidevideo(QObject *parent, QString PATH, QList<QWidget *> screenLis
     for (int i = 0;i<screenList.size();i++)
     {
         lbl = new videoPlayer(screenList.at(i),filename);
-       // lbl->resize(w0,1080);
-      //  lbl->move(x0,0);
+       lbl->resize(w0,1080);
+       lbl->move(x0,0);
         lbls.push_back(lbl);
 
 

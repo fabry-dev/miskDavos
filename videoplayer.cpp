@@ -8,7 +8,6 @@
 
 
 
-
 static inline void check_error(int status)
 {
     if (status < 0) {
@@ -153,6 +152,7 @@ void videoPlayer::closePlayer()
     const char *cmd[] = {"quit", "1", NULL};
     //check_error(mpv_command(mpv, cmd));
     mpv_terminate_destroy(mpv);
+
     this->deleteLater();
 }
 
