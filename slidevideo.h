@@ -14,6 +14,9 @@
 #include "qwindow.h"
 #include "qscreen.h"
 #include "qwidget.h"
+#include "videoplayer.h"
+
+
 
 class slidevideo:public QObject
 {
@@ -22,18 +25,20 @@ class slidevideo:public QObject
 public:
     slidevideo(QObject *parent = 0, QString PATH="", QList<QWidget*> screenList={}, int x0=0, int w0=1920, int totalWidth=1920, QString filename="",int deltax=1);
     ~slidevideo();
+    void shutdown();
 
 
 private:
     QString PATH;
    QList<QWidget*> screenList;
-    QList<QWidget*> lbls;
-    QTimer *mvTimer;
+    std::vector<videoPlayer*> lbls;
+
     int x0,w0;
     int totalWidth;
     QString filename;
     int deltax;
     void redraw();
+    bool closed;
 
 private slots:
     void goBackward();

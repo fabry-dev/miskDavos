@@ -29,7 +29,7 @@ private:
     QPixmap bgImg;
     QList<QWidget*> screenList;
     QList<QLabel*> lbls;
-    QTimer *mvTimer;
+
     int x0;
     int totalWidth;
     QString filename;

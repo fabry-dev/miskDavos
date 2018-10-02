@@ -38,12 +38,12 @@ void serialWatcher::readData()
  uchar b = data.at(0);
  if(b==155)
  {
-    // qDebug()<<"+";
+    //qDebug()<<"+";
      emit goForward();
  }
  else if(b==255)
  {
-     //qDebug()<<"-";
+    // qDebug()<<"-";
      emit goBackward();
  }
 

@@ -1,7 +1,7 @@
 #include "slidevideo.h"
 #include "qdebug.h"
 #include "qtimer.h"
-#include "videoplayer.h"
+
 #define FPS 24
 
 slidevideo::slidevideo(QObject *parent, QString PATH, QList<QWidget *> screenList,int x0,int w0,int totalWidth,QString filename,int deltax):QObject(parent),PATH(PATH),screenList(screenList),x0(x0),w0(w0),totalWidth(totalWidth),filename(filename),deltax(deltax)
@@ -10,30 +10,28 @@ slidevideo::slidevideo(QObject *parent, QString PATH, QList<QWidget *> screenLis
 
     //bgImg.load(PATH+filename);
     //bgImg = bgImg.scaledToHeight(1080);
-
+    closed = false;
 
 
 
     //resize(bgImg.size());
     videoPlayer *lbl;
+    lbls.clear();
     for (int i = 0;i<screenList.size();i++)
     {
         lbl = new videoPlayer(screenList.at(i),filename);
-        lbl->resize(w0,1080);
-        lbl->move(x0,0);
-        lbls.append(lbl);
-
-
-
+       // lbl->resize(w0,1080);
+      //  lbl->move(x0,0);
+        lbls.push_back(lbl);
 
 
     }
 
+  //  connect(lbl,SIGNAL(destroyed(QObject*)),this,SLOT(deleteLater()));
 
 
 
-
-    redraw();
+  //  redraw();
 
 }
 
@@ -41,7 +39,6 @@ slidevideo::slidevideo(QObject *parent, QString PATH, QList<QWidget *> screenLis
 
 void slidevideo::goBackward()
 {
-
     x0-=deltax;
 
     if(x0>totalWidth)
@@ -49,11 +46,9 @@ void slidevideo::goBackward()
     if(x0<0)
         x0 += totalWidth;
 
-
     redraw();
-
-
 }
+
 void slidevideo::goForward()
 {
 
@@ -70,57 +65,41 @@ void slidevideo::goForward()
 
 }
 
-
-
 void slidevideo::redraw()
 {
-
+    return;
+    if(closed)
+    {
+        qDebug()<<"-----------------LOCKED---------------------------";
+        return;
+    }
 
 
     if(x0<1920) //start on first screen
     {
-
         if(x0+w0<1920)//fits on first screen
         {
             lbls[0]->move(x0,0);
             lbls[0]->show();
             lbls[1]->hide();
             lbls[2]->hide();
-
-
-
-
-
-
         }
         else if(x0+w0<2*1920) //shows on both screen
         {
-
-
-
             lbls[0]->move(x0,0);
-
             lbls[1]->move(x0-1920,0);
             lbls[0]->show();
             lbls[1]->show();
             lbls[2]->hide();
-
-
         }
         else
         {
-
-
-
             lbls[0]->move(x0,0);
-
             lbls[1]->move(x0-1920,0);
             lbls[2]->move(x0-2*1920,0);
             lbls[0]->show();
             lbls[1]->show();
             lbls[2]->show();
-
-
         }
 
     }
@@ -181,8 +160,6 @@ void slidevideo::redraw()
         }
 
     }
-
-
     else//starts outside any screen
     {
 
@@ -221,14 +198,24 @@ void slidevideo::redraw()
 }
 
 
+void slidevideo::shutdown()
+{
+    closed = true;
 
+    for(auto lbl:lbls)
+    {
+        lbl->closePlayer();
+    }
+
+    lbls.clear();
+}
 
 
 
 slidevideo::~slidevideo()
 {
-    for(auto lbl:lbls)
-        lbl->deleteLater();
+    //for(auto lbl:lbls)
+    //    lbl->deleteLater();
     qDebug()<<"closed video window";
 
 }

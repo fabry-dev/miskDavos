@@ -30,7 +30,7 @@ class showRunner
     QString fileName = "/dev/input/event5";
     QSocketNotifier *notifier;
     int fd;
-    QTimer *RFIDtimeout,*restartGame;
+    QTimer *RFIDtimeout;
     QList <QWidget*> widgetList;
     QString PATH;
     int speed;
@@ -39,11 +39,16 @@ class showRunner
     std::vector<slideWindow*> photos;
     std::vector<QLabel *> bgLbls;
     QPixmap bgImg;
-    QTimer *testTimer;
+
     std::vector<uchar> code0,code1,code2,codeBuf;
+
+       videoPlayer *testvp;
+       std::vector<videoPlayer *> testvps;
+       slidevideo *testslide;
 
 private:
     int activeShow;
+    int getVideoWidth(QString name);
 
 public:
     explicit showRunner(QObject *parent = nullptr, QList <QWidget*> widgetList={}, QString PATH="", int speed=10, serialWatcher *serialwatch=NULL);
@@ -51,6 +56,7 @@ public:
 
 public slots:
     void handle_readNotification(int socket);
+    void restart();
 
 
 private slots:

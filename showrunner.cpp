@@ -5,15 +5,22 @@
 #include <qstringlist.h>
 #include <linux/input.h>
 #include "qbytearray.h"
+#include "qprocess.h"
 
-
-#define timeout 3000
+#define timeout 2000
 
 
 
 showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PATH, int speed, serialWatcher *serialwatch)
     : QObject(parent),widgetList(widgetList),PATH(PATH),speed(speed),serialwatch(serialwatch)
 {
+
+
+
+
+
+
+
 
 
 
@@ -71,8 +78,8 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
 
 
-    testTimer = new QTimer(this);
-    //testTimer->start(500);
+
+
 
 
 
@@ -89,8 +96,9 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
     }
 
 
-    stopShow();
-   // startShow(2);
+
+    startShow(1);
+
 
 }
 
@@ -98,10 +106,25 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
 
 
-#define imgCount 5
+#define imgCount 0
 
 void showRunner::startShow(int show)
 {
+
+
+    testvps.clear();
+
+    for (int i = 0;i<3;i++)
+    {
+        testvps.push_back(new videoPlayer(widgetList[i],PATH+"video0.mp4"));
+        widgetList[i]->show();
+
+    }
+
+    RFIDtimeout->start(timeout);
+    return;
+
+
     codeBuf.clear();
     if(show>2)
         return;
@@ -110,7 +133,7 @@ void showRunner::startShow(int show)
 
     if(activeShow == show)
     {
-         RFIDtimeout->start(timeout);//just restart
+        RFIDtimeout->start(timeout);//just restart
         return;
     }
     else if(activeShow != -1)//already playing something, let us stop first.
@@ -124,7 +147,7 @@ void showRunner::startShow(int show)
 
     activeShow = show;
 
-    RFIDtimeout->start(timeout);//Restart
+
 
     QString contentPath = "content"+QString::number(show)+"/";
 
@@ -133,13 +156,13 @@ void showRunner::startShow(int show)
     {
         lbl->hide();
     }
-    //  RFIDtimeout->start(timeout);
+    RFIDtimeout->start(timeout);
 
     for(auto w:widgetList)
     {
-        w->showFullScreen();
-        w->showFullScreen();
-        w->showFullScreen();
+        //w->showFullScreen();
+        //w->showFullScreen();
+        // w->showFullScreen();
         w->show();
         w->show();
         w->show();
@@ -161,9 +184,13 @@ void showRunner::startShow(int show)
         names.push_back((QString)contentPath+"img"+QString::number(i)+".jpg");
     }
 
-    int videoWidth = 1920;
+
     int videoPos = totalWidth;
     QString videoName = PATH+contentPath+"video0.mp4";
+
+
+    int videoWidth = getVideoWidth(videoName);
+
     totalWidth+=videoWidth;
 
 
@@ -177,22 +204,52 @@ void showRunner::startShow(int show)
         slideWindow *sw =   new slideWindow(NULL,PATH,widgetList,x0s.at(i),totalWidth,names.at(i),speed,i);
         connect(serialwatch,SIGNAL(goBackward()),sw,SLOT(goBackward()));
         connect(serialwatch,SIGNAL(goForward()),sw,SLOT(goForward()));
-        connect(testTimer,SIGNAL(timeout()),sw,SLOT(goForward()));
+
         photos.push_back(sw);
 
     }
+
+
     slidevideo *sv = new slidevideo(NULL,PATH,widgetList,videoPos,videoWidth,totalWidth,videoName,speed);
     videos.push_back(sv);
 
 
     connect(serialwatch,SIGNAL(goForward()),sv,SLOT(goForward()));
     connect(serialwatch,SIGNAL(goBackward()),sv,SLOT(goBackward()));
-    connect(testTimer,SIGNAL(timeout()),sv,SLOT(goForward()));
+
+}
+
+void showRunner::restart()
+{
+    qDebug()<<"restarting ";
+    startShow(1);
 }
 
 
 void showRunner::stopShow()
 {
+
+
+
+
+    for (int i = 0;i<3;i++)
+    {
+        testvps.at(i)->closePlayer();
+
+    }
+
+     testvps.clear();
+    QTimer::singleShot(2000,this,SLOT(restart()));
+
+
+
+
+
+
+
+    return;
+
+
     if(activeShow == -1)
         return;
 
@@ -200,9 +257,9 @@ void showRunner::stopShow()
     codeBuf.clear();
     for(auto w:widgetList)
     {
-        w->showFullScreen();
-        w->showFullScreen();
-        w->showFullScreen();
+        //  w->showFullScreen();
+        //  w->showFullScreen();
+        //  w->showFullScreen();
         w->show();
         w->show();
         w->show();
@@ -214,15 +271,14 @@ void showRunner::stopShow()
     }
 
     RFIDtimeout->stop();
+
     for (auto v:videos)
     {
-
-        v->deleteLater();
+        v->shutdown();
     }
 
     for (auto p:photos)
     {
-
         p->deleteLater();
     }
 
@@ -230,6 +286,9 @@ void showRunner::stopShow()
     videos.clear();
 
 
+    qDebug()<<"show stopped";
+
+    QTimer::singleShot(2000,this,SLOT(restart()));
 
 
 }
@@ -251,6 +310,26 @@ void showRunner::onTimeout()
 
 }
 
+
+int showRunner::getVideoWidth(QString name)
+{
+    QProcess process;
+    process.start("mediainfo --Inform=\"Video;%Width%\" "+name);
+    process.waitForFinished(-1); // will wait forever until finished
+
+    QString stdout = process.readAllStandardOutput();
+    QStringList params = stdout.split("\n");
+    bool test=false;int val;
+    if(params.size()>0)
+    {
+        val = params[0].toInt(&test);
+    }
+
+    if(test)
+        return val;
+    else
+        return 1920;//default value
+}
 
 
 

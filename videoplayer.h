@@ -6,6 +6,8 @@
 #include "qevent.h"
 #include <QObject>
 #include <mpv/client.h>
+#include "qmutex.h"
+
 
 class videoPlayer : public QWidget
 {
@@ -13,14 +15,18 @@ class videoPlayer : public QWidget
 public:
     videoPlayer( QWidget *parent = 0, QString videFile="");
     ~videoPlayer() ;
-
+    void closePlayer();
 
 private:
-
+    void handle_mpv_event(mpv_event *event);
     mpv_handle *mpv;
+    QMutex deleteLock;
 
+private slots:
+    void on_mpv_events();
 
-
+signals:
+    void mpv_events(void);
 
 };
 

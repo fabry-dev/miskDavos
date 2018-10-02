@@ -81,7 +81,6 @@ int main(int argc, char *argv[])
 
 
 
-
     serialWatcher * serialwatch = new serialWatcher(NULL);
 
     //

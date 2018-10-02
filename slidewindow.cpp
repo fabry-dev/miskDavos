@@ -222,6 +222,8 @@ slideWindow::~slideWindow()
     for(auto lbl:lbls)
         lbl->deleteLater();
 
+
+
 }
 
 
