@@ -341,7 +341,7 @@ void showRunner::handle_readNotification(int /*socket*/)
 
 
 
-
+    return;
 
     struct input_event ev;
 
