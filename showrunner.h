@@ -43,7 +43,7 @@ class showRunner
     std::vector<uchar> code0,code1,code2,codeBuf;
 
 private:
-
+    int activeShow;
 
 public:
     explicit showRunner(QObject *parent = nullptr, QList <QWidget*> widgetList={}, QString PATH="", int speed=10, serialWatcher *serialwatch=NULL);

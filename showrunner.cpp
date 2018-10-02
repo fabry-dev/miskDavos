@@ -16,6 +16,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 {
 
 
+    activeShow = -1;
     codeBuf.clear();
     code0.clear();
     code1.clear();
@@ -88,7 +89,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
     }
 
 
-    // stopShow();
+    stopShow();
     //startShow(2);
 
 }
@@ -106,6 +107,24 @@ void showRunner::startShow(int show)
         return;
     if(show<0)
         return;
+
+    if(activeShow == show)
+    {
+         RFIDtimeout->start(timeout);//just restart
+        return;
+    }
+    else if(activeShow != -1)//already playing something, let us stop first.
+    {
+
+        stopShow();
+        return;
+    }
+
+
+
+    activeShow = show;
+
+    RFIDtimeout->start(timeout);//Restart
 
     QString contentPath = "content"+QString::number(show)+"/";
 
@@ -174,6 +193,7 @@ void showRunner::startShow(int show)
 
 void showRunner::stopShow()
 {
+    activeShow = -1;
     codeBuf.clear();
     for(auto w:widgetList)
     {
@@ -206,7 +226,7 @@ void showRunner::stopShow()
     photos.clear();
     videos.clear();
 
-    //  restartGame->start(timeout);
+
 
 
 }
@@ -250,15 +270,26 @@ void showRunner::handle_readNotification(int /*socket*/)
     {
         if((ev.code == 96)||(ev.code == 28))
         {
-            qDebug()<<"enter";
+            //qDebug()<<"enter";
 
 
             if(codeBuf == code0)
+            {
                 qDebug()<<"code0";
+
+                startShow(0);
+
+            }
             else if(codeBuf == code1)
+            {
                 qDebug()<<"code1";
+                startShow(1);
+            }
             else if(codeBuf == code2)
+            {
                 qDebug()<<"code2";
+                startShow(2);
+            }
             else
             {
                 for(auto b:codeBuf)
