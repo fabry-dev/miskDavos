@@ -7,7 +7,7 @@
 #include "qbytearray.h"
 #include "qprocess.h"
 
-#define timeout 2000
+#define timeout 10000
 
 
 
@@ -112,17 +112,6 @@ void showRunner::startShow(int show)
 {
 
 
-    testvps.clear();
-
-    for (int i = 0;i<3;i++)
-    {
-        testvps.push_back(new videoPlayer(widgetList[i],PATH+"video0.mp4"));
-        widgetList[i]->show();
-
-    }
-
-    RFIDtimeout->start(timeout);
-    return;
 
 
     codeBuf.clear();
@@ -160,12 +149,12 @@ void showRunner::startShow(int show)
 
     for(auto w:widgetList)
     {
-        //w->showFullScreen();
-        //w->showFullScreen();
-        // w->showFullScreen();
-        w->show();
-        w->show();
-        w->show();
+        w->showFullScreen();
+        w->showFullScreen();
+         w->showFullScreen();
+       // w->show();
+       // w->show();
+       // w->show();
     }
     std::vector<int> x0s;
     QStringList names;
@@ -229,27 +218,6 @@ void showRunner::restart()
 void showRunner::stopShow()
 {
 
-
-
-
-    for (int i = 0;i<3;i++)
-    {
-        testvps.at(i)->closePlayer();
-
-    }
-
-     testvps.clear();
-    QTimer::singleShot(2000,this,SLOT(restart()));
-
-
-
-
-
-
-
-    return;
-
-
     if(activeShow == -1)
         return;
 
@@ -257,12 +225,12 @@ void showRunner::stopShow()
     codeBuf.clear();
     for(auto w:widgetList)
     {
-        //  w->showFullScreen();
-        //  w->showFullScreen();
-        //  w->showFullScreen();
-        w->show();
-        w->show();
-        w->show();
+         w->showFullScreen();
+          w->showFullScreen();
+         w->showFullScreen();
+        // w->show();
+       //  w->show();
+        // w->show();
     }
 
     for(auto lbl:bgLbls)
@@ -288,7 +256,7 @@ void showRunner::stopShow()
 
     qDebug()<<"show stopped";
 
-    QTimer::singleShot(2000,this,SLOT(restart()));
+    QTimer::singleShot(4000,this,SLOT(restart()));
 
 
 }

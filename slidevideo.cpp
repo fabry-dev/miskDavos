@@ -31,7 +31,7 @@ slidevideo::slidevideo(QObject *parent, QString PATH, QList<QWidget *> screenLis
 
 
 
-  //  redraw();
+  redraw();
 
 }
 
@@ -67,10 +67,10 @@ void slidevideo::goForward()
 
 void slidevideo::redraw()
 {
-    return;
+
     if(closed)
     {
-        qDebug()<<"-----------------LOCKED---------------------------";
+     //   qDebug()<<"-----------------LOCKED---------------------------";
         return;
     }
 
@@ -208,6 +208,8 @@ void slidevideo::shutdown()
     }
 
     lbls.clear();
+
+    deleteLater();
 }
 
 
