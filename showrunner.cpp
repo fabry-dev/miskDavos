@@ -210,7 +210,7 @@ void showRunner::onTimeout()
 
 void showRunner::handle_readNotification(int /*socket*/)
 {
-    qDebug()<<"notifs";
+    //qDebug()<<"notifs";
 
     uchar buf;
     while( read(fd,&buf,sizeof(buf))>0 ){
