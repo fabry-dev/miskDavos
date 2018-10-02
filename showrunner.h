@@ -16,7 +16,7 @@ class showRunner
 {
     Q_OBJECT
 
-    QString fileName = "/dev/input/event5";
+    QString fileName = "/dev/input/event1";
     QSocketNotifier *notifier;
     int fd;
     QTimer *RFIDtimeout,*restartGame;
