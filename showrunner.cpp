@@ -90,9 +90,8 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
     }
 
 
+
     stopShow();
-    startShow(0);
-    // stopShow();
 
 }
 
@@ -141,7 +140,7 @@ void showRunner::startShow(int show)
     {
         lbl->hide();
     }
-    //  RFIDtimeout->start(timeout);
+      RFIDtimeout->start(timeout);
 
     for(auto w:widgetList)
     {
