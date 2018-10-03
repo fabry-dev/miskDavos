@@ -144,9 +144,9 @@ void showRunner::startShow(int show)
 
     for(auto w:widgetList)
     {
-        w->showFullScreen();
-        w->showFullScreen();
-        w->showFullScreen();
+       // w->showFullScreen();
+       // w->showFullScreen();
+        //w->showFullScreen();
         // w->show();
         // w->show();
         // w->show();
@@ -243,9 +243,9 @@ void showRunner::stopShow()
     codeBuf.clear();
     for(auto w:widgetList)
     {
-        w->showFullScreen();
-        w->showFullScreen();
-        w->showFullScreen();
+        //w->showFullScreen();
+        //w->showFullScreen();
+        //w->showFullScreen();
         // w->show();
         //  w->show();
         // w->show();
