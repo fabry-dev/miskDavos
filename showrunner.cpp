@@ -136,9 +136,9 @@ void showRunner::startShow(int show)
 
     for(auto w:widgetList)
     {
-       // w->showFullScreen();
-       // w->showFullScreen();
-        //w->showFullScreen();
+       w->showFullScreen();
+        w->showFullScreen();
+        w->showFullScreen();
         // w->show();
         // w->show();
         // w->show();
@@ -235,9 +235,9 @@ void showRunner::stopShow()
     codeBuf.clear();
     for(auto w:widgetList)
     {
-        //w->showFullScreen();
-        //w->showFullScreen();
-        //w->showFullScreen();
+        w->showFullScreen();
+        w->showFullScreen();
+        w->showFullScreen();
         // w->show();
         //  w->show();
         // w->show();
@@ -313,7 +313,7 @@ int showRunner::getVideoWidth(QString name)
 
 void showRunner::handle_readNotification(int /*socket*/)
 {
-     qDebug()<<"notifs";
+   //  qDebug()<<"notifs";
 
 
 
