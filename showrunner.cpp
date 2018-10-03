@@ -174,7 +174,7 @@ void showRunner::startShow(int show)
     {
         videoPos.push_back(totalWidth);
         QString videoName = PATH+contentPath+"video"+QString::number(i)+".mov";
-        videoName = (QString)"/home/fred/Downloads/content0/"+"video"+QString::number(i)+".mov";
+       // videoName = (QString)"/home/fred/Downloads/content0/"+"video"+QString::number(i)+".mov";
         videoNames.push_back(videoName);
         videoWidth.push_back(getVideoWidth(videoName));
         totalWidth+=videoWidth.at(i);
