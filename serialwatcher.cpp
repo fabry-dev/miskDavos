@@ -11,7 +11,7 @@ serialWatcher::serialWatcher(QObject *parent)
 {
 
     port = new QSerialPort;
-    port->setPortName("ttyACM0");
+    port->setPortName("/dev/ttyACM0");
 
 
     if(port->open(QIODevice::ReadWrite))
@@ -47,12 +47,12 @@ void serialWatcher::readData()
     uchar b = data.at(0);
     if(b==155)
     {
-        qDebug()<<"+";
+
         emit goForward();
     }
     else if(b==255)
     {
-        qDebug()<<"-";
+
         emit goBackward();
     }
 

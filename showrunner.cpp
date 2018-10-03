@@ -84,7 +84,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
 
     stopShow();
-    startShow(1);
+    //startShow(1);
 
 }
 
