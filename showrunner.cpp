@@ -16,14 +16,6 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 {
 
 
-
-
-
-
-
-
-
-
     codeBuf.clear();
     code0.clear();
     code1.clear();
@@ -321,7 +313,7 @@ int showRunner::getVideoWidth(QString name)
 
 void showRunner::handle_readNotification(int /*socket*/)
 {
-    // qDebug()<<"notifs";
+     qDebug()<<"notifs";
 
 
 

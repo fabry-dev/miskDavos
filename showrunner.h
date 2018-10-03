@@ -27,7 +27,7 @@ class showRunner
 {
     Q_OBJECT
 
-    QString fileName = "/dev/input/event5";
+    QString fileName = "/dev/input/by-id/usb-SpringCard_ProxNRoll_RFID_Scanner_517F095D-event-kbd";
     QSocketNotifier *notifier;
     int fd;
     QTimer *RFIDtimeout;
