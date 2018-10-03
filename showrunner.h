@@ -56,7 +56,6 @@ public:
 
 public slots:
     void handle_readNotification(int socket);
-    void restart();
 
 
 private slots:

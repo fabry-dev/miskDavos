@@ -7,7 +7,7 @@
 #include "qbytearray.h"
 #include "qprocess.h"
 
-#define timeout 10000
+#define timeout 3000
 
 
 
@@ -110,6 +110,7 @@ void showRunner::startShow(int show)
 
     if(activeShow == show)
     {
+        qDebug()<<"reset time out";
         RFIDtimeout->start(timeout);//just restart
         return;
     }
@@ -133,13 +134,14 @@ void showRunner::startShow(int show)
     {
         lbl->hide();
     }
-      RFIDtimeout->start(timeout);
+    qDebug()<<"start time out count";
+    RFIDtimeout->start(timeout);
 
     for(auto w:widgetList)
     {
-       w->showFullScreen();
-        w->showFullScreen();
-        w->showFullScreen();
+        // w->showFullScreen();
+        //   w->showFullScreen();
+        //   w->showFullScreen();
         // w->show();
         // w->show();
         // w->show();
@@ -174,7 +176,7 @@ void showRunner::startShow(int show)
     {
         videoPos.push_back(totalWidth);
         QString videoName = PATH+contentPath+"video"+QString::number(i)+".mov";
-       // videoName = (QString)"/home/fred/Downloads/content0/"+"video"+QString::number(i)+".mov";
+        // videoName = (QString)"/home/fred/Downloads/content0/"+"video"+QString::number(i)+".mov";
         videoNames.push_back(videoName);
         videoWidth.push_back(getVideoWidth(videoName));
         totalWidth+=videoWidth.at(i);
@@ -220,11 +222,6 @@ void showRunner::startShow(int show)
 }
 
 
-void showRunner::restart()
-{
-    qDebug()<<"restarting ";
-    startShow(2);
-}
 
 
 void showRunner::stopShow()
@@ -237,9 +234,9 @@ void showRunner::stopShow()
     codeBuf.clear();
     for(auto w:widgetList)
     {
-        w->showFullScreen();
-        w->showFullScreen();
-        w->showFullScreen();
+        //  w->showFullScreen();
+        //  w->showFullScreen();
+        //  w->showFullScreen();
         // w->show();
         //  w->show();
         // w->show();
@@ -315,7 +312,7 @@ int showRunner::getVideoWidth(QString name)
 
 void showRunner::handle_readNotification(int /*socket*/)
 {
-   //  qDebug()<<"notifs";
+    //  qDebug()<<"notifs";
 
 
 
