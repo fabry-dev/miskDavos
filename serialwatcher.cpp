@@ -14,9 +14,13 @@ serialWatcher::serialWatcher(QObject *parent)
     port->setPortName("ttyACM0");
 
 
-    port->open(QIODevice::ReadWrite);
+    if(port->open(QIODevice::ReadWrite))
+        qDebug()<<"serial created";
+    else
+        qDebug()<<"serial error";
 
-    if (port->setBaudRate(QSerialPort::Baud9600)
+
+    port->setBaudRate(QSerialPort::Baud9600)
 
             && port->setDataBits(QSerialPort::Data8)
 
@@ -24,34 +28,40 @@ serialWatcher::serialWatcher(QObject *parent)
 
             && port->setStopBits(QSerialPort::OneStop)
 
-            && port->setFlowControl(QSerialPort::NoFlowControl))
-        qDebug()<<"serial created";
+            && port->setFlowControl(QSerialPort::NoFlowControl);
 
 
 
-        connect(port, SIGNAL(readyRead()), this, SLOT(readData()));
+
+    connect(port, SIGNAL(readyRead()), this, SLOT(readData()));
+
+
 }
+
+
 
 void serialWatcher::readData()
 {
- const QByteArray data = port->readAll();
- uchar b = data.at(0);
- if(b==155)
- {
-    //qDebug()<<"+";
-     emit goForward();
- }
- else if(b==255)
- {
-    // qDebug()<<"-";
-     emit goBackward();
- }
+
+    const QByteArray data = port->readAll();
+    uchar b = data.at(0);
+    if(b==155)
+    {
+        qDebug()<<"+";
+        emit goForward();
+    }
+    else if(b==255)
+    {
+        qDebug()<<"-";
+        emit goBackward();
+    }
 
 }
 
 
 serialWatcher::~serialWatcher()
 {
+    qDebug()<<"closed";
 
 }
 

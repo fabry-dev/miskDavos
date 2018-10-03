@@ -43,7 +43,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
     if( !file->exists() ){
         qWarning("file does not exist");
-        return;
+        //return;
     }
 
     qDebug()<<fileName.toUtf8().data();
@@ -84,6 +84,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
 
     stopShow();
+    startShow(1);
 
 }
 
@@ -173,6 +174,7 @@ void showRunner::startShow(int show)
     {
         videoPos.push_back(totalWidth);
         QString videoName = PATH+contentPath+"video"+QString::number(i)+".mov";
+        videoName = (QString)"/home/fred/Downloads/content0/"+"video"+QString::number(i)+".mov";
         videoNames.push_back(videoName);
         videoWidth.push_back(getVideoWidth(videoName));
         totalWidth+=videoWidth.at(i);
