@@ -230,6 +230,8 @@ void showRunner::stopShow()
     if(activeShow == -1)
         return;
 
+    qDebug()<<"stop show";
+
     activeShow = -1;
     codeBuf.clear();
     for(auto w:widgetList)
