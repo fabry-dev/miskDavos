@@ -16,7 +16,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
     : QObject(parent),widgetList(widgetList),PATH(PATH),speed(speed),serialwatch(serialwatch)
 {
 
-    videoThread.start();
+   // videoThread.start();
 
     codeBuf.clear();
     code0.clear();
@@ -207,7 +207,7 @@ void showRunner::startShow(int show)
     for (int i = 0;i<videoCount;i++)
     {
         slidevideo *sv1 = new slidevideo(NULL,PATH,widgetList,videoPos.at(i),videoWidth.at(i),totalWidth,videoNames.at(i),speed);
-        sv1->moveToThread(&videoThread);
+        //sv1->moveToThread(&videoThread);
         videos.push_back(sv1);
         connect(serialwatch,SIGNAL(goForward()),sv1,SLOT(goForward()));
         connect(serialwatch,SIGNAL(goBackward()),sv1,SLOT(goBackward()));
