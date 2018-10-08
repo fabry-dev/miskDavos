@@ -9,7 +9,7 @@
 
 #define TIMEOUT 10000
 
-#define FULLSCREEN false
+#define FULLSCREEN true
 
 
 showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PATH, int speed, serialWatcher *serialwatch)
