@@ -7,7 +7,7 @@
 #include "qbytearray.h"
 #include "qprocess.h"
 
-#define TIMEOUT 3000
+#define TIMEOUT 10000
 
 #define FULLSCREEN false
 
