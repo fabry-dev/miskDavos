@@ -7,7 +7,7 @@
 #include "qbytearray.h"
 #include "qprocess.h"
 
-#define timeout 3000
+#define TIMEOUT 3000
 
 #define FULLSCREEN false
 
@@ -112,7 +112,7 @@ void showRunner::startShow(int show)
     if(activeShow == show)
     {
         qDebug()<<"reset time out";
-        RFIDtimeout->start(timeout);//just restart
+        RFIDtimeout->start(TIMEOUT);//just restart
         return;
     }
     else if(activeShow != -1)//already playing something, let us stop first.
@@ -136,7 +136,7 @@ void showRunner::startShow(int show)
         lbl->hide();
     }
     qDebug()<<"start time out count";
-    RFIDtimeout->start(timeout);
+    RFIDtimeout->start(TIMEOUT);
 
     for(auto w:widgetList)
     {
