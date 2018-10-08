@@ -85,7 +85,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
 
     stopShow();
-    startShow(1);
+   // startShow(1);
 
 }
 
@@ -148,9 +148,9 @@ void showRunner::startShow(int show)
         }
         else
         {
-            //w->show();
-           // w->show();
-          //  w->show();
+            w->show();
+            w->show();
+            w->show();
         }
     }
     std::vector<int> x0s;
@@ -251,9 +251,9 @@ void showRunner::stopShow()
         }
         else
         {
-            //w->show();
-           // w->show();
-           // w->show();
+            w->show();
+            w->show();
+            w->show();
         }
     }
 

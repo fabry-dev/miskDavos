@@ -75,6 +75,7 @@ slidevideo::slidevideo(QObject *parent, QString PATH, QList<QWidget *> screenLis
 
 void slidevideo::goBackward()
 {
+    return;
     x0-=deltax;
 
     if(x0>totalWidth)
@@ -87,6 +88,7 @@ void slidevideo::goBackward()
 
 void slidevideo::goForward()
 {
+    return;
 
     x0+=deltax;
 
