@@ -101,9 +101,6 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 void showRunner::startShow(int show)
 {
 
-
-
-
     codeBuf.clear();
     if(show>2)
         return;
@@ -173,8 +170,6 @@ void showRunner::startShow(int show)
 
 
 
-
-
     std::vector<int>videoPos;
     std::vector<int>videoWidth;
 
@@ -191,12 +186,6 @@ void showRunner::startShow(int show)
 
         qDebug()<<videoName<<videoPos.at(i);
     }
-
-
-
-
-
-
 
 
 
@@ -330,16 +319,12 @@ void showRunner::handle_readNotification(int /*socket*/)
 {
      // qDebug()<<"notifs";
 
-
-
-
-
     struct input_event ev;
 
 
     read(fd, &ev, sizeof(struct input_event));
 
-    qDebug()<<ev.code;
+   // qDebug()<<ev.code;
 
     if((ev.type == 1)&&(ev.value==0))
     {
@@ -367,8 +352,14 @@ void showRunner::handle_readNotification(int /*socket*/)
             }
             else
             {
+                QString sbuf="";
                 for(auto b:codeBuf)
-                    qDebug()<<(int)b;
+                {
+
+                    sbuf.append(QString::number((int)b)+" ");
+                }
+                qDebug()<<sbuf;
+
             }
 
             codeBuf.clear();
