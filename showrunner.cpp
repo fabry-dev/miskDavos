@@ -9,14 +9,14 @@
 
 #define TIMEOUT 10000
 
-#define FULLSCREEN true
+#define FULLSCREEN false
 
 
 showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PATH, int speed, serialWatcher *serialwatch)
     : QObject(parent),widgetList(widgetList),PATH(PATH),speed(speed),serialwatch(serialwatch)
 {
 
-   // videoThread.start();
+    // videoThread.start();
 
     codeBuf.clear();
     code0.clear();
@@ -33,10 +33,10 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
     std::vector<uchar> vec2 (arr2, arr2 + sizeof(arr2) / sizeof(arr2[0]) );
 
 
+    codes.push_back(vec0);
+    codes.push_back(vec1);
+    codes.push_back(vec2);
 
-    code0=vec0;
-    code1=vec1;
-    code2=vec2;
 
 
 
@@ -211,7 +211,7 @@ void showRunner::startShow(int show)
         videos.push_back(sv1);
         connect(serialwatch,SIGNAL(goForward()),sv1,SLOT(goForward()));
         connect(serialwatch,SIGNAL(goBackward()),sv1,SLOT(goBackward()));
-       //
+        //
     }
 
 
@@ -317,14 +317,14 @@ int showRunner::getVideoWidth(QString name)
 
 void showRunner::handle_readNotification(int /*socket*/)
 {
-     // qDebug()<<"notifs";
+    // qDebug()<<"notifs";
 
     struct input_event ev;
 
 
     read(fd, &ev, sizeof(struct input_event));
 
-   // qDebug()<<ev.code;
+    // qDebug()<<ev.code;
 
     if((ev.type == 1)&&(ev.value==0))
     {
@@ -332,25 +332,23 @@ void showRunner::handle_readNotification(int /*socket*/)
         {
             //qDebug()<<"enter";
 
-
-            if(codeBuf == code0)
+            bool okcode=false;
+            for(int i = 0;i<codes.size();i++)
             {
-                qDebug()<<"code0";
+                if(codeBuf == codes[i])
+                {
+                    qDebug()<<"code"<<i;
+                    startShow(i);
+                    okcode = true;
+                    break;
+                }
 
-                startShow(0);
 
             }
-            else if(codeBuf == code1)
-            {
-                qDebug()<<"code1";
-                startShow(1);
-            }
-            else if(codeBuf == code2)
-            {
-                qDebug()<<"code2";
-                startShow(2);
-            }
-            else
+
+
+
+            if(not okcode)
             {
                 QString sbuf="";
                 for(auto b:codeBuf)

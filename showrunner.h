@@ -42,6 +42,7 @@ class showRunner
     QPixmap bgImg;
 
     std::vector<uchar> code0,code1,code2,codeBuf;
+    std::vector<std::vector<uchar>>codes;
 
        videoPlayer *testvp;
        std::vector<videoPlayer *> testvps;
