@@ -361,7 +361,7 @@ void showRunner::handle_readNotification(int /*socket*/)
                 qDebug()<<sbuf;
                 qDebug()<<"FORCE reset time out";
                 RFIDtimeout->start(TIMEOUT);//just restart
-                return;
+
 
             }
 
