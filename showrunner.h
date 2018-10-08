@@ -28,6 +28,7 @@ class showRunner
     Q_OBJECT
 
     QString fileName = "/dev/input/by-id/usb-SpringCard_ProxNRoll_RFID_Scanner_517F095D-event-kbd";
+    //QString fileName = "/dev/input/by-id/usb-Logitech_USB_Keyboard-event-kbd";
     QSocketNotifier *notifier;
     int fd;
     QTimer *RFIDtimeout;
@@ -45,6 +46,8 @@ class showRunner
        videoPlayer *testvp;
        std::vector<videoPlayer *> testvps;
        slidevideo *testslide;
+
+   QThread videoThread;
 
 private:
     int activeShow;

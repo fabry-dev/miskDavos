@@ -16,6 +16,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
     : QObject(parent),widgetList(widgetList),PATH(PATH),speed(speed),serialwatch(serialwatch)
 {
 
+    videoThread.start();
 
     codeBuf.clear();
     code0.clear();
@@ -85,7 +86,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
 
     stopShow();
-   // startShow(1);
+    //startShow(0);
 
 }
 
@@ -208,6 +209,7 @@ void showRunner::startShow(int show)
         connect(serialwatch,SIGNAL(goBackward()),sw,SLOT(goBackward()));
         connect(serialwatch,SIGNAL(goForward()),sw,SLOT(goForward()));
 
+
         photos.push_back(sw);
 
     }
@@ -216,10 +218,11 @@ void showRunner::startShow(int show)
     for (int i = 0;i<videoCount;i++)
     {
         slidevideo *sv1 = new slidevideo(NULL,PATH,widgetList,videoPos.at(i),videoWidth.at(i),totalWidth,videoNames.at(i),speed);
+        sv1->moveToThread(&videoThread);
         videos.push_back(sv1);
         connect(serialwatch,SIGNAL(goForward()),sv1,SLOT(goForward()));
         connect(serialwatch,SIGNAL(goBackward()),sv1,SLOT(goBackward()));
-
+       //
     }
 
 
@@ -227,8 +230,6 @@ void showRunner::startShow(int show)
 
 
 }
-
-
 
 
 void showRunner::stopShow()
@@ -327,7 +328,7 @@ int showRunner::getVideoWidth(QString name)
 
 void showRunner::handle_readNotification(int /*socket*/)
 {
-    //  qDebug()<<"notifs";
+     // qDebug()<<"notifs";
 
 
 
@@ -337,6 +338,8 @@ void showRunner::handle_readNotification(int /*socket*/)
 
 
     read(fd, &ev, sizeof(struct input_event));
+
+    qDebug()<<ev.code;
 
     if((ev.type == 1)&&(ev.value==0))
     {
