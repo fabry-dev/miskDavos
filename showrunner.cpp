@@ -9,8 +9,8 @@
 #include "qtextcodec.h"
 #define TIMEOUT 10000
 
-#define FULLSCREEN false
-#define SHOW false
+#define FULLSCREEN true
+#define SHOW true
 
 
 
@@ -201,8 +201,7 @@ void showRunner::readCodes()
         {
             line = in.readLine();
             codes.append(line);
-            qDebug()<<line;
-            qDebug()<<(QString)"0004FF39A2ED4C80";
+
         }
         file.close();
 
@@ -489,8 +488,7 @@ void showRunner::handle_readNotification(int /*socket*/)
                         sbuf.append(QString::number((int)b)+" ");
                     }
                     qDebug()<<sbuf;*/
-                    qDebug()<<codeBuf2;
-                    qDebug()<<codes[0];
+
                     qDebug()<<"FORCE reset time out";
                     RFIDtimeout->start(TIMEOUT);//just restart
 
