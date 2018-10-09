@@ -108,18 +108,18 @@ int main(int argc, char *argv[])
     for(int i = 0;i<a.screens().size();i++)
     {
 
-    screens.push_back(a.screens().at(i));
+        screens.push_back(a.screens().at(i));
 
 
 
-    ws[i]->setGeometry(screens[i]->geometry().x(),screens[i]->geometry().y(),1920,1080);
-    //w1.setGeometry(screen1->geometry().x(),screen1->geometry().y(),1920,1080);
-    //w2.setGeometry(screen2->geometry().x(),screen2->geometry().y(),1920,1080);
+        ws[i]->setGeometry(screens[i]->geometry().x(),screens[i]->geometry().y(),1920,1080);
+        //w1.setGeometry(screen1->geometry().x(),screen1->geometry().y(),1920,1080);
+        //w2.setGeometry(screen2->geometry().x(),screen2->geometry().y(),1920,1080);
 
 
     }
 
- new showRunner(NULL,ws,PATH,speed,serialwatch);
+    new showRunner(NULL,ws,PATH,speed,serialwatch);
 
     return a.exec();
 }

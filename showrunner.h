@@ -42,7 +42,7 @@ class showRunner
     QPixmap bgImg;
     QString codeBuf2;
     std::vector<uchar> codeBuf;
-    std::vector<std::vector<uchar>>codes;
+    QStringList codes;
 
     videoPlayer *testvp;
     std::vector<videoPlayer *> testvps;
@@ -56,6 +56,7 @@ class showRunner
 private:
     int activeShow;
     int getVideoWidth(QString name);
+    void readCodes();
 
 public:
     explicit showRunner(QObject *parent = nullptr, QList <QWidget*> widgetList={}, QString PATH="", int speed=10, serialWatcher *serialwatch=NULL);

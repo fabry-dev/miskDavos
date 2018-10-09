@@ -6,7 +6,7 @@
 #include <linux/input.h>
 #include "qbytearray.h"
 #include "qprocess.h"
-
+#include "qtextcodec.h"
 #define TIMEOUT 10000
 
 #define FULLSCREEN false
@@ -15,6 +15,54 @@
 
 
 
+QString keycodelist(int scancode){
+    QString ret="";
+    //return (unsigned char)scancode;
+    switch(scancode){
+    case 0x02: ret ='1';break;
+    case 0x03: ret ='2';break;
+    case 0x04: ret ='3';break;
+    case 0x05: ret ='4';break;
+    case 0x06: ret ='5';break;
+    case 0x07: ret ='6';break;
+    case 0x08: ret ='7';break;
+    case 0x09: ret ='8';break;
+    case 0x0a: ret ='9';break;
+    case 0x0b: ret ='0';break;
+    case 0x0c: ret ='-';break;
+
+    case 0x10: ret ='q';break;
+    case 0x11: ret ='w';break;
+    case 0x12: ret ='e';break;
+    case 0x13: ret ='r';break;
+    case 0x14: ret ='t';break;
+    case 0x15: ret ='y';break;
+    case 0x16: ret ='u';break;
+    case 0x17: ret ='i';break;
+    case 0x18: ret ='o';break;
+    case 0x19: ret ='p';break;
+
+    case 0x1e: ret ='a';break;
+    case 0x1f: ret ='s';break;
+    case 0x20: ret ='d';break;
+    case 0x21: ret ='f';break;
+    case 0x22: ret ='g';break;
+    case 0x23: ret ='h';break;
+    case 0x24: ret ='j';break;
+    case 0x25: ret ='k';break;
+    case 0x26: ret ='l';break;
+
+    case 0x2c: ret ='z';break;
+    case 0x2d: ret ='x';break;
+    case 0x2e: ret ='c';break;
+    case 0x2f: ret ='v';break;
+    case 0x30: ret ='b';break;
+    case 0x31: ret ='n';break;
+    case 0x32: ret ='m';break;
+    default: break;
+    }
+    return ret.toUpper();
+}
 
 
 
@@ -26,7 +74,11 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
     // videoThread.start();
 
     codeBuf.clear();
-    codes.clear();
+
+    readCodes();
+
+
+    /*
     static const int arr0[] = {11,11,11,5,42,33,42,33,4,10,42,30,3,42,18,42,32,5,42,46,9,11};
     static const int arr1[] = {11,11,11,5,10,2,42,18,8,42,30,3,42,18,42,32,5,42,46,9,11};
     static const int arr2[] = {11,11,11,5,8,4,10,6,42,30,3,42,18,42,32,5,42,46,9,11};
@@ -71,7 +123,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
     codes.push_back(vec6);
     codes.push_back(vec7);
     codes.push_back(vec8);
-    codes.push_back(vec9);
+    codes.push_back(vec9);*/
 
 
     auto file = new QFile();
@@ -121,6 +173,40 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
 
     stopShow();
     //startShow(0);
+
+}
+
+
+
+
+
+void showRunner::readCodes()
+{
+    codes.clear();
+    QFile file(PATH+"codes.cfg");
+    if(!file.open(QIODevice::ReadOnly)) {
+        qDebug()<<"no config file";
+
+    }
+    else
+    {
+
+        QTextStream in(&file);
+
+        QString  line;
+        QString paramName,paramValue;
+        QStringList params;
+
+        while(!in.atEnd())
+        {
+            line = in.readLine();
+            codes.append(line);
+        }
+        file.close();
+
+    }
+
+    qDebug()<<codes.size()<<" RFID code(s) loaded.";
 
 }
 
@@ -375,10 +461,10 @@ void showRunner::handle_readNotification(int /*socket*/)
                 bool okcode=false;
                 for(int i = 0;i<codes.size();i++)
                 {
-                    if(codeBuf == codes[i])
+                    if(codeBuf2 == codes[i])
                     {
                         qDebug()<<"code"<<i;
-                        qDebug()<<codeBuf2;
+
                         codeBuf2 = "";
                         startShow(i);
                         okcode = true;
@@ -393,12 +479,13 @@ void showRunner::handle_readNotification(int /*socket*/)
                 if(not okcode)
                 {
                     QString sbuf="";
-                    for(auto b:codeBuf)
+                    /* for(auto b:codeBuf)
                     {
 
                         sbuf.append(QString::number((int)b)+" ");
                     }
-                    qDebug()<<sbuf;
+                    qDebug()<<sbuf;*/
+                    qDebug()<<codeBuf2;
                     qDebug()<<"FORCE reset time out";
                     RFIDtimeout->start(TIMEOUT);//just restart
 
@@ -406,13 +493,14 @@ void showRunner::handle_readNotification(int /*socket*/)
                 }
 
                 codeBuf.clear();
+                codeBuf2.clear();
             }
             else
             {
-                ushort buf = ev.code;
+                int buf = ev.code;
 
-                codeBuf.push_back(buf);
-                codeBuf2.append(QKeySequence(buf).toString());
+                // codeBuf.push_back(buf);
+                codeBuf2.append(keycodelist(buf));
             }
         }
     }
