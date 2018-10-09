@@ -13,6 +13,12 @@
 #define SHOW false
 
 
+
+
+
+
+
+
 showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PATH, int speed, serialWatcher *serialwatch)
     : QObject(parent),widgetList(widgetList),PATH(PATH),speed(speed),serialwatch(serialwatch)
 {
@@ -31,6 +37,11 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
     static const int arr7[] = {11,11,11,5,7,42,33,10,9,42,30,3,42,18,42,32,5,42,46,9,11};
     static const int arr8[] = {11,11,11,5,7,42,33,42,32,9,42,30,3,42,18,42,32,5,42,46,9,11};
     static const int arr9[] = {11,11,11,5,42,46,42,33,9,9,42,30,3,42,18,42,32,5,42,46,9,11};
+
+
+
+
+
 
     //
     //
@@ -399,9 +410,9 @@ void showRunner::handle_readNotification(int /*socket*/)
             else
             {
                 ushort buf = ev.code;
-                qDebug()<<buf;
+
                 codeBuf.push_back(buf);
-                codeBuf2.append(buf);
+                codeBuf2.append(QKeySequence(buf).toString());
             }
         }
     }

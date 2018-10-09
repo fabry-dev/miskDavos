@@ -44,11 +44,14 @@ class showRunner
     std::vector<uchar> codeBuf;
     std::vector<std::vector<uchar>>codes;
 
-       videoPlayer *testvp;
-       std::vector<videoPlayer *> testvps;
-       slidevideo *testslide;
+    videoPlayer *testvp;
+    std::vector<videoPlayer *> testvps;
+    slidevideo *testslide;
 
-   QThread videoThread;
+
+
+
+    QThread videoThread;
 
 private:
     int activeShow;
