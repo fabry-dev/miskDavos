@@ -10,6 +10,7 @@
 #define TIMEOUT 10000
 
 #define FULLSCREEN false
+#define SHOW false
 
 
 showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PATH, int speed, serialWatcher *serialwatch)
@@ -160,17 +161,20 @@ void showRunner::startShow(int show)
 
     for(auto w:widgetList)
     {
-        if(FULLSCREEN)
+        if(SHOW)
         {
-            w->showFullScreen();
-            w->showFullScreen();
-            w->showFullScreen();
-        }
-        else
-        {
-            w->show();
-            w->show();
-            w->show();
+            if(FULLSCREEN)
+            {
+                w->showFullScreen();
+                w->showFullScreen();
+                w->showFullScreen();
+            }
+            else
+            {
+                w->show();
+                w->show();
+                w->show();
+            }
         }
     }
     std::vector<int> x0s;
@@ -255,17 +259,20 @@ void showRunner::stopShow()
     codeBuf.clear();
     for(auto w:widgetList)
     {
-        if(FULLSCREEN)
+        if(SHOW)
         {
-            w->showFullScreen();
-            w->showFullScreen();
-            w->showFullScreen();
-        }
-        else
-        {
-            w->show();
-            w->show();
-            w->show();
+            if(FULLSCREEN)
+            {
+                w->showFullScreen();
+                w->showFullScreen();
+                w->showFullScreen();
+            }
+            else
+            {
+                w->show();
+                w->show();
+                w->show();
+            }
         }
     }
 
