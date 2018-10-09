@@ -10,8 +10,7 @@
 #define TIMEOUT 10000
 
 #define FULLSCREEN true
-#define SHOW false
-
+#define SHOW true
 
 
 
@@ -153,7 +152,8 @@ void showRunner::readCodes()
         while(!in.atEnd())
         {
             line = in.readLine();
-            codes.append(line);
+            if (line!="")
+                codes.append(line);
 
         }
         file.close();
