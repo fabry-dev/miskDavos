@@ -397,6 +397,7 @@ void showRunner::handle_readNotification(int /*socket*/)
             else
             {
                 ushort buf = ev.code;
+                qDebug()<<buf;
                 codeBuf.push_back(buf);
             }
         }
