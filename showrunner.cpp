@@ -38,7 +38,7 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
     //
     //
     //
-
+    codeBuf2 = "";
     std::vector<uchar> vec0 (arr0, arr0 + sizeof(arr0) / sizeof(arr0[0]) );
     std::vector<uchar> vec1 (arr1, arr1 + sizeof(arr1) / sizeof(arr1[0]) );
     std::vector<uchar> vec2 (arr2, arr2 + sizeof(arr2) / sizeof(arr2[0]) );
@@ -367,6 +367,8 @@ void showRunner::handle_readNotification(int /*socket*/)
                     if(codeBuf == codes[i])
                     {
                         qDebug()<<"code"<<i;
+                        qDebug()<<codeBuf2;
+                        codeBuf2 = "";
                         startShow(i);
                         okcode = true;
                         break;
@@ -399,6 +401,7 @@ void showRunner::handle_readNotification(int /*socket*/)
                 ushort buf = ev.code;
                 qDebug()<<buf;
                 codeBuf.push_back(buf);
+                codeBuf2.append(buf);
             }
         }
     }

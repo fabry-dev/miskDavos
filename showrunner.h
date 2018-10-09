@@ -40,7 +40,7 @@ class showRunner
     std::vector<slideWindow*> photos;
     std::vector<QLabel *> bgLbls;
     QPixmap bgImg;
-
+    QString codeBuf2;
     std::vector<uchar> codeBuf;
     std::vector<std::vector<uchar>>codes;
 
