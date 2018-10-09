@@ -201,6 +201,8 @@ void showRunner::readCodes()
         {
             line = in.readLine();
             codes.append(line);
+            qDebug()<<line;
+            qDebug()<<(QString)"0004FF39A2ED4C80";
         }
         file.close();
 
@@ -472,6 +474,8 @@ void showRunner::handle_readNotification(int /*socket*/)
                     }
 
 
+
+
                 }
 
 
@@ -486,6 +490,7 @@ void showRunner::handle_readNotification(int /*socket*/)
                     }
                     qDebug()<<sbuf;*/
                     qDebug()<<codeBuf2;
+                    qDebug()<<codes[0];
                     qDebug()<<"FORCE reset time out";
                     RFIDtimeout->start(TIMEOUT);//just restart
 
