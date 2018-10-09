@@ -94,28 +94,32 @@ int main(int argc, char *argv[])
     w0.setAttribute(Qt::WA_DeleteOnClose);
     w2.setAttribute(Qt::WA_DeleteOnClose);
 
+    QList<QWidget*> ws;
 
+
+    ws.push_back(&w0);
+    ws.push_back(&w1);
+    ws.push_back(&w2);
 
 
     qDebug()<<a.screens().size()<<" screens detected";
+    std::vector<QScreen*> screens;
 
-    QScreen* screen0 = a.screens().at(0);
-    QScreen* screen1 = a.screens().at(1);
-    QScreen* screen2 = a.screens().at(2);
+    for(int i = 0;i<a.screens().size();i++)
+    {
 
-
-    w0.setGeometry(screen0->geometry().x(),screen0->geometry().y(),1920,1080);
-    w1.setGeometry(screen1->geometry().x(),screen1->geometry().y(),1920,1080);
-    w2.setGeometry(screen2->geometry().x(),screen2->geometry().y(),1920,1080);
-
-    QList <QWidget*> widgetList;
-
-    widgetList.append(&w1);
-    widgetList.append(&w0);
-    widgetList.append(&w2);
+    screens.push_back(a.screens().at(i));
 
 
- new showRunner(NULL,widgetList,PATH,speed,serialwatch);
+
+    ws[i]->setGeometry(screens[i]->geometry().x(),screens[i]->geometry().y(),1920,1080);
+    //w1.setGeometry(screen1->geometry().x(),screen1->geometry().y(),1920,1080);
+    //w2.setGeometry(screen2->geometry().x(),screen2->geometry().y(),1920,1080);
+
+
+    }
+
+ new showRunner(NULL,ws,PATH,speed,serialwatch);
 
     return a.exec();
 }

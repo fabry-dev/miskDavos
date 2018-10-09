@@ -31,8 +31,8 @@ showRunner::showRunner(QObject *parent, QList<QWidget *> widgetList, QString PAT
     static const int arr8[] = {11,11,11,5,7,42,33,42,32,9,42,30,3,42,18,42,32,5,42,46,9,11};
     static const int arr9[] = {11,11,11,5,42,46,42,33,9,9,42,30,3,42,18,42,32,5,42,46,9,11};
 
-//
-//
+    //
+    //
     //
     //
     //
@@ -344,56 +344,56 @@ void showRunner::handle_readNotification(int /*socket*/)
     struct input_event ev;
 
 
-    read(fd, &ev, sizeof(struct input_event));
-
-    // qDebug()<<ev.code;
-
-    if((ev.type == 1)&&(ev.value==0))
+    while(read(fd, &ev, sizeof(struct input_event))>0)
     {
-        if((ev.code == 96)||(ev.code == 28))
-        {
-            //qDebug()<<"enter";
+        // qDebug()<<ev.code;
 
-            bool okcode=false;
-            for(int i = 0;i<codes.size();i++)
+        if((ev.type == 1)&&(ev.value==0))
+        {
+            if((ev.code == 96)||(ev.code == 28))
             {
-                if(codeBuf == codes[i])
+                //qDebug()<<"enter";
+
+                bool okcode=false;
+                for(int i = 0;i<codes.size();i++)
                 {
-                    qDebug()<<"code"<<i;
-                    startShow(i);
-                    okcode = true;
-                    break;
+                    if(codeBuf == codes[i])
+                    {
+                        qDebug()<<"code"<<i;
+                        startShow(i);
+                        okcode = true;
+                        break;
+                    }
+
+
                 }
 
 
-            }
 
-
-
-            if(not okcode)
-            {
-                QString sbuf="";
-                for(auto b:codeBuf)
+                if(not okcode)
                 {
+                    QString sbuf="";
+                    for(auto b:codeBuf)
+                    {
 
-                    sbuf.append(QString::number((int)b)+" ");
+                        sbuf.append(QString::number((int)b)+" ");
+                    }
+                    qDebug()<<sbuf;
+                    qDebug()<<"FORCE reset time out";
+                    RFIDtimeout->start(TIMEOUT);//just restart
+
+
                 }
-                qDebug()<<sbuf;
-                qDebug()<<"FORCE reset time out";
-                RFIDtimeout->start(TIMEOUT);//just restart
 
-
+                codeBuf.clear();
             }
-
-            codeBuf.clear();
-        }
-        else
-        {
-            uchar buf = ev.code;
-            codeBuf.push_back(buf);
+            else
+            {
+                ushort buf = ev.code;
+                codeBuf.push_back(buf);
+            }
         }
     }
-
 
 }
 

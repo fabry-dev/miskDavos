@@ -32,5 +32,3 @@ HEADERS  += \
 
 FORMS    +=
 
-
-LIBS += -lvlc

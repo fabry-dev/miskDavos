@@ -2,7 +2,7 @@
 #define videoPlayer_H
 
 #include "qwidget.h"
-#include <vlc/vlc.h>
+
 #include "qevent.h"
 #include <QObject>
 #include <mpv/client.h>
