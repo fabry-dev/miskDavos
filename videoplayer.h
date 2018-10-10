@@ -8,9 +8,9 @@
 #include <mpv/client.h>
 #include "qmutex.h"
 #include "qopengl.h"
-#include "qopenglwidget.h"
 
-class videoPlayer : public QOpenGLWidget
+
+class videoPlayer : public QWidget
 {
     Q_OBJECT
 public:

@@ -36,7 +36,7 @@ static void wakeup(void *ctx)
 */
 
 
-videoPlayer::videoPlayer( QWidget *parent , QString videoFile ):QOpenGLWidget(parent)
+videoPlayer::videoPlayer( QWidget *parent , QString videoFile ):QWidget(parent)
 {
     deleteLock.unlock();
 
