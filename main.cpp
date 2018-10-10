@@ -77,8 +77,10 @@ int main(int argc, char *argv[])
 
 
 
+    new videoPlayer(NULL,PATH+"video0.mp4");
 
 
+    /*
 
 
     serialWatcher * serialwatch = new serialWatcher(NULL);
@@ -120,6 +122,6 @@ int main(int argc, char *argv[])
     }
 
     new showRunner(NULL,ws,PATH,speed,serialwatch);
-
+*/
     return a.exec();
 }

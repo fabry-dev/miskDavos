@@ -176,10 +176,7 @@ void showRunner::startShow(int show)
 {
 
     codeBuf.clear();
-    if(show>9)
-        return;
-    if(show<0)
-        return;
+
 
     if(activeShow == show)
     {

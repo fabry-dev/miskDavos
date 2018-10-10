@@ -7,9 +7,10 @@
 #include <QObject>
 #include <mpv/client.h>
 #include "qmutex.h"
+#include "qopengl.h"
+#include "qopenglwidget.h"
 
-
-class videoPlayer : public QWidget
+class videoPlayer : public QOpenGLWidget
 {
     Q_OBJECT
 public:

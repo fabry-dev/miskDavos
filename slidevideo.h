@@ -15,7 +15,8 @@
 #include "qscreen.h"
 #include "qwidget.h"
 #include "videoplayer.h"
-
+#include "qopengl.h"
+#include "QOpenGLWidget"
 
 
 class slidevideo:public QObject
