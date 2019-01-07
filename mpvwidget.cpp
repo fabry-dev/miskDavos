@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <QtGui/QOpenGLContext>
 #include <QtCore/QMetaObject>
-
+#include "qdebug.h"
 static void wakeup(void *ctx)
 {
     QMetaObject::invokeMethod((mpvWidget*)ctx, "on_mpv_events", Qt::QueuedConnection);
@@ -26,12 +26,13 @@ mpvWidget::mpvWidget(QWidget *parent, Qt::WindowFlags f)
         throw std::runtime_error("could not create mpv context");
 
     //  mpv_set_option_string(mpv, "terminal", "yes");
-    // mpv_set_option_string(mpv, "msg-level", "all=v");
+  //   mpv_set_option_string(mpv, "msg-level", "all=v");
     if (mpv_initialize(mpv) < 0)
         throw std::runtime_error("could not initialize mpv context");
 
     // Make use of the MPV_SUB_API_OPENGL_CB API.
     mpv::qt::set_option_variant(mpv, "vo", "opengl-cb");
+
 
     // Request hw decoding, just for testing.
     mpv::qt::set_option_variant(mpv, "hwdec", "auto");
@@ -45,6 +46,8 @@ mpvWidget::mpvWidget(QWidget *parent, Qt::WindowFlags f)
     mpv_observe_property(mpv, 0, "duration", MPV_FORMAT_DOUBLE);
     mpv_observe_property(mpv, 0, "time-pos", MPV_FORMAT_DOUBLE);
     mpv_set_wakeup_callback(mpv, wakeup, this);
+
+
 }
 
 mpvWidget::~mpvWidget()
@@ -70,7 +73,7 @@ void mpvWidget::loadFile(QString videoFile)
     const char *cmd[] = {"loadfile", videoFile2, "append-play"};
 
     //mpv_command(mpv, cmd);
-    command(QStringList() << "loadfile" << videoFile);
+    command(QStringList() << "loadfile" << videoFile<<"append-play");
 
 }
 
@@ -92,9 +95,15 @@ void mpvWidget::setLoop(bool looping)
         mpv::qt::set_option_variant( mpv, "loop", "inf");
     else
         mpv::qt::set_option_variant( mpv, "loop", "0");
-
 }
 
+
+
+void mpvWidget::setCrop()
+{
+
+ mpv::qt::set_option_variant(mpv, "vf", QStringList()<<"crop"<<"1920:1080:0:0");
+}
 
 
 
@@ -140,9 +149,16 @@ void mpvWidget::on_mpv_events()
 void mpvWidget::handle_mpv_event(mpv_event *event)
 {
     switch (event->event_id) {
+    case MPV_EVENT_PAUSE:
+    {
+// qDebug()<<"ennnnnd";
+    emit videoOver();
+        break;
+    }
     case MPV_EVENT_IDLE:
     {
-        emit videoOver();
+
+
         break;
     }
     case MPV_EVENT_PROPERTY_CHANGE: {

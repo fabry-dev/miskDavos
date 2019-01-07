@@ -19,6 +19,7 @@ public:
     void loadFile(QString);
     void setLoop(bool looping);
     void stop();
+    void setCrop();
 Q_SIGNALS:
     void durationChanged(int value);
     void positionChanged(int value);

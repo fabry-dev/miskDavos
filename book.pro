@@ -17,18 +17,16 @@ CONFIG += link_pkgconfig debug
 PKGCONFIG += mpv
 
 SOURCES += main.cpp \
-    slidewindow.cpp \
-    slidevideo.cpp \
-    videoplayer.cpp \
     serialwatcher.cpp \
-    showrunner.cpp
+    videowindow.cpp \
+    mpvwidget.cpp
+
 
 HEADERS  += \
-    slidewindow.h \
-    slidevideo.h \
-    videoplayer.h \
     serialwatcher.h \
-    showrunner.h
+    videowindow.h \
+    mpvwidget.h
+
 
 FORMS    +=
 

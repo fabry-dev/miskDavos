@@ -2,16 +2,16 @@
 #include "qwindow.h"
 #include "qscreen.h"
 #include "qwidget.h"
-#include "slidewindow.h"
+#include "videowindow.h"
 #include "qdebug.h"
-#include "videoplayer.h"
-#include "slidevideo.h"
-#include "showrunner.h"
-#include "serialwatcher.h"
-#include "videoplayer.h"
-#define PATH_DEFAULT (QString)"/home/fred/Dropbox/Taf/Cassiopee/falcon/files/"
 
-#define imgCount 5
+
+
+#include "serialwatcher.h"
+
+#define PATH_DEFAULT (QString)"/home/fred/Dropbox/Taf/Cassiopee/book/files/"
+
+
 #define defaultSpeed (55)
 
 int main(int argc, char *argv[])
@@ -84,41 +84,30 @@ int main(int argc, char *argv[])
 
 
 
-    QWidget w1;
-    QWidget w2;
-    QWidget w0;
+    qDebug()<<a.screens().size();
 
 
-    w1.setAttribute(Qt::WA_DeleteOnClose);
-    w0.setAttribute(Qt::WA_DeleteOnClose);
-    w2.setAttribute(Qt::WA_DeleteOnClose);
+    std::vector<videoWindow*> vws;
 
-    QList<QWidget*> ws;
-
-
-    ws.push_back(&w0);
-    ws.push_back(&w1);
-    ws.push_back(&w2);
+    videoWindow *vw = new videoWindow(NULL,PATH,2);
+    vws.push_back(vw);
+    videoWindow *vw2 = new videoWindow(NULL,PATH,1);
+    vws.push_back(vw2);
 
 
-    qDebug()<<a.screens().size()<<" screens detected";
-    std::vector<QScreen*> screens;
-
-    for(int i = 0;i<a.screens().size();i++)
+    for(int i = 0;i<vws.size();i++)
     {
+        vws[i]->setGeometry(a.screens()[i]->geometry().x(),a.screens()[i]->geometry().y(),1920,1080);
+        vws[i]->show();
 
-        screens.push_back(a.screens().at(i));
-
-
-
-        ws[i]->setGeometry(screens[i]->geometry().x(),screens[i]->geometry().y(),1920,1080);
-        //w1.setGeometry(screen1->geometry().x(),screen1->geometry().y(),1920,1080);
-        //w2.setGeometry(screen2->geometry().x(),screen2->geometry().y(),1920,1080);
-
+        a.connect(serialwatch,SIGNAL(nuPage(int)),vws[i],SLOT(goToPage(int)));
+        a.connect(vws[i],SIGNAL(updStatus(int,bool)),serialwatch,SLOT(getStatus(int,bool)));
 
     }
 
-    new showRunner(NULL,ws,PATH,speed,serialwatch);
+
+
 
     return a.exec();
+
 }
