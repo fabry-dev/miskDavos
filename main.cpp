@@ -12,16 +12,14 @@
 #define PATH_DEFAULT (QString)"/home/fred/Dropbox/Taf/Cassiopee/book/files/"
 
 
-#define defaultSpeed (55)
+#define defaultSpeed (10)
 
 int main(int argc, char *argv[])
 
 {
     QApplication a(argc, argv);
 
-    QCursor cursor(Qt::BlankCursor);
-    a.setOverrideCursor(cursor);
-    a.changeOverrideCursor(cursor);
+
 
 
     QString PATH;
@@ -31,7 +29,7 @@ int main(int argc, char *argv[])
     else
         PATH=PATH_DEFAULT;
 
-
+    bool HIDE_CURSOR=false;
     int speed = defaultSpeed;
 
 
@@ -65,6 +63,8 @@ int main(int argc, char *argv[])
                     if(!test)
                         speed = defaultSpeed;
                 }
+                else if (paramName.mid(0,6)=="CURSOR")
+                    HIDE_CURSOR = (paramValue=="NO");
 
                 else
                     qDebug()<<paramName<<" - "<<paramValue;
@@ -77,14 +77,19 @@ int main(int argc, char *argv[])
 
 
 
+    if (HIDE_CURSOR)
+    {
+        QCursor cursor(Qt::BlankCursor);
+        a.setOverrideCursor(cursor);
+        a.changeOverrideCursor(cursor);
+    }
+
+
+    serialWatcher * serialwatch = new serialWatcher(NULL,speed);
 
 
 
-    serialWatcher * serialwatch = new serialWatcher(NULL);
-
-
-
-    qDebug()<<a.screens().size();
+    qDebug()<<"Screens count: "<<a.screens().size();
 
 
     std::vector<videoWindow*> vws;

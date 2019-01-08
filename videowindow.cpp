@@ -38,14 +38,14 @@ void videoWindow::resizeEvent(QResizeEvent *event)
 void videoWindow::playingOver()
 {
 
-    qDebug()<<"done playing";
+   // qDebug()<<"done playing";
     emit updStatus(id,false);
 }
 
 
 void videoWindow::goToPage(int nuPage)
 {
-     qDebug()<<page<<nuPage;
+    // qDebug()<<page<<nuPage;
 
     QString videoName;
 

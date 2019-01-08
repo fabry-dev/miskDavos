@@ -4,12 +4,12 @@
 #include <unistd.h>
 
 
-#define pageTops 5
+
 #define maxPage 3
 
-serialWatcher::serialWatcher(QObject *parent)
+serialWatcher::serialWatcher(QObject *parent,int pageTops)
 
-    : QObject(parent)
+    : QObject(parent),pageTops(pageTops)
 {
 
     pageStatus.resize(2,false);

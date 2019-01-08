@@ -14,9 +14,10 @@ class serialWatcher
 
 
 public:
-    explicit serialWatcher(QObject *parent = nullptr);
+    explicit serialWatcher(QObject *parent = nullptr,int pageTops=10);
     ~serialWatcher();
 private:
+    int pageTops;
     QSerialPort *port;
     int tops;
     int page;
