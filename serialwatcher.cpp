@@ -5,7 +5,7 @@
 
 
 
-#define maxPage 3
+#define maxPage 10
 
 serialWatcher::serialWatcher(QObject *parent,int pageTops)
 
@@ -40,7 +40,7 @@ serialWatcher::serialWatcher(QObject *parent,int pageTops)
     connect(port, SIGNAL(readyRead()), this, SLOT(readData()));
 
     tops = 0;
-    page =  1;
+    page =  0;
 }
 
 
@@ -83,7 +83,7 @@ void serialWatcher::readData()
     {
         tops=0;
 
-        if(page>1)
+        if(page>0)
         {
             page --;
             emit nuPage(page);

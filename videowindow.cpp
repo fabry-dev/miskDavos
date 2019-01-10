@@ -6,7 +6,7 @@
 videoWindow::videoWindow(QLabel *parent, QString PATH,int id) : QLabel(parent),PATH(PATH),id(id)
 {
 
-    page = 2;
+    page = 1;
     vp = new mpvWidget(this);
       vp->setLoop(false);
     vp->setProperty("pause", false);
@@ -23,7 +23,7 @@ videoWindow::videoWindow(QLabel *parent, QString PATH,int id) : QLabel(parent),P
 
     showFullScreen();
 
-    goToPage(1);
+    goToPage(0);
 
 }
 
@@ -45,7 +45,7 @@ void videoWindow::playingOver()
 
 void videoWindow::goToPage(int nuPage)
 {
-    // qDebug()<<page<<nuPage;
+    qDebug()<<page<<nuPage;
 
     QString videoName;
 
