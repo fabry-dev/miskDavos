@@ -10,7 +10,7 @@
 #include "serialwatcher.h"
 
 #define PATH_DEFAULT (QString)"/home/fred/Dropbox/Taf/Cassiopee/book/files/"
-
+#define TIMEOUT 15000
 
 #define defaultSpeed (10)
 
@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
 
     bool HIDE_CURSOR=false;
     int speed = defaultSpeed;
+    int timeout = TIMEOUT;
 
 
     QFile file(PATH+"config.cfg");
@@ -63,6 +64,13 @@ int main(int argc, char *argv[])
                     if(!test)
                         speed = defaultSpeed;
                 }
+                else if (paramName=="TIMEOUT")
+                {
+                    bool test;
+                    timeout = paramValue.toInt(&test);
+                    if(!test)
+                        speed = TIMEOUT;
+                }
                 else if (paramName.mid(0,6)=="CURSOR")
                     HIDE_CURSOR = (paramValue=="NO");
 
@@ -85,7 +93,7 @@ int main(int argc, char *argv[])
     }
 
 
-    serialWatcher * serialwatch = new serialWatcher(NULL,speed);
+    serialWatcher * serialwatch = new serialWatcher(NULL,speed,timeout);
 
 
 
@@ -100,14 +108,16 @@ int main(int argc, char *argv[])
     vws.push_back(vw2);
 
 
-    for(int i = 0;i<vws.size();i++)
+    for(int i = 0;(i<vws.size())&&(i<a.screens().size());i++)
     {
+
         vws[i]->setGeometry(a.screens()[i]->geometry().x(),a.screens()[i]->geometry().y(),1920,1080);
         vws[i]->show();
 
         a.connect(serialwatch,SIGNAL(nuPage(int)),vws[i],SLOT(goToPage(int)));
         a.connect(vws[i],SIGNAL(updStatus(int,bool)),serialwatch,SLOT(getStatus(int,bool)));
-
+        a.connect(serialwatch,SIGNAL(gotTimeOut()),vws[i],SLOT(goSaving()));
+        a.connect(serialwatch,SIGNAL(exitTimeOut()),vws[i],SLOT(exitSaving()));
     }
 
 

@@ -73,8 +73,8 @@ void mpvWidget::loadFile(QString videoFile)
     const char *cmd[] = {"loadfile", videoFile2, "append-play"};
 
     //mpv_command(mpv, cmd);
-    command(QStringList() << "loadfile" << videoFile<<"append-play");
-
+    //command(QStringList() << "loadfile" << videoFile<<"append-play");
+command(QStringList() << "loadfile" << videoFile);
 }
 
 

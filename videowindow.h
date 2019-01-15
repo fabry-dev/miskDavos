@@ -20,6 +20,7 @@ public:
 private:
     QString PATH;
     int page;
+    bool saving;
 
 
 signals:
@@ -30,6 +31,8 @@ private slots:
     void playingOver();
     void initVideo();
     void goToPage(int page);
+    void goSaving();
+    void exitSaving();
 
 protected:
     void resizeEvent(QResizeEvent *event);

@@ -5,13 +5,18 @@
 
 
 
-#define maxPage 10
 
-serialWatcher::serialWatcher(QObject *parent,int pageTops)
+#define maxPage 14
 
-    : QObject(parent),pageTops(pageTops)
+serialWatcher::serialWatcher(QObject *parent,int pageTops,int timeoutValue)
+
+    : QObject(parent),pageTops(pageTops),timeoutValue(timeoutValue)
 {
 
+    savingTimer = new QTimer(this);
+    connect(savingTimer,SIGNAL(timeout()),this,SLOT(timeOut()));
+    timeOut();
+    ready = true;
     pageStatus.resize(2,false);
 
     port = new QSerialPort;
@@ -45,6 +50,16 @@ serialWatcher::serialWatcher(QObject *parent,int pageTops)
 
 
 
+
+void serialWatcher::timeOut()
+{
+    saving = true;
+    tops = 0;
+    page =  0;
+    emit gotTimeOut();
+}
+
+
 void serialWatcher::readData()
 {
 
@@ -52,20 +67,50 @@ void serialWatcher::readData()
     uchar b = data.at(0);
 
 
-    if(!ready)
+
+    if(saving)
+    {
+        page =  0;
+        saving = false;
+        emit exitTimeOut();
+         savingTimer->start(timeoutValue);//restart timing
         return;
+    }
+
+
+    if((!ready))
+        return;
+
+    savingTimer->start(timeoutValue);//restart timing
+
+
+ //   qDebug()<<saving;
+
+
+
+
+
+
+
+
 
     if(b==155)
     {
         tops ++;
 
+
     }
     else if(b==255)
     {
 
-        emit goBackward();
+
+
         tops--;
     }
+
+
+
+    //qDebug()<<tops;
 
     if(tops>pageTops)
     {
@@ -76,6 +121,7 @@ void serialWatcher::readData()
         {
             page++;
             emit nuPage(page);
+
         }
 
     }
@@ -101,7 +147,7 @@ void serialWatcher::getStatus(int id,bool status)
     if((id>0)&&(id<=2))
     {
         pageStatus[id-1]=status;
-    //qDebug()<<pageStatus;
+        //qDebug()<<pageStatus;
     }
 
     ready = true;
@@ -115,7 +161,7 @@ void serialWatcher::getStatus(int id,bool status)
         }
     }
 
-   // qDebug()<<"status: "<<ready;
+    // qDebug()<<"status: "<<ready;
 }
 
 

@@ -7,8 +7,9 @@ videoWindow::videoWindow(QLabel *parent, QString PATH,int id) : QLabel(parent),P
 {
 
     page = 1;
+    saving = false;
     vp = new mpvWidget(this);
-      vp->setLoop(false);
+    vp->setLoop(false);
     vp->setProperty("pause", false);
     vp->setProperty("keep-open",true);
 
@@ -22,8 +23,8 @@ videoWindow::videoWindow(QLabel *parent, QString PATH,int id) : QLabel(parent),P
     connect(vp,SIGNAL(videoOver()),this,SIGNAL(donePlaying()));
 
     showFullScreen();
-
-    goToPage(0);
+    goSaving();
+    //goToPage(0);
 
 }
 
@@ -38,7 +39,7 @@ void videoWindow::resizeEvent(QResizeEvent *event)
 void videoWindow::playingOver()
 {
 
-   // qDebug()<<"done playing";
+    // qDebug()<<"done playing";
     emit updStatus(id,false);
 }
 
@@ -47,10 +48,13 @@ void videoWindow::goToPage(int nuPage)
 {
     qDebug()<<page<<nuPage;
 
+
+
     QString videoName;
 
     if(page == nuPage)
         return;
+
 
     if(page>nuPage)
     {
@@ -72,12 +76,39 @@ void videoWindow::goToPage(int nuPage)
 
 void videoWindow::startVideo(QString videoUrl)
 {
-   // qDebug()<<videoUrl;
+    qDebug()<<videoUrl;
     emit updStatus(id,true);
 
     vp->loadFile(PATH+videoUrl);
 
     vp->setProperty("pause",false);
+
+}
+
+
+void videoWindow::goSaving()
+{
+
+    if(saving)
+        return;
+
+
+    vp->setLoop(true);
+
+    saving = true;
+    page = 1;
+    vp->loadFile(PATH+"videopresentation.mp4");
+    vp->setProperty("pause",false);
+    qDebug()<<id<<"go saving";
+}
+
+void videoWindow::exitSaving()
+{
+    qDebug()<<id<<"exit saving";
+    vp->setLoop(false);
+    saving = false;
+    page = 1;
+    goToPage(0);
 
 }
 
