@@ -8,7 +8,7 @@ module2::module2(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 
     showFullScreen();
     resize(3840,2160);
-    setPixmap(QPixmap(PATH+"exploreBackground.png").scaledToWidth(width()));
+
 
 
     vp = new mpvWidget(this);
@@ -37,8 +37,31 @@ module2::module2(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 
     vp->raise();//video player on top of everything
 
+    for (auto b:exploreBubbles)
+        b->hide();
+
+
+    goExplore();
+
 
 }
+
+
+void module2::goCompare()
+{
+    for (auto b:exploreBubbles)
+        b->hide();
+
+}
+
+void module2::goExplore()
+{
+ setPixmap(QPixmap(PATH+"exploreBackground.png").scaledToWidth(width()));
+ for (auto b:exploreBubbles)
+     b->show();
+}
+
+
 
 
 void module2::loadCountries()
@@ -93,7 +116,7 @@ void module2::loadCountries()
 
 
             circleButton *b = new circleButton(this,colors[colorCode],count,QString::number(countryValue)+" "+countryName);
-            bubbles.push_back(b);
+            exploreBubbles.push_back(b);
             countryNames.push_back(countryName);
             connect(b,SIGNAL(clicked(int)),this,SLOT(showVideo(int)));
             b->resize(QSize(countrySize,countrySize));

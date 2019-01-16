@@ -28,7 +28,7 @@ public:
 
 private:
     QString PATH;
-    std::vector<circleButton*> bubbles;
+    std::vector<circleButton*> exploreBubbles;
     void loadCountries();
     std::vector<QString> countryNames;
     std::vector<QColor> colors;
@@ -39,6 +39,8 @@ private slots:
     void showVideo(int countryId);
     void getVideoClicked(QPoint pos);
     void hideVideo();
+    void goCompare();
+    void goExplore();
 
 protected:
     void mousePressEvent(QMouseEvent *ev);
