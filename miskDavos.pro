@@ -4,12 +4,12 @@
 #
 #-------------------------------------------------
 
-QT       += core gui serialport
+QT       += core gui
 CONFIG += c++14
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = book
+TARGET = miskDavos
 TEMPLATE = app
 
 QT_CONFIG -= no-pkg-config
@@ -17,15 +17,15 @@ CONFIG += link_pkgconfig debug
 PKGCONFIG += mpv
 
 SOURCES += main.cpp \
-    serialwatcher.cpp \
-    videowindow.cpp \
-    mpvwidget.cpp
+    mpvwidget.cpp \
+    circlebutton.cpp \
+    module3.cpp
 
 
 HEADERS  += \
-    serialwatcher.h \
-    videowindow.h \
-    mpvwidget.h
+    mpvwidget.h \
+    circlebutton.h \
+    module3.h
 
 
 FORMS    +=

@@ -26,7 +26,7 @@ mpvWidget::mpvWidget(QWidget *parent, Qt::WindowFlags f)
         throw std::runtime_error("could not create mpv context");
 
     //  mpv_set_option_string(mpv, "terminal", "yes");
-  //   mpv_set_option_string(mpv, "msg-level", "all=v");
+    //   mpv_set_option_string(mpv, "msg-level", "all=v");
     if (mpv_initialize(mpv) < 0)
         throw std::runtime_error("could not initialize mpv context");
 
@@ -74,7 +74,9 @@ void mpvWidget::loadFile(QString videoFile)
 
     //mpv_command(mpv, cmd);
     //command(QStringList() << "loadfile" << videoFile<<"append-play");
-command(QStringList() << "loadfile" << videoFile);
+    command(QStringList() << "loadfile" << videoFile);
+
+    setProperty("pause",false);
 }
 
 
@@ -102,7 +104,7 @@ void mpvWidget::setLoop(bool looping)
 void mpvWidget::setCrop()
 {
 
- mpv::qt::set_option_variant(mpv, "vf", QStringList()<<"crop"<<"1920:1080:0:0");
+    mpv::qt::set_option_variant(mpv, "vf", QStringList()<<"crop"<<"1920:1080:0:0");
 }
 
 
@@ -151,8 +153,8 @@ void mpvWidget::handle_mpv_event(mpv_event *event)
     switch (event->event_id) {
     case MPV_EVENT_PAUSE:
     {
-// qDebug()<<"ennnnnd";
-    emit videoOver();
+        // qDebug()<<"ennnnnd";
+        emit videoOver();
         break;
     }
     case MPV_EVENT_IDLE:
