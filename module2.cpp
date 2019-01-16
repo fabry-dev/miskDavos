@@ -1,6 +1,6 @@
 #include "module2.h"
 #include "qdebug.h"
-
+#include "qpushbutton.h"
 
 
 module2::module2(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
@@ -8,7 +8,7 @@ module2::module2(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 
     showFullScreen();
     resize(3840,2160);
-    setPixmap(QPixmap(PATH+"fond.png").scaledToWidth(width()));
+    setPixmap(QPixmap(PATH+"exploreBackground.png").scaledToWidth(width()));
 
 
     vp = new mpvWidget(this);
@@ -36,6 +36,8 @@ module2::module2(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     loadCountries();
 
     vp->raise();//video player on top of everything
+
+
 }
 
 

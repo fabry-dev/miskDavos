@@ -6,7 +6,7 @@
 #include "module2.h"
 #include "qdebug.h"
 
-
+#include "QPushButton"
 
 
 
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
         PATH=PATH_DEFAULT;
 
     bool HIDE_CURSOR=false;
-
+    bool DEBUG=false;
 
 
 
@@ -59,6 +59,9 @@ int main(int argc, char *argv[])
                 paramValue = params[1];
                 if (paramName.mid(0,6)=="CURSOR")
                     HIDE_CURSOR = (paramValue=="NO");
+                else if (paramName.mid(0,5)=="DEBUG")
+                    DEBUG = (paramValue=="YES");
+
 
                 else
                     qDebug()<<paramName<<" - "<<paramValue;
@@ -98,8 +101,28 @@ int main(int argc, char *argv[])
 
 
 
+    if(DEBUG)
+    {
+
+    QPushButton *pb = new QPushButton(md2);
+    pb->move(0,0);
+    pb->resize(200,200);
+    pb->setText("close app");
+    a.connect(pb,SIGNAL(clicked(bool)),&a,SLOT(closeAllWindows()));
+    pb->show();
+    pb->raise();
 
 
+
+    QPushButton *pb2 = new QPushButton(md3);
+    pb2->move(0,0);
+    pb2->resize(200,200);
+    pb2->setText("close app");
+    a.connect(pb2,SIGNAL(clicked(bool)),&a,SLOT(closeAllWindows()));
+    pb2->show();
+    pb2->raise();
+
+    }
     return a.exec();
 
 }
