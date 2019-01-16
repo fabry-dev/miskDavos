@@ -19,13 +19,15 @@ PKGCONFIG += mpv
 SOURCES += main.cpp \
     mpvwidget.cpp \
     circlebutton.cpp \
-    module3.cpp
+    module3.cpp \
+    module2.cpp
 
 
 HEADERS  += \
     mpvwidget.h \
     circlebutton.h \
-    module3.h
+    module3.h \
+    module2.h
 
 
 FORMS    +=

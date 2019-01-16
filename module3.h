@@ -1,5 +1,5 @@
-#ifndef VIDEOWINDOW_H
-#define VIDEOWINDOW_H
+#ifndef MODULE3_H
+#define MODULE3_H
 
 #include <QWidget>
 #include <qobject.h>

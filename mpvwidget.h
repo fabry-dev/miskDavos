@@ -24,9 +24,11 @@ Q_SIGNALS:
     void durationChanged(int value);
     void positionChanged(int value);
     void videoOver();
+    void clicked(QPoint pos);
 protected:
     void initializeGL() Q_DECL_OVERRIDE;
     void paintGL() Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event);
 private Q_SLOTS:
     void swapped();
     void on_mpv_events();

@@ -3,6 +3,7 @@
 #include "qscreen.h"
 #include "qwidget.h"
 #include "module3.h"
+#include "module2.h"
 #include "qdebug.h"
 
 
@@ -87,11 +88,13 @@ int main(int argc, char *argv[])
 
 
 
-    module3 *md3 = new module3(NULL,PATH);
+    module3 *md3 = new module3(NULL,PATH+"module3/");
     md3->setGeometry(a.screens()[0]->geometry().x(),a.screens()[0]->geometry().y(),3840,2160);
-    md3->show();
+    md3->hide();
 
-
+    module2 *md2 = new module2(NULL,PATH+"module2/");
+    md2->setGeometry(a.screens()[0]->geometry().x(),a.screens()[0]->geometry().y(),3840,2160);
+    md2->show();
 
 
 

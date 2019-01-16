@@ -69,13 +69,8 @@ void mpvWidget::command(const QVariant& params)
 void mpvWidget::loadFile(QString videoFile)
 {
     QByteArray ba = videoFile.toLatin1();
-    const char *videoFile2 = ba.data();
-    const char *cmd[] = {"loadfile", videoFile2, "append-play"};
-
-    //mpv_command(mpv, cmd);
     //command(QStringList() << "loadfile" << videoFile<<"append-play");
     command(QStringList() << "loadfile" << videoFile);
-
     setProperty("pause",false);
 }
 
@@ -207,4 +202,10 @@ void mpvWidget::maybeUpdate()
 void mpvWidget::on_update(void *ctx)
 {
     QMetaObject::invokeMethod((mpvWidget*)ctx, "maybeUpdate");
+}
+
+
+void mpvWidget::mousePressEvent(QMouseEvent *event)
+{
+    emit clicked(event->pos());
 }

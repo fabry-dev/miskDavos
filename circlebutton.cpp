@@ -1,7 +1,8 @@
 #include "circlebutton.h"
 
-circleButton::circleButton(QWidget *parent,QColor color,int id) : QWidget(parent),color(color),id(id)
+circleButton::circleButton(QWidget *parent,QColor color,int id,QString txt) : QWidget(parent),color(color),id(id),txt(txt)
 {
+
 
     isClicked = false;
 
@@ -32,6 +33,39 @@ void circleButton::paintEvent(QPaintEvent *event)
     painter.setBrush(QColor(color));
     painter.drawEllipse(QPointF(width()/2,height()/2),0.9*width()/2,0.9*height()/2);
 
+
+    if(txt!="")
+    {
+
+
+
+
+        QFont font = QFont("Arial",50) ;
+
+
+        QFontMetrics fm(font);
+
+        double W = fm.width(txt);
+        double H = fm.height();
+
+        if(W > (double)0.75*width())
+        {
+            float a = (double) W/(0.75*width());
+
+            font.setPointSizeF((double)font.pointSize()/a);
+
+            QFontMetrics fm2(font);
+            W = fm2.width(txt);
+            H = fm2.height();
+        }
+
+
+        painter.setFont(font);
+
+        painter.setPen(QPen(Qt::white, 2));
+        painter.drawText(QRectF((width()-W)/2,(height()-H)/2,width(),height()),txt);
+
+    }
 
 }
 
