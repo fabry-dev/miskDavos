@@ -12,7 +12,7 @@
 #include "qcombobox.h"
 
 #include "circlebutton.h"
-
+#include "picbutton.h"
 #include "qmath.h"
 #include "qlineedit.h"
 #include "qstylefactory.h"
@@ -68,6 +68,7 @@ private:
     mpvWidget *vp;
     QPropertyAnimation *videoSlide;
     QComboBox* combo;
+    picButton *home;
   //  std::vector<countryIcon*> activeCountries;
 std::vector<QString> activeCountries;
     std::vector<std::vector<uint>> compareScores;
@@ -91,6 +92,8 @@ private slots:
 protected:
     void mousePressEvent(QMouseEvent *ev);
 
+signals:
+    void goHome();
 
 };
 

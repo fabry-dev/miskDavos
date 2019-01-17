@@ -86,6 +86,13 @@ module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     for(int i =0;i<5;i++)
         bgPixS.push_back(QPixmap(PATH+"scale"+QString::number(i+1)+".png"));
 
+
+    home = new picButton(this,0,PATH+"home.png",PATH+"homeOn.png","");
+    connect(home,SIGNAL(clicked(QString)),this,SIGNAL(goHome()));
+    home->move(width()-50-home->width(),50);
+    home->show();
+    home->raise();
+
     setupKeyboard();
     initDb();
     //  nextButton->show();

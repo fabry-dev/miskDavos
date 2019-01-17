@@ -84,10 +84,10 @@ mainScreen::mainScreen(QLabel *parent,QString PATH,bool DEBUG) : QLabel(parent),
     come->setDuration(1000);
     come->setEasingCurve(QEasingCurve::InCurve);
 
-
-
-
-
+ //   connect(md1,SIGNAL(goHome()),this,SLOT(goModule0()));
+    connect(md2,SIGNAL(goHome()),this,SLOT(goModule0()));
+    connect(md3,SIGNAL(goHome()),this,SLOT(goModule0()));
+    connect(md4,SIGNAL(goHome()),this,SLOT(goModule0()));
 
 }
 
@@ -99,8 +99,31 @@ mainScreen::mainScreen(QLabel *parent,QString PATH,bool DEBUG) : QLabel(parent),
 
 void mainScreen::goModule0()
 {
+    QLabel *md = (QLabel*) QObject::sender();
 
+
+    disconnect(goaway,0,0,0);
+    disconnect(come,0,0,0);
+
+    goaway->setTargetObject(md);
+    goaway->setStartValue(md->pos());
+    goaway->setEndValue(QPoint(-width(),0));
+    connect(goaway,SIGNAL(finished()),md,SLOT(hide()));
+
+    come->setTargetObject(md0);
+    come->setStartValue(pos());
+    come->setEndValue(QPoint(0,0));
+
+    md0->init();
+    md0->move(width(),0);
+    md0->show();
+
+    goaway->start();
+    come->start();
 }
+
+
+
 void mainScreen::goModule1()
 {
 

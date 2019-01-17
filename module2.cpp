@@ -45,7 +45,11 @@ module2::module2(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     colors.push_back(QColor::fromRgb(0xF3,0x79,0x40));//orange
     colors.push_back(QColor::fromRgb(0xFB,0xA9,0x2B));//jaune
 
-
+    home = new picButton(this,0,PATH+"home.png",PATH+"homeOn.png","");
+    connect(home,SIGNAL(clicked(QString)),this,SIGNAL(goHome()));
+    home->move(width()-50-home->width(),50);
+    home->show();
+    home->raise();
 
 
     loadExploreCountries();

@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <qobject.h>
 #include "qlabel.h"
-
+#include "picbutton.h"
 #include "mpvwidget.h"
 #include "qtimer.h"
 #include "QDirIterator"
@@ -62,10 +62,11 @@ public:
 private:
     QString PATH;
     question * q;
-
+    picButton *home;
 private slots:
     void getResult(int questionId,int answer);
-
+signals:
+    void goHome();
 
 };
 

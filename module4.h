@@ -143,6 +143,8 @@ private:
     std::vector<picButton*> keyboard;
     void setupKeyboard();
     void initDb();
+        picButton *home;
+
 private slots:
     void bubbleMoved(int id,QPointF pos);
     void goSecondPart();
@@ -153,7 +155,8 @@ private slots:
 protected:
     void mousePressEvent(QMouseEvent *ev);
 
-
+signals:
+    void goHome();
 };
 
 #endif

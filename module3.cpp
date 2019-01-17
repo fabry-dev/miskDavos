@@ -14,6 +14,11 @@ module3::module3(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     q->resize(size());
     q->hide();
 
+    home = new picButton(this,0,PATH+"home.png",PATH+"homeOn.png","");
+    connect(home,SIGNAL(clicked(QString)),this,SIGNAL(goHome()));
+    home->move(width()-50-home->width(),50);
+    home->show();
+    home->raise();
 
 
 }
@@ -21,6 +26,7 @@ module3::module3(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 
 void module3::init()
 {
+
  showQuestion(1);
 
 }
@@ -162,9 +168,12 @@ void question::showQuestion(int nuid)
     id = nuid;
 
     disconnect(vp,SIGNAL(videoOver()),0,0);
-    for(auto b:buttons)
-        connect(vp,SIGNAL(videoOver()),b,SLOT(show()));
 
+    for(auto b:buttons)
+    {
+        b->hide();
+        connect(vp,SIGNAL(videoOver()),b,SLOT(show()));
+    }
     vp->loadFile(PATH+"question"+QString::number(id)+".mp4");
 
      show();
