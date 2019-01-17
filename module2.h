@@ -79,6 +79,8 @@ std::vector<QString> activeCountries;
     std::vector<countryBubble*>countryBubbles;
     std::vector<countryIcon*>countryIcons;
 
+    picButton *compareButton,*exploreButton;
+
 private slots:
     void showVideo(int countryId);
     void getVideoClicked(QPoint pos);

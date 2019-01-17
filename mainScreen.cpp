@@ -10,7 +10,7 @@ mainScreen::mainScreen(QLabel *parent,QString PATH,bool DEBUG) : QLabel(parent),
 
     showFullScreen();
     resize(3840,2160);
-
+    initDb();
 
 
     md0 = new module0(this,PATH+"module0/");
@@ -84,7 +84,7 @@ mainScreen::mainScreen(QLabel *parent,QString PATH,bool DEBUG) : QLabel(parent),
     come->setDuration(1000);
     come->setEasingCurve(QEasingCurve::InCurve);
 
- //   connect(md1,SIGNAL(goHome()),this,SLOT(goModule0()));
+    //   connect(md1,SIGNAL(goHome()),this,SLOT(goModule0()));
     connect(md2,SIGNAL(goHome()),this,SLOT(goModule0()));
     connect(md3,SIGNAL(goHome()),this,SLOT(goModule0()));
     connect(md4,SIGNAL(goHome()),this,SLOT(goModule0()));
@@ -121,6 +121,24 @@ void mainScreen::goModule0()
     goaway->start();
     come->start();
 }
+
+
+void mainScreen::initDb()
+{
+    const QString DRIVER("QSQLITE");
+    QSqlDatabase db = QSqlDatabase::addDatabase(DRIVER);
+    db.setHostName("hostname");
+    db.setDatabaseName(PATH+"miskdb");
+    db.setUserName("user");
+    db.setPassword("password");
+
+    if(!db.open())
+        qWarning() << "ERROR: " << db.lastError();
+
+    qDebug()<<db.tables();
+
+}
+
 
 
 

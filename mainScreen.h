@@ -27,6 +27,8 @@ private:
     QLabel *activeModule;
 
     QPropertyAnimation *goaway,*come;
+    void initDb();
+
 
 private slots:
     void goModule0();

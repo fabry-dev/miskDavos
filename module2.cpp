@@ -55,6 +55,21 @@ module2::module2(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     loadExploreCountries();
     loadCompareCountries();
 
+
+    compareButton = new picButton(this,300,PATH+"compare.png",PATH+"compareOn.png","");
+    connect(compareButton,SIGNAL(clicked(QString)),this,SLOT(goCompare()));
+    compareButton->move(3300,0);
+
+    exploreButton = new picButton(this,300,PATH+"explore.png",PATH+"exploreOn.png","");
+    connect(exploreButton,SIGNAL(clicked(QString)),this,SLOT(goExplore()));
+    exploreButton->move(3300,0);
+
+
+
+    compareButton->hide();
+    exploreButton->hide();
+
+
     vp->raise();//video player on top of everything
 
     for (auto b:exploreBubbles)
@@ -81,26 +96,28 @@ module2::module2(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 
 void module2::init()
 {
-
+    compareButton->hide();
+    exploreButton->hide();
     goCompare();
 }
 
 
 void module2::goCompare()
 {
+    compareButton->hide();
+    exploreButton->show();
     for (auto b:exploreBubbles)
         b->hide();
 
     setPixmap(QPixmap(PATH+"compareBackground.png").scaledToWidth(width()));
 
     combo->show();
-
-
-
 }
 
 void module2::goExplore()
 {
+    exploreButton->hide();
+    compareButton->show();
     setPixmap(QPixmap(PATH+"exploreBackground.png").scaledToWidth(width()));
     for (auto b:exploreBubbles)
         b->show();

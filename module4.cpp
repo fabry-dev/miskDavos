@@ -355,7 +355,7 @@ void module4::setupKeyboard()
 
 void  module4::initDb()
 {
-
+   /*
     const QString DRIVER("QSQLITE");
     QSqlDatabase db = QSqlDatabase::addDatabase(DRIVER);
     db.setHostName("hostname");
@@ -368,8 +368,8 @@ void  module4::initDb()
 
     qDebug()<<db.tables();
 
-
-    QSqlQuery query("CREATE TABLE players (id INTEGER PRIMARY KEY AUTOINCREMENT, q1 INTEGER, q2 INTEGER, q3 INTEGER, q4 INTEGER, q5 INTEGER, q6 INTEGER, q7 INTEGER, q8 INTEGER, q9 INTEGER, date TIMESTAMP)");
+*/
+    QSqlQuery query("CREATE TABLE module4 (id INTEGER PRIMARY KEY AUTOINCREMENT, q1 INTEGER, q2 INTEGER, q3 INTEGER, q4 INTEGER, q5 INTEGER, q6 INTEGER, q7 INTEGER, q8 INTEGER, q9 INTEGER, date TIMESTAMP)");
 
     bool success = query.exec();
 
@@ -389,7 +389,7 @@ void module4::insertData()
     QDateTime timestamp = QDateTime::currentDateTime();
 
     QSqlQuery query;
-    query.prepare("INSERT INTO players (q1,q2,q3,q4,q5,q6,q7,q8,q9, date) VALUES (:q1,:q2,:q3,:q4,:q5,:q6,:q7,:q8,:q9,:datetime)");
+    query.prepare("INSERT INTO module4 (q1,q2,q3,q4,q5,q6,q7,q8,q9, date) VALUES (:q1,:q2,:q3,:q4,:q5,:q6,:q7,:q8,:q9,:datetime)");
 
     for(int i = 0;i<score1.size();i++)
         query.bindValue(":q"+QString::number(i+1), score1.at(i));
@@ -411,7 +411,7 @@ void module4::getData()
 {
 
     QSqlQuery query;
-    query.prepare("SELECT q1,q2,q3,q4,q5,q6,q7,q8,q9, date FROM players");
+    query.prepare("SELECT q1,q2,q3,q4,q5,q6,q7,q8,q9, date FROM module4");
     query.exec();
 
     std::vector<int> buf;
