@@ -23,7 +23,8 @@
 #include "QGraphicsItem"
 #include "customslider.h"
 #include "picbutton.h"
-
+#include <QtSql>
+#include <QSqlQuery>
 
 class com:public QObject
 {
@@ -122,7 +123,7 @@ class module4 : public QLabel
     Q_OBJECT
 public:
     explicit module4(QLabel *parent = nullptr, QString PATH="");
-
+    void init();
 private:
     QString PATH;
     void loadSkillList();
@@ -131,7 +132,7 @@ private:
     std::vector<skillTab*> targets;
     std::vector<QColor> colors;
     std::vector<int> ranking;
-    void init();
+
     QGraphicsView *mainView;
     QGraphicsScene *mainScene;
     picButton *nextButton,*nextButton2;
@@ -141,6 +142,7 @@ private:
     std::vector<int> score2,score1;
     std::vector<picButton*> keyboard;
     void setupKeyboard();
+    void initDb();
 private slots:
     void bubbleMoved(int id,QPointF pos);
     void goSecondPart();

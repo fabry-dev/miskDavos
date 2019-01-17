@@ -13,7 +13,7 @@ circleButton::circleButton(QWidget *parent,QColor color,int id,QString txt) : QW
 
 
 
-void circleButton::resizeEvent(QResizeEvent *event)
+void circleButton::resizeEvent(QResizeEvent *)
 {
 
 

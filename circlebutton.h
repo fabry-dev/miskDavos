@@ -26,7 +26,7 @@ private:
 public slots:
 
 protected:
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *);
     void paintEvent(QPaintEvent *event) override;
     void mousePressEvent( QMouseEvent* ev );
     void mouseReleaseEvent(QMouseEvent * event);

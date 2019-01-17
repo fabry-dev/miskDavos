@@ -87,11 +87,11 @@ module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
         bgPixS.push_back(QPixmap(PATH+"scale"+QString::number(i+1)+".png"));
 
     setupKeyboard();
-
+    initDb();
     //  nextButton->show();
     init();
-    goSecondPart();
-    goKeyboard();
+   // goSecondPart();
+   // goKeyboard();
 
 }
 
@@ -154,6 +154,15 @@ void module4::goKeyboard()
 
     for (auto k:keyboard)
         k->show();
+
+
+    int totalScore = 0;
+    for(auto i:score2)
+        totalScore += i/5;
+
+
+    qDebug()<<"mongolo score: "<<totalScore;
+    //culture remixer ; climate changer ; contestant ; the authentic self ; global citizen ; startup artist ; transitionist ; eco maker ; speedrunner
 }
 
 
@@ -169,6 +178,7 @@ void module4::showNextQuestion()
     if(activeQuestion>=5)
     {
         qDebug()<<"score2 "<<score2;
+        goKeyboard();
         return;
     }
     nextButton2->show();
@@ -258,9 +268,6 @@ void module4::bubbleMoved(int id, QPointF pos)
 
 }
 
-
-
-
 void module4::setupKeyboard()
 {
 
@@ -336,6 +343,34 @@ void module4::setupKeyboard()
 
     for(auto p:keyboard)
         p->hide();
+}
+
+void  module4::initDb()
+{
+
+    const QString DRIVER("QSQLITE");
+    QSqlDatabase db = QSqlDatabase::addDatabase(DRIVER);
+    db.setHostName("hostname");
+    db.setDatabaseName(PATH+"module4_1");
+    db.setUserName("user");
+    db.setPassword("password");
+
+    if(!db.open())
+        qWarning() << "ERROR: " << db.lastError();
+
+    qDebug()<<db.tables();
+
+
+    QSqlQuery query("CREATE TABLE players (id INTEGER PRIMARY KEY AUTOINCREMENT, q1 INTEGER, q2 INTEGER, q3 INTEGER, q4 INTEGER, q5 INTEGER, q6 INTEGER, q7 INTEGER, q8 INTEGER, q9 INTEGER, date TIMESTAMP)");
+
+    bool success = query.exec();
+
+    if(!success)
+    {
+        qDebug() << query.lastError();
+    }
+    else qDebug() << "table created";
+
 }
 
 

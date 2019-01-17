@@ -58,7 +58,7 @@ class module2 : public QLabel
     Q_OBJECT
 public:
     explicit module2(QLabel *parent = nullptr, QString PATH="");
-
+    void init();
 private:
     QString PATH;
     std::vector<circleButton*> exploreBubbles;

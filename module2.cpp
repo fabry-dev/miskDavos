@@ -21,7 +21,7 @@ const int bubbleY[4][5] = {
 module2::module2(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 {
 
-    showFullScreen();
+    // showFullScreen();
     resize(3840,2160);
 
 
@@ -69,9 +69,16 @@ module2::module2(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 
     connect(combo,SIGNAL(activated(QString)),this,SLOT(addNewCountry(QString)));
 
+
+
+    // goCompare();
+}
+
+
+void module2::init()
+{
+
     goCompare();
-    goExplore();
-   // goCompare();
 }
 
 

@@ -56,6 +56,7 @@ class module3 : public QLabel
     Q_OBJECT
 public:
     explicit module3(QLabel *parent = nullptr, QString PATH="");
+    void init();
     mpvWidget *vp;
     void showQuestion(int id);
 private:

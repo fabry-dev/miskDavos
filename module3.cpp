@@ -15,8 +15,16 @@ module3::module3(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     q->hide();
 
 
-    showQuestion(1);
+
 }
+
+
+void module3::init()
+{
+ showQuestion(1);
+
+}
+
 
 
 void module3::getResult(int questionId, int answer)

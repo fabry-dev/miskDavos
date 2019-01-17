@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 CONFIG += c++14
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -23,7 +23,9 @@ SOURCES += main.cpp \
     module2.cpp \
     module4.cpp \
     picbutton.cpp \
-    customslider.cpp
+    customslider.cpp \
+    module0.cpp \
+    mainScreen.cpp
 
 
 HEADERS  += \
@@ -33,7 +35,9 @@ HEADERS  += \
     module2.h \
     module4.h \
     picbutton.h \
-    customslider.h
+    customslider.h \
+    module0.h \
+    mainScreen.h
 
 
 FORMS    +=
