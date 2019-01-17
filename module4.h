@@ -143,7 +143,10 @@ private:
     std::vector<picButton*> keyboard;
     void setupKeyboard();
     void initDb();
-        picButton *home;
+    void getData();
+    void insertData();
+
+    picButton *home;
 
 private slots:
     void bubbleMoved(int id,QPointF pos);

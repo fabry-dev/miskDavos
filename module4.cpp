@@ -134,7 +134,8 @@ void module4::init()
 void module4::goSecondPart()
 {
 
-    qDebug()<<"score1 "<<score1;
+
+    insertData();
     nextButton->hide();
     mainView->hide();
     for(int i = 0;i<skillList.size();i++)
@@ -379,6 +380,53 @@ void  module4::initDb()
     else qDebug() << "table created";
 
 }
+
+void module4::insertData()
+{
+
+    qDebug()<<"score1 "<<score1;
+
+    QDateTime timestamp = QDateTime::currentDateTime();
+
+    QSqlQuery query;
+    query.prepare("INSERT INTO players (q1,q2,q3,q4,q5,q6,q7,q8,q9, date) VALUES (:q1,:q2,:q3,:q4,:q5,:q6,:q7,:q8,:q9,:datetime)");
+
+    for(int i = 0;i<score1.size();i++)
+        query.bindValue(":q"+QString::number(i+1), score1.at(i));
+
+    query.bindValue(":datetime", timestamp.toString("yyyy-MM-dd hh:mm:ss"));
+
+
+    bool success = query.exec();
+    if(!success)
+    {
+        qDebug() << query.lastError();
+    }
+
+
+   // getData();
+}
+
+void module4::getData()
+{
+
+    QSqlQuery query;
+    query.prepare("SELECT q1,q2,q3,q4,q5,q6,q7,q8,q9, date FROM players");
+    query.exec();
+
+    std::vector<int> buf;
+    buf.resize(9,-1);
+
+    while (query.next()) {
+        for(int i = 0;i<9;i++)
+        buf[i] = query.value(i).toInt();
+
+        QDateTime date = query.value(9).toDateTime();
+        qDebug()<<date<<buf;
+    }
+}
+
+
 
 
 void module4::getKey(QString key)

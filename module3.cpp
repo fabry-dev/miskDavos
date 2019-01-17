@@ -8,6 +8,7 @@ module3::module3(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 
     showFullScreen();
     resize(3840,2160);
+    initDb();
 
     q = new question(this,PATH);
     connect(q,SIGNAL(result(int,int)),this,SLOT(getResult(int,int)));
@@ -26,18 +27,92 @@ module3::module3(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 
 void module3::init()
 {
-
+ answers.clear();
  showQuestion(1);
 
 }
 
 
 
+
+void  module3::initDb()
+{
+
+    const QString DRIVER("QSQLITE");
+    QSqlDatabase db = QSqlDatabase::addDatabase(DRIVER);
+    db.setHostName("hostname");
+    db.setDatabaseName(PATH+"module3");
+    db.setUserName("user");
+    db.setPassword("password");
+
+    if(!db.open())
+        qWarning() << "ERROR: " << db.lastError();
+
+    qDebug()<<db.tables();
+
+
+    QSqlQuery query("CREATE TABLE players (id INTEGER PRIMARY KEY AUTOINCREMENT, q1 INTEGER, q2 INTEGER, q3 INTEGER, q4 INTEGER, q5 INTEGER, q6 INTEGER, q7 INTEGER, q8 INTEGER, q9 INTEGER, date TIMESTAMP)");
+
+    bool success = query.exec();
+
+    if(!success)
+    {
+        qDebug() << query.lastError();
+    }
+    else qDebug() << "table created";
+
+}
+
+void module3::insertData()
+{
+    QDateTime timestamp = QDateTime::currentDateTime();
+
+    QSqlQuery query;
+    query.prepare("INSERT INTO players (q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14, date) VALUES (:q1,:q2,:q3,:q4,:q5,:q6,:q7,:q8,:q9,:q10,:q11,:q12,:q13,:q14,:datetime)");
+
+    for(int i = 0;i<answers.size();i++)
+        query.bindValue(":q"+QString::number(i+1), answers.at(i));
+
+    query.bindValue(":datetime", timestamp.toString("yyyy-MM-dd hh:mm:ss"));
+
+
+    bool success = query.exec();
+    if(!success)
+    {
+        qDebug() << query.lastError();
+    }
+
+
+   getData();
+}
+
+void module3::getData()
+{
+
+    QSqlQuery query;
+    query.prepare("SELECT q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14,date FROM players");
+    query.exec();
+
+    std::vector<int> buf;
+    buf.resize(14,-1);
+
+    while (query.next()) {
+        for(int i = 0;i<14;i++)
+        buf[i] = query.value(i).toInt();
+
+        QDateTime date = query.value(9).toDateTime();
+        qDebug()<<date<<buf;
+    }
+}
+
+
+
+
 void module3::getResult(int questionId, int answer)
 {
     qDebug()<<questionId<<answer;
+    answers.push_back(answer);
     q->hide();
-
     q->showQuestion(1);
 }
 

@@ -10,7 +10,8 @@
 #include "QDirIterator"
 #include "qcolor.h"
 #include "circlebutton.h"
-
+#include <QtSql>
+#include <QSqlQuery>
 
 
 class question:public QLabel
@@ -63,6 +64,10 @@ private:
     QString PATH;
     question * q;
     picButton *home;
+    std::vector<int> answers;
+    void initDb();
+    void getData();
+    void insertData();
 private slots:
     void getResult(int questionId,int answer);
 signals:
