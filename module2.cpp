@@ -3,6 +3,21 @@
 #include "qpushbutton.h"
 
 
+const int bubbleX[4][5] = {
+    {80,1180,1900,2700,3120},
+    {350,870,1600,2450,3400},
+    {100,1200,1675,2750,3450},
+    {400,830,1980,2530,3150}
+};
+
+const int bubbleY[4][5] = {
+    {870,1300,900,1300,1160},
+    {950,1300,1000,950,980},
+    {1370,900,1200,1000,1200},
+    {1280,950,1140,1300,950}
+};
+
+
 module2::module2(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 {
 
@@ -33,7 +48,8 @@ module2::module2(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 
 
 
-    loadCountries();
+    loadExploreCountries();
+    loadCompareCountries();
 
     vp->raise();//video player on top of everything
 
@@ -41,9 +57,21 @@ module2::module2(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
         b->hide();
 
 
+    //  QStringList commands = { "Argentina", "Australia", "Brazil", "Canada","China","Denmark","Egypt","France","Germany","India","Indonesia","Italy","Japan","Jordan","Mexico","Nigeria","Pakistan","Russia","Saudi Arabi","South Africa","South Korea","Sweden","Turkey","United Kingdom","US"};
+    combo = new QComboBox(this);
+    combo->addItems(compareCountries);
+    combo->move(130,435);
+    combo->resize(400,100);
+    combo->hide();
+    combo->setFont(QFont("Arial",30));
+    //combo->setStyleSheet("padding-left: 10px;border-radius: 50px;QComboBox::drop-down  {  color:white;};");
+
+
+    connect(combo,SIGNAL(activated(QString)),this,SLOT(addNewCountry(QString)));
+
+    goCompare();
     goExplore();
-
-
+   // goCompare();
 }
 
 
@@ -52,19 +80,42 @@ void module2::goCompare()
     for (auto b:exploreBubbles)
         b->hide();
 
+    setPixmap(QPixmap(PATH+"compareBackground.png").scaledToWidth(width()));
+
+    combo->show();
+
+
+
 }
 
 void module2::goExplore()
 {
- setPixmap(QPixmap(PATH+"exploreBackground.png").scaledToWidth(width()));
- for (auto b:exploreBubbles)
-     b->show();
+    setPixmap(QPixmap(PATH+"exploreBackground.png").scaledToWidth(width()));
+    for (auto b:exploreBubbles)
+        b->show();
+
+    combo->hide();
+    for(auto b:countryBubbles)
+        b->deleteLater();
+    countryBubbles.clear();
+
+
+    for(auto i:countryIcons)
+        i->deleteLater();
+    countryIcons.clear();
+
+    activeCountries.clear();
 }
 
 
 
 
-void module2::loadCountries()
+
+
+
+//Explore
+
+void module2::loadExploreCountries()
 {
     uint count = 0;
 
@@ -130,8 +181,8 @@ void module2::loadCountries()
 
 }
 
-
 void module2::showVideo(int countryId)
+
 {
     if(countryId>=countryNames.size())
         return;
@@ -154,8 +205,6 @@ void module2::showVideo(int countryId)
 
 }
 
-
-
 void module2::hideVideo()
 {
     disconnect(videoSlide,0,0,0);
@@ -168,13 +217,254 @@ void module2::hideVideo()
 
 void module2::getVideoClicked(QPoint pos)
 {
-    if((pos.x()>160)&&(pos.y()>120)&&(pos.x()<400)&&(pos.y()<255))
+    if((pos.x()>160)&&(pos.y()>120)&&(pos.x()<400)&&(pos.y()<300))
     {
         hideVideo();
     }
 
     //    qDebug()<<pos;
 }
+
+
+
+
+
+
+//Compare
+
+void module2::loadCompareCountries()
+{
+    QString countryName;
+    std::vector<uint>score;
+    score.resize(5);
+
+    bool test;
+    QFile file(PATH+"compare.cfg");
+    if(!file.open(QIODevice::ReadOnly)) {
+        qDebug()<<"no config file";
+
+    }
+    else
+    {
+
+        QTextStream in(&file);
+
+        QString  line;
+        QStringList params;
+
+        while(!in.atEnd()) {
+            line = in.readLine();
+            params = (line.split(","));
+
+            if(params.size()!=6)
+                break;
+
+            countryName = params[0];
+
+
+            score[0]=(params[1].toInt(&test));
+            if(!test)
+                break;
+
+            score[1]=(params[2].toInt(&test));
+            if(!test)
+                break;
+
+            score[2]=(params[3].toInt(&test));
+            if(!test)
+                break;
+
+            score[3]=(params[4].toInt(&test));
+            if(!test)
+                break;
+
+            score[4]=(params[5].toInt(&test));
+            if(!test)
+                break;
+
+
+            compareCountries.push_back(countryName);
+            compareScores.push_back(score);
+
+        }
+        file.close();
+
+    }
+
+}
+
+void module2::addNewCountry(QString country)
+{
+
+    if(activeCountries.size()>= 4)
+        return;
+
+    for(auto activeCountry:activeCountries)
+        if(activeCountry==country)
+            return;
+
+
+    activeCountries.push_back(country);
+    organiseCountries();
+
+}
+
+void module2::removeCountry()
+{
+    countryIcon* icon = (countryIcon*)(QObject::sender() );
+    activeCountries.erase(std::remove(activeCountries.begin(), activeCountries.end(), icon->getName()), activeCountries.end());
+
+    organiseCountries();
+}
+
+
+void module2::organiseCountries()
+{
+    int spacing = 50;
+
+    for(auto b:countryBubbles)
+        b->deleteLater();
+    countryBubbles.clear();
+
+
+    for(auto i:countryIcons)
+        i->deleteLater();
+    countryIcons.clear();
+
+
+
+    if(activeCountries.size()<=0)
+        return;
+
+    countryIcon* icon = new countryIcon(this,PATH,activeCountries[0],colors[0]);
+    icon->move(600,440);
+    connect(icon,SIGNAL(deleteClicked()),this,SLOT(removeCountry()));
+    icon->show();
+    countryIcons.push_back(icon);
+
+
+
+
+    for(int i = 1;i<activeCountries.size();i++)
+    {
+
+        countryIcon *previous = countryIcons.at(i-1);
+        icon = new countryIcon(this,PATH,activeCountries[i],colors[i]);
+        connect(icon,SIGNAL(deleteClicked()),this,SLOT(removeCountry()));
+        icon->show();
+        icon->move(previous->geometry().bottomRight().x()+spacing,440);
+        countryIcons.push_back(icon);
+    }
+
+
+
+
+    for(int i = 0;i<activeCountries.size();i++)
+    {
+        int n = compareCountries.indexOf(activeCountries[i]);
+        std::vector<uint> score;
+
+        score = compareScores[n];
+
+        for (int j=0;j<score.size();j++)
+        {
+            countryBubble *b = new countryBubble(this,colors[i],score[j],activeCountries[i]);
+            b->move(bubbleX[i][j],bubbleY[i][j]);
+            countryBubbles.push_back(b);
+            b->show();
+        }
+    }
+
+
+
+    combo->setEnabled(activeCountries.size()<4);
+
+}
+
+
+countryIcon::countryIcon(QLabel *parent, QString PATH,QString name, QColor color):QLabel(parent),PATH(PATH),name(name),color(color)
+{
+
+    //this->setStyleSheet("border: 1px solid black");
+
+
+    QFont font = QFont("Arial",30) ;
+
+
+    QFontMetrics fm(font);
+
+    double W = fm.width(name);
+    double H = fm.height();
+
+    double W1 = W+220;
+    if(W1<150) W1=150;
+    resize(W1,100);
+    QPixmap pix = QPixmap(PATH+"icon.png").scaled(size());
+    QPainter painter(&pix);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setPen(QPen(Qt::black, 0));
+    painter.setFont(font);
+    painter.drawText(QRectF(95,(height()-H)/2,width(),height()),name);
+    painter.drawText(QRectF((width()-75),(height()-H)/2,width(),height()),"X");
+    int r = 35;
+    painter.setBrush(QColor(color));
+    painter.setPen(QPen(color, 0));
+    painter.drawEllipse(QRectF(40,(height()-r)/2,r,r));
+    setPixmap(pix.scaledToWidth(width()));
+
+}
+
+
+
+countryBubble::countryBubble(QWidget *parent, QColor color, uint score,QString name): QLabel(parent),color(color),score(score),name(name)
+{
+
+    double r = (double)qSqrt(2000*score);
+
+
+    if(r<50)
+        r=50;
+    resize(r,r);
+
+    QPixmap pix(r,r);
+    pix.fill(Qt::transparent);
+
+    QPainter painter(&pix);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+
+
+    painter.setPen(QPen(QColor(color), 0));
+    painter.setBrush(QColor(color));
+    painter.drawEllipse(QPointF(width()/2,height()/2),0.95*width()/2,0.95*height()/2);
+    painter.setPen(QPen(QColor(Qt::white), 0));
+
+    QFont font = QFont("Arial",20+(r/5)) ;
+
+    QFontMetrics fm(font);
+    double W = fm.width(QString::number(score));
+    double H = fm.height();
+    painter.setFont(font);
+    painter.drawText(QRectF((width()-W)/2,(height()-H)/3,width(),height()),QString::number(score));
+
+    font = QFont("Arial",(20+(r/5))/4) ;
+    painter.setFont(font);
+    QFontMetrics fm2(font);
+    W = fm2.width(name);
+    H = fm2.height();
+    painter.drawText(QRectF((width()-W)/2,2*(height()-H)/3,width(),height()),name);
+    setPixmap(pix);
+
+}
+
+
+
+void countryIcon::mousePressEvent(QMouseEvent *ev)
+{
+    if(ev->pos().x()>width()*7/10)
+        emit deleteClicked();
+}
+
+
 
 void module2::mousePressEvent(QMouseEvent *ev)
 {

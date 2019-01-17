@@ -20,14 +20,20 @@ SOURCES += main.cpp \
     mpvwidget.cpp \
     circlebutton.cpp \
     module3.cpp \
-    module2.cpp
+    module2.cpp \
+    module4.cpp \
+    picbutton.cpp \
+    customslider.cpp
 
 
 HEADERS  += \
     mpvwidget.h \
     circlebutton.h \
     module3.h \
-    module2.h
+    module2.h \
+    module4.h \
+    picbutton.h \
+    customslider.h
 
 
 FORMS    +=

@@ -61,6 +61,7 @@ public:
 private:
     QString PATH;
     question * q;
+
 private slots:
     void getResult(int questionId,int answer);
 
