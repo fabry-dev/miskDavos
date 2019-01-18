@@ -9,6 +9,7 @@
 #include "module2.h"
 #include "module3.h"
 #include "module4.h"
+#include "module1.h"
 
 class mainScreen : public QLabel
 {
@@ -20,6 +21,7 @@ private:
     QString PATH;
     bool DEBUG;
     module0 *md0;
+    module1 *md1;
     module2 *md2;
     module3 *md3;
     module4 *md4;

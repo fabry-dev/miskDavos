@@ -25,6 +25,42 @@
 #include "picbutton.h"
 #include <QtSql>
 #include <QSqlQuery>
+#include "QLineEdit"
+
+
+
+
+class lineEdit2: public QLineEdit
+{
+    Q_OBJECT
+public:
+    lineEdit2(QWidget *parent = nullptr):QLineEdit(parent)
+    {installEventFilter(this);}
+
+protected:
+    /*  void focusInEvent(QFocusEvent *e)
+    {
+
+    }*/
+    bool eventFilter(QObject *object, QEvent *event)
+    {
+        if (event->type() == QEvent::FocusIn)
+        {
+            emit clicked(this);
+        }
+
+        return false;
+    }
+
+signals:
+    void clicked(lineEdit2*);
+};
+
+
+
+
+
+
 
 class com:public QObject
 {
@@ -146,7 +182,14 @@ private:
     void getData();
     void insertData();
 
+    std::vector<lineEdit2*> inputs;
+    lineEdit2* activeInput;
+
+    std::vector<QRegularExpression> exps;
+    picButton *submit;
+
     picButton *home;
+
 
 private slots:
     void bubbleMoved(int id,QPointF pos);
@@ -154,6 +197,8 @@ private slots:
     void showNextQuestion();
     void goKeyboard();
     void getKey(QString key);
+    void selectInput(lineEdit2* ln);
+    void submitInputs();
 
 protected:
     void mousePressEvent(QMouseEvent *ev);

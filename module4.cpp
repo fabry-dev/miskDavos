@@ -7,7 +7,7 @@ QStringList keyboardStr = (QStringList)"@"<<"1"<<"2"<<"3"<<"4"<<"5"<<"6"<<"7"<<"
                                          <<""<<"q"<<"w"<<"e"<<"r"<<"t"<<"y"<<"u"<<"i"<<"o"<<"p"
                                         <<""<<"a"<<"s"<<"d"<<"f"<<"g"<<"h"<<"j"<<"k"<<"l"
                                        <<""<<"z"<<"x"<<"c"<<"v"<<"b"<<"n"<<"m"<<"."<<""
-                                     <<"-"<<"_"<<" "<<"_"<<"-"<<"enter";
+                                      <<"-"<<"_"<<" "<<"_"<<"-"<<"enter";
 
 
 
@@ -93,12 +93,48 @@ module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     home->show();
     home->raise();
 
+
+    //std::vector<lineEdit2*> inputs;
+
+    for(int i = 0;i<4;i++)
+    {
+        inputs.push_back(new lineEdit2(this));
+        inputs[i]->show();
+        inputs[i]->setFont(QFont("Arial",40));
+        connect( inputs[i],SIGNAL(clicked(lineEdit2*)),this,SLOT(selectInput(lineEdit2*)));
+    }
+
+    inputs[0]->move(760,330);
+    inputs[0]->resize(900,80);
+
+    inputs[1]->move(760,650);
+    inputs[1]->resize(900,85);
+
+    inputs[2]->move(2730,330);
+    inputs[2]->resize(150,80);
+
+    inputs[3]->move(2875,650);
+    inputs[3]->resize(800,85);
+
+
+
+    exps.push_back(QRegularExpression(""));
+    exps.push_back(QRegularExpression(""));
+    exps.push_back(QRegularExpression("^[0-9]{2,3}$"));
+    exps.push_back(QRegularExpression("^[0-9a-zA-Z]+([0-9a-zA-Z]*[-._+])*[0-9a-zA-Z]+@[0-9a-zA-Z]+([-.][0-9a-zA-Z]+)*([0-9a-zA-Z]*[.])[a-zA-Z]{2,6}$"));
+
+
+
+
+
+
+
     setupKeyboard();
     initDb();
     //  nextButton->show();
     init();
-   // goSecondPart();
-   // goKeyboard();
+    goSecondPart();
+    // goKeyboard();
 
 }
 
@@ -129,6 +165,8 @@ void module4::init()
     mainView->show();
     mainView->raise();
     nextButton->raise();
+
+    goKeyboard();
 }
 
 void module4::goSecondPart()
@@ -154,7 +192,19 @@ void module4::goSecondPart()
 
 void module4::goKeyboard()
 {
-    setPixmap(QPixmap(PATH+"keyboardBg.png").scaled(size()));
+    activeInput = inputs[0];
+
+    nextButton->hide();
+    mainView->hide();
+    for(int i = 0;i<skillList.size();i++)
+    {
+        bubbles[i]->hide();
+        targets[i]->hide();
+
+    }
+
+
+    setPixmap(QPixmap(PATH+"registration.png").scaled(size()));
 
     cs->hide();
     nextButton2->hide();
@@ -173,6 +223,11 @@ void module4::goKeyboard()
     //culture remixer ; climate changer ; contestant ; the authentic self ; global citizen ; startup artist ; transitionist ; eco maker ; speedrunner
 }
 
+void module4::selectInput(lineEdit2* ln)
+{
+    ln->setFocus();
+    activeInput = ln;
+}
 
 void module4::showNextQuestion()
 {
@@ -292,28 +347,28 @@ void module4::setupKeyboard()
         kw = kwdefault;
 
 
-    if(i==11)
-    {
-        kw = 1.8*kwdefault;
-    }
-    else if (i==12)
-        kw = 1.5*kwdefault;
-    else if (i==23)
-        kw = 2*kwdefault;
-    else if (i==33)
-        kw = 2.55*kwdefault;
-    else if (i==42)
-        kw = 2.2*kwdefault;
-    else if ((i==43)||(i==44)||(i==46)||(i==47))
-        kw = 1.6*kwdefault;
-    else if (i==45)
-        kw = 6.3*kwdefault;
-    else if (i==48)
-    {
-        kw = 1.8* kwdefault;
-        posX = 1980;
-        posY = 780;
-    }
+        if(i==11)
+        {
+            kw = 1.8*kwdefault;
+        }
+        else if (i==12)
+            kw = 1.5*kwdefault;
+        else if (i==23)
+            kw = 2*kwdefault;
+        else if (i==33)
+            kw = 2.55*kwdefault;
+        else if (i==42)
+            kw = 2.2*kwdefault;
+        else if ((i==43)||(i==44)||(i==46)||(i==47))
+            kw = 1.6*kwdefault;
+        else if (i==45)
+            kw = 6.3*kwdefault;
+        else if (i==48)
+        {
+            kw = 1.8* kwdefault;
+            posX = 1980;
+            posY = 780;
+        }
         picButton *pb = new picButton(this,kw,PATH+"off/"+QString::number(i)+".png",PATH+"on/"+QString::number(i)+".png",keyboardStr[i]);
 
         connect(pb,SIGNAL(clicked(QString)),this,SLOT(getKey(QString)));
@@ -332,6 +387,7 @@ void module4::setupKeyboard()
         keyboard.push_back(pb);
 
 
+
     }
 
 
@@ -346,7 +402,13 @@ void module4::setupKeyboard()
     }
 
     for(auto p:keyboard)
-        p->move(p->x()+(width()-maxX)/2,p->y());
+        p->move(p->x()+(width()-maxX)/2,p->y()+400);
+
+    submit = new picButton(this,0,PATH+"submit.png",PATH+"submitOn.png","");
+    submit->move(width()-submit->width()-50,height()-submit->height()-50);
+    connect(submit,SIGNAL(clicked(QString)),this,SLOT(submitInputs()));
+
+    keyboard.push_back(submit);
 
 
     for(auto p:keyboard)
@@ -355,7 +417,7 @@ void module4::setupKeyboard()
 
 void  module4::initDb()
 {
-   /*
+    /*
     const QString DRIVER("QSQLITE");
     QSqlDatabase db = QSqlDatabase::addDatabase(DRIVER);
     db.setHostName("hostname");
@@ -404,7 +466,7 @@ void module4::insertData()
     }
 
 
-   // getData();
+    // getData();
 }
 
 void module4::getData()
@@ -419,7 +481,7 @@ void module4::getData()
 
     while (query.next()) {
         for(int i = 0;i<9;i++)
-        buf[i] = query.value(i).toInt();
+            buf[i] = query.value(i).toInt();
 
         QDateTime date = query.value(9).toDateTime();
         qDebug()<<date<<buf;
@@ -429,13 +491,66 @@ void module4::getData()
 
 
 
-void module4::getKey(QString key)
+void module4::getKey(QString txt)
 {
+    QRegularExpression exp;
 
-    qDebug()<<key;
+    if(txt=="enter")
+    {
+       /* if((nameEdit->text()>3)&&(emailEdit->text()>3))
+        {
+            validateData();
+        }*/
+
+    }
+    else if(txt=="back")
+    {
+        if(activeInput->text().size()>0)
+            activeInput->setText((activeInput->text()).remove((activeInput->text()).size()-1,1));
+
+    }
+    else
+    {
+       // activeInput->setText();
+        QString buf = activeInput->text()+txt;
+
+
+        for(int i = 0;i<inputs.size();i++)
+        {
+            if(inputs[i]==activeInput)
+            {
+                QRegularExpressionMatch match = exps[i].match(buf, 0, QRegularExpression::PartialPreferCompleteMatch);
+                if( ((match.hasPartialMatch())||(match.hasMatch())))
+                    activeInput->setText(buf);
+                break;
+            }
+        }
+
+
+
+
+
+
+
+    }
+    activeInput->setCursorPosition( activeInput->text().size());
+
 }
 
+void module4::submitInputs()
+{
 
+    for(int i = 0;i<inputs.size();i++)
+    {
+            QRegularExpressionMatch match = exps[i].match(inputs[i]->text(), 0, QRegularExpression::PartialPreferCompleteMatch);
+            if( !(match.hasMatch()))
+                return;
+    }
+
+
+for(auto input:inputs)
+    qDebug()<<input->text();
+}
 
 
 

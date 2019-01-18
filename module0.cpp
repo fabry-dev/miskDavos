@@ -7,7 +7,6 @@
 
 module0::module0(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 {
-
     showFullScreen();
     resize(3840,2160);
 

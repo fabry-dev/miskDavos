@@ -12,7 +12,7 @@
 #include "circlebutton.h"
 #include <QtSql>
 #include <QSqlQuery>
-
+#include "qstringlist.h"
 
 class question:public QLabel
 {
@@ -68,10 +68,19 @@ private:
     void initDb();
     void getData();
     void insertData();
+    void loadStats();
+    void displayResults();
+    std::vector<QString> questionNames;
+    std::vector<std::vector<int>> questionStats;
+
+    QLabel *results;
+
 private slots:
     void getResult(int questionId,int answer);
 signals:
     void goHome();
+protected:
+    void mousePressEvent(QMouseEvent *ev);
 
 };
 

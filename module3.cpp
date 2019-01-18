@@ -2,6 +2,7 @@
 #include "qdebug.h"
 
 
+QStringList answersTxt = QStringList() << "Strongly disagree" << "Somewhat disagree"<<"Neither disagree nor agree"<<"Somewhat agree"<<"Strongly agree"<<"Don't know"<<"N/A" ;
 
 module3::module3(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 {
@@ -9,6 +10,9 @@ module3::module3(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     showFullScreen();
     resize(3840,2160);
     initDb();
+
+    loadStats();
+
 
     q = new question(this,PATH);
     connect(q,SIGNAL(result(int,int)),this,SLOT(getResult(int,int)));
@@ -21,16 +25,22 @@ module3::module3(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     home->show();
     home->raise();
 
+    results = new QLabel(this);
+    results->resize(size());
+    results->hide();
+    results->raise();
 
 }
 
 
 void module3::init()
 {
+
+    results->hide();
+
     answers.clear();
 
     showQuestion(1);
-
 }
 
 
@@ -95,9 +105,6 @@ void module3::getData()
     }
 }
 
-
-
-
 void module3::getResult(int questionId, int answer)
 {
     qDebug()<<questionId<<answer;
@@ -110,6 +117,7 @@ void module3::getResult(int questionId, int answer)
     {
         qDebug()<<"questionnaire over";
         insertData();
+        displayResults();
 
     }
 }
@@ -124,6 +132,92 @@ void module3::showQuestion(int id)
 
 
 
+void module3::loadStats()
+{
+
+    QString questionName;
+    std::vector<int> stats;
+
+    bool test;
+    QFile file(PATH+"answers.cfg");
+    if(!file.open(QIODevice::ReadOnly)) {
+        qDebug()<<"no config file";
+
+    }
+    else
+    {
+
+        QTextStream in(&file);
+
+        QString  line;
+        QStringList params;
+
+        while(!in.atEnd()) {
+            stats.clear();
+            line = in.readLine();
+            params = (line.split(","));
+
+            if(params.size()<2)
+                break;
+
+            questionName = params[0];
+
+            for(int i = 1;i<params.size();i++)
+            {
+                stats.push_back(params[i].toInt(&test));
+            }
+
+
+            questionStats.push_back(stats);
+            questionNames.push_back(questionName);
+        }
+        file.close();
+
+    }
+
+
+}
+
+
+void module3::displayResults()
+{
+
+
+    QPixmap pix = QPixmap(PATH+"results.png");
+
+    QPainter painter(&pix);
+    QFont font = QFont("Myriad",40);
+    painter.setFont(font);
+    painter.setPen(QPen(Qt::black, 2));
+
+    QFontMetrics fm(font);
+
+
+    int W;
+    for(int i = 0;i<14;i++)
+    {
+        QString percent = QString::number(questionStats[i][answers[i]])+"%";
+        W = fm.width(answersTxt[answers[i]]);
+        painter.drawText(QRectF(2160-W/2,255+i*129,width(),height()),answersTxt[answers[i]]);
+        W = fm.width(percent);
+        painter.drawText(QRectF(3050-W/2,255+i*129,width(),height()),percent);
+    }
+
+    results->setPixmap(pix);
+
+    results->show();
+
+
+}
+
+
+
+
+void module3::mousePressEvent(QMouseEvent *ev)
+{
+
+    qDebug()<<ev->pos();
+}
 
 question::question(QLabel *parent, QString PATH):QLabel(parent),PATH(PATH)
 {
@@ -134,6 +228,7 @@ question::question(QLabel *parent, QString PATH):QLabel(parent),PATH(PATH)
     vp->setProperty("pause", false);
     vp->setProperty("keep-open",true);
     vp->show();
+
 
     int yb = 1731;
     int yh = 1129;
@@ -196,10 +291,13 @@ question::question(QLabel *parent, QString PATH):QLabel(parent),PATH(PATH)
     show();
 
 
-
-
-
 }
+
+
+
+
+
+
 
 void question::showChoice(int choice)
 {
@@ -233,6 +331,7 @@ void question::showTarget(uint choice)
 
     target.show();
 }
+
 
 void question::showQuestion(int nuid)
 {

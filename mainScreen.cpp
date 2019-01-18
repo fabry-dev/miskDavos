@@ -17,6 +17,9 @@ mainScreen::mainScreen(QLabel *parent,QString PATH,bool DEBUG) : QLabel(parent),
     md0->show();
 
 
+    md1 = new module1(this,PATH+"module1/");
+    md1->hide();
+
 
     md2 = new module2(this,PATH+"module2/");
     md2->hide();
@@ -84,7 +87,7 @@ mainScreen::mainScreen(QLabel *parent,QString PATH,bool DEBUG) : QLabel(parent),
     come->setDuration(1000);
     come->setEasingCurve(QEasingCurve::InCurve);
 
-    //   connect(md1,SIGNAL(goHome()),this,SLOT(goModule0()));
+    connect(md1,SIGNAL(goHome()),this,SLOT(goModule0()));
     connect(md2,SIGNAL(goHome()),this,SLOT(goModule0()));
     connect(md3,SIGNAL(goHome()),this,SLOT(goModule0()));
     connect(md4,SIGNAL(goHome()),this,SLOT(goModule0()));
@@ -93,12 +96,30 @@ mainScreen::mainScreen(QLabel *parent,QString PATH,bool DEBUG) : QLabel(parent),
 
 
 
+void mainScreen::initDb()
+{
+    const QString DRIVER("QSQLITE");
+    QSqlDatabase db = QSqlDatabase::addDatabase(DRIVER);
+    db.setHostName("hostname");
+    db.setDatabaseName(PATH+"miskdb");
+    db.setUserName("user");
+    db.setPassword("password");
+
+    if(!db.open())
+        qWarning() << "ERROR: " << db.lastError();
+
+    qDebug()<<db.tables();
+
+}
+
+
 
 
 
 
 void mainScreen::goModule0()
 {
+
     QLabel *md = (QLabel*) QObject::sender();
 
 
@@ -123,29 +144,31 @@ void mainScreen::goModule0()
 }
 
 
-void mainScreen::initDb()
-{
-    const QString DRIVER("QSQLITE");
-    QSqlDatabase db = QSqlDatabase::addDatabase(DRIVER);
-    db.setHostName("hostname");
-    db.setDatabaseName(PATH+"miskdb");
-    db.setUserName("user");
-    db.setPassword("password");
-
-    if(!db.open())
-        qWarning() << "ERROR: " << db.lastError();
-
-    qDebug()<<db.tables();
-
-}
-
-
 
 
 void mainScreen::goModule1()
 {
 
+
+    disconnect(goaway,0,0,0);
+    disconnect(come,0,0,0);
+
+    goaway->setTargetObject(md0);
+    goaway->setStartValue(md0->pos());
+    goaway->setEndValue(QPoint(-width(),0));
+    connect(goaway,SIGNAL(finished()),md0,SLOT(hide()));
+
+    come->setTargetObject(md1);
+    come->setStartValue(pos());
+    come->setEndValue(QPoint(0,0));
+    md1->init();
+    md1->move(width(),0);
+    md1->show();
+
+    goaway->start();
+    come->start();
 }
+
 
 void mainScreen::goModule2()
 {

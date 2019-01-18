@@ -16,6 +16,8 @@
 #include "qmath.h"
 #include "qlineedit.h"
 #include "qstylefactory.h"
+#include "qpropertyanimation.h"
+
 
 class countryIcon:public QLabel
 {
@@ -79,14 +81,19 @@ std::vector<QString> activeCountries;
     std::vector<countryBubble*>countryBubbles;
     std::vector<countryIcon*>countryIcons;
 
-    picButton *compareButton,*exploreButton;
+    picButton *compareButton,*exploreButton,*goStatsButton,*goMapButton;
 
+    QLabel *rankLbl;
+
+    QPropertyAnimation *rankAnim;
 private slots:
     void showVideo(int countryId);
     void getVideoClicked(QPoint pos);
     void hideVideo();
     void goCompare();
     void goExplore();
+    void goRank();
+    void goMap();
 
     void addNewCountry(QString country);
     void removeCountry();
