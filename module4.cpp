@@ -133,15 +133,16 @@ module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     initDb();
     //  nextButton->show();
     init();
-    goSecondPart();
+
     // goKeyboard();
 
 }
 
-
-
 void module4::init()
 {
+
+
+
     score2.resize(5,0);
     score1.resize(9,-1);
     cs->hide();
@@ -150,6 +151,10 @@ void module4::init()
     setPixmap(QPixmap(PATH+"background.png").scaled(size()));
 
     ranking.resize(skillList.size(),-1);
+
+
+    for(auto in:inputs)
+        in->hide();
 
 
     for(int i = 0;i<skillList.size();i++)
@@ -166,7 +171,6 @@ void module4::init()
     mainView->raise();
     nextButton->raise();
 
-    goKeyboard();
 }
 
 void module4::goSecondPart()
@@ -192,6 +196,10 @@ void module4::goSecondPart()
 
 void module4::goKeyboard()
 {
+
+    for(auto in:inputs)
+        in->show();
+
     activeInput = inputs[0];
 
     nextButton->hide();
@@ -488,9 +496,6 @@ void module4::getData()
     }
 }
 
-
-
-
 void module4::getKey(QString txt)
 {
     QRegularExpression exp;
@@ -556,10 +561,6 @@ for(auto input:inputs)
 
 
 
-
-
-
-
 //skill bubbles
 void bubbleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
@@ -614,7 +615,6 @@ void bubbleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     td.drawContents(painter);
 
 }
-
 
 
 

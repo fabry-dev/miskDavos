@@ -14,6 +14,11 @@ class circleButton : public QWidget
     Q_OBJECT
 public:
     explicit circleButton(QWidget *parent = nullptr, QColor color=Qt::red, int id=0, QString txt="");
+    void setColor(QColor nuColor)
+    {
+        color = nuColor;
+        update();
+    }
 
 private:
     QColor color;

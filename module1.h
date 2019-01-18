@@ -31,9 +31,10 @@ private:
     mpvWidget *vp;
     picButton *home;
     QPropertyAnimation *videoSlide;
+    picButton *b1,*b2,*skip;
 
 private slots:
-    void showVideo(int videoId);
+    void showVideo(QString video);
     void hideVideo();
 protected:
     void mousePressEvent(QMouseEvent *ev);

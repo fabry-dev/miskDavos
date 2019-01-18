@@ -3,6 +3,8 @@
 
 
 QStringList answersTxt = QStringList() << "Strongly disagree" << "Somewhat disagree"<<"Neither disagree nor agree"<<"Somewhat agree"<<"Strongly agree"<<"Don't know"<<"N/A" ;
+QStringList answersTxt2 = QStringList() << "Not important at all" << "Somewhat important"<<"Moderately important"<<"Quite important"<<"Extremely important"<<"Don't know";
+
 
 module3::module3(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 {
@@ -25,10 +27,19 @@ module3::module3(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     home->show();
     home->raise();
 
+
+
+
     results = new QLabel(this);
     results->resize(size());
     results->hide();
     results->raise();
+
+    home2 = new picButton(results,0,PATH+"home.png",PATH+"homeOn.png","");
+    connect(home2,SIGNAL(clicked(QString)),this,SIGNAL(goHome()));
+    home2->move(width()-50-home2->width(),50);
+    home2->show();
+    home2->raise();
 
 }
 
@@ -83,7 +94,7 @@ void module3::insertData()
     }
 
 
-    getData();
+   // getData();
 }
 
 void module3::getData()
@@ -194,7 +205,7 @@ void module3::displayResults()
 
 
     int W;
-    for(int i = 0;i<14;i++)
+    for(int i = 0;i<answers.size();i++)
     {
         QString percent = QString::number(questionStats[i][answers[i]])+"%";
         W = fm.width(answersTxt[answers[i]]);
@@ -236,39 +247,49 @@ question::question(QLabel *parent, QString PATH):QLabel(parent),PATH(PATH)
     int y0;
     int d0 = 220;
 
-    circleButton * cb0 = new circleButton(this,QColor::fromRgb(0xFA,0xA9,0x2A),0);
+    colors.push_back(QColor::fromRgb(0xFA,0xA9,0x2A));
+    colors.push_back(QColor::fromRgb(0xF4,0x79,0x41));
+    colors.push_back(QColor::fromRgb(0x06,0x71,0xB8));
+    colors.push_back(QColor::fromRgb(0xFC,0x48,0x61));
+    colors.push_back(QColor::fromRgb(0xB7,0x47,0xB5));
+    colors.push_back(QColor::fromRgb(0x8E,0x32,0x8B));
+    colors.push_back(QColor::fromRgb(0x89,0x8E,0x91));
+
+
+
+    cb0 = new circleButton(this,colors[0],0);
     buttons.push_back(cb0);
     int x0 = 491;y0 = yb;
     cb0->move(x0-d0/2,y0-d0/2);
 
-    circleButton * cb1 = new circleButton(this,QColor::fromRgb(0xF4,0x79,0x41),1);
+    cb1 = new circleButton(this,colors[1],1);
     buttons.push_back(cb1);
     x0 = 979;y0 = yh;
     cb1->move(x0-d0/2,y0-d0/2);
 
-    circleButton * cb2 = new circleButton(this,QColor::fromRgb(0x06,0x71,0xB8),2);
+    cb2 = new circleButton(this,colors[2],2);
     buttons.push_back(cb2);
     x0 = 1440;y0 = yb;
     cb2->move(x0-d0/2,y0-d0/2);
 
 
-    circleButton * cb3 = new circleButton(this,QColor::fromRgb(0xFC,0x48,0x61),3);
+    cb3 = new circleButton(this,colors[3],3);
     buttons.push_back(cb3);
     x0 = 1924;y0 = yh;
     cb3->move(x0-d0/2,y0-d0/2);
 
-    circleButton * cb4 = new circleButton(this,QColor::fromRgb(0xB7,0x47,0xB5),4);
+    cb4 = new circleButton(this,colors[4],4);
     buttons.push_back(cb4);
     x0 = 2408; y0 = yb;
     cb4->move(x0-d0/2,y0-d0/2);
 
 
-    circleButton * cb5 = new circleButton(this,QColor::fromRgb(0x8E,0x32,0x8B),5);
+    cb5 = new circleButton(this,colors[5],5);
     buttons.push_back(cb5);
     x0 = 2894; y0 = yh;
     cb5->move(x0-d0/2,y0-d0/2);
 
-    circleButton * cb6 = new circleButton(this,QColor::fromRgb(0x89,0x8E,0x91),6);
+    cb6 = new circleButton(this,colors[6],6);
     buttons.push_back(cb6);
     x0 = 3373; y0 = yb;
     cb6->move(x0-d0/2,y0-d0/2);
@@ -341,9 +362,79 @@ void question::showQuestion(int nuid)
 
     disconnect(vp,SIGNAL(videoOver()),0,0);
 
+
+
+
+    if(nuid<=5)
+    {
+        int yb = 1730;
+        int yh = 1129;
+
+        int y0;
+        int d0 = 220;
+
+        int x0 = 491;y0 = yb;
+        cb0->move(x0-d0/2,y0-d0/2);
+
+        x0 = 979;y0 = yh;
+        cb1->move(x0-d0/2,y0-d0/2);
+
+        x0 = 1440;y0 = yb;
+        cb2->move(x0-d0/2,y0-d0/2);
+
+        x0 = 1924;y0 = yh;
+        cb3->move(x0-d0/2,y0-d0/2);
+
+        x0 = 2408; y0 = yb;
+        cb4->move(x0-d0/2,y0-d0/2);
+
+        x0 = 2893; y0 = yh;
+        cb5->move(x0-d0/2,y0-d0/2);
+
+        x0 = 3373; y0 = yb;
+        cb6->move(x0-d0/2,y0-d0/2);
+
+        for(int i = 0;i<buttons.size();i++)
+            buttons[i]->setColor(colors[i]);
+
+
+    }
+    else
+    {
+        int yb = 1731-43;
+        int yh = 1129-38;
+
+        int y0;
+        int d0 = 220;
+
+        int x0 = 491+231;y0 = yb;
+        cb0->move(x0-d0/2,y0-d0/2);
+
+        x0 = 979+205;y0 = yh;
+        cb1->move(x0-d0/2,y0-d0/2);
+
+        x0 = 1440+228;y0 = yb;
+        cb2->move(x0-d0/2,y0-d0/2);
+
+        x0 = 1924+226;y0 = yh;
+        cb3->move(x0-d0/2,y0-d0/2);
+
+        x0 = 2408+228; y0 = yb;
+        cb4->move(x0-d0/2,y0-d0/2);
+
+        x0 = 2894+222; y0 = yh;
+        cb5->move(x0-d0/2,y0-d0/2);
+
+        for(int i = 0;i<buttons.size()-1;i++)
+            buttons[i]->setColor(colors[i+1]);
+    }
+
+
+
     for(auto b:buttons)
     {
         b->hide();
+        if(!((nuid>5)&&(b==buttons[6])))
         connect(vp,SIGNAL(videoOver()),b,SLOT(show()));
     }
     vp->loadFile(PATH+"question"+QString::number(id)+".mp4");

@@ -30,8 +30,12 @@ private:
     QLabel target;
     void showTarget(uint choice);
 
+    circleButton * cb0,*cb1,*cb2,*cb3,*cb4,*cb5,*cb6,*cb7;
+
+    std::vector<QColor> colors;
 
 protected:
+
     void resizeEvent(QResizeEvent *);
 
 
@@ -63,7 +67,7 @@ public:
 private:
     QString PATH;
     question * q;
-    picButton *home;
+    picButton *home,*home2;
     std::vector<int> answers;
     void initDb();
     void getData();

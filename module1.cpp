@@ -24,7 +24,7 @@ module1::module1(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     videoSlide = new QPropertyAnimation(vp,"pos");
     videoSlide->setDuration(500);
     videoSlide->setEasingCurve(QEasingCurve::InCurve);
-    
+    connect(vp,SIGNAL(videoOver()),this,SLOT(hideVideo()));
 
     
     home = new picButton(this,0,PATH+"home.png",PATH+"homeOn.png","");
@@ -35,10 +35,25 @@ module1::module1(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     
     
 
-    
+    setPixmap(QPixmap(PATH+"background.png").scaled(width(),height()));
     
 
-    
+    b1 = new picButton(this,0,PATH+"button1.png",PATH+"button1on.png","1");
+    b1->move((width()-b1->width())/3,height()/2);
+    b1->show();
+
+    b2 = new picButton(this,0,PATH+"button2.png",PATH+"button2on.png","2");
+    b2->move(2*(width()-b2->width())/3,height()/2);
+    b2->show();
+
+
+    skip = new picButton(vp,0,PATH+"skip.png",PATH+"skipon.png","");
+    skip->move(width()-skip->width()-50,50);
+    skip->show();
+
+    connect(b1,SIGNAL(clicked(QString)),this,SLOT(showVideo(QString)));
+    connect(b2,SIGNAL(clicked(QString)),this,SLOT(showVideo(QString)));
+    connect(skip,SIGNAL(clicked(QString)),this,SLOT(hideVideo()));
     vp->raise();//video player on top of everything
 
     
@@ -53,14 +68,13 @@ void module1::init()
 
 
 
-void module1::showVideo(int videoId)
+void module1::showVideo(QString video)
 {
-
     disconnect(videoSlide,0,0,0);
     
-    QString videoName = PATH+"video"+QString::number(videoId)+".mp4";
+    QString videoName = PATH+"video"+video+".mp4";
 
-    vp->move(width(),0);
+    vp->move(-width(),0);
     vp->show();
     vp->loadFile(videoName);
     
@@ -69,13 +83,15 @@ void module1::showVideo(int videoId)
     
     QTimer::singleShot(200,videoSlide,SLOT(start()));
 
+
+
 }
 
 void module1::hideVideo()
 {
     disconnect(videoSlide,0,0,0);
     videoSlide->setStartValue(vp->pos());
-    videoSlide->setEndValue(QPoint(width(),0));
+    videoSlide->setEndValue(QPoint(-width(),0));
     connect(videoSlide,SIGNAL(finished()),vp,SLOT(hide()));
     videoSlide->start();
     

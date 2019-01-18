@@ -129,7 +129,7 @@ void module2::goCompare()
     for (auto b:exploreBubbles)
         b->hide();
     
-    setPixmap(QPixmap(PATH+"compareBackground.png").scaledToWidth(width()));
+    setPixmap(QPixmap(PATH+"compareBackground.png").scaled(width(),height()));
     
     combo->show();
 }
@@ -138,7 +138,7 @@ void module2::goExplore()
 {
     exploreButton->hide();
     compareButton->show();
-    setPixmap(QPixmap(PATH+"exploreBackground.png").scaledToWidth(width()));
+    setPixmap(QPixmap(PATH+"exploreBackground.png").scaled(width(),height()));
     for (auto b:exploreBubbles)
         b->show();
     
