@@ -31,7 +31,8 @@
 #include "QtPrintSupport/QPrinterInfo"
 #include "QtPrintSupport/QPrintPreviewDialog"
 
-
+#include "QMouseEvent"
+#include "qevent.h"
 
 class lineEdit2: public QLineEdit
 {
@@ -101,9 +102,19 @@ public:
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) override;
 
-    void setRank(int nurank)
+    void setRank(int nurank,QPoint nucursor)
     {
+
+        //cursor().setPos(QPoint(nux,nuy));
+       if((rank!=nurank)&&(nurank!=-1))
+       {
+           hasToMove = true;
+            cursor().setPos(nucursor);
+        }
+
+
         rank = nurank;
+
         update();
     }
 private:
@@ -112,7 +123,9 @@ private:
     QColor color;
     QRectF bounding;
     int rank;
+    bool hasToMove;
 public:
+    QPointF goTo;
     com communicator;
 
 protected:
@@ -122,7 +135,7 @@ protected:
             // value is the new position.
             QPointF newPos = value.toPointF();
 
-
+            //qDebug()<<"1:"<<newPos.x();
             QRectF rect = scene()->sceneRect();
             if(newPos.x()+boundingRect().width()/2>rect.width())
                 newPos.setX(rect.width()-boundingRect().width()/2);
@@ -133,6 +146,15 @@ protected:
             if(newPos.y()-boundingRect().height()/2<0)
                 newPos.setY(boundingRect().height()/2);
 
+
+            QPointF distance = newPos-pos();
+
+            if((rank!=-1)&&(distance.manhattanLength()<100)&&(!hasToMove))
+            {
+               // qDebug()<<"too close";
+                return pos();
+            }
+            hasToMove = false;
             communicator.sendMoved(id,newPos);
             return newPos;
         }

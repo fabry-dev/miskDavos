@@ -96,7 +96,7 @@ module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     nextButton3->hide();
     connect(nextButton3,SIGNAL(clicked(QString)),this,SLOT(goKeyboard()));
     connect(vp,SIGNAL(videoOver()),nextButton3,SLOT(show()));
-   connect(vp,SIGNAL(videoOver()),nextButton3,SLOT(raise()));
+    connect(vp,SIGNAL(videoOver()),nextButton3,SLOT(raise()));
 
     cs = new customSlider(this,PATH,geometry());
 
@@ -248,7 +248,7 @@ void module4::goKeyboard()
         k->show();
 
     vp->raise();
-hideVideo();
+    hideVideo();
 
 }
 
@@ -331,6 +331,7 @@ void module4::mousePressEvent(QMouseEvent *ev)
 
 void module4::bubbleMoved(int id, QPointF pos)
 {
+    QPoint nucursor = QPoint(0,0);
 
     ranking[id] = -1;
 
@@ -345,11 +346,20 @@ void module4::bubbleMoved(int id, QPointF pos)
             if(!(std::find(ranking.begin(), ranking.end(), i) != ranking.end()))
             {
                 ranking[id] = i;
+
+                double nux = cursor().pos().x()-x1;
+                double nuy = cursor().pos().y()-y1;
+                //cursor().setPos(QPoint(nux,nuy));
+                nucursor.setX(nux);
+                nucursor.setY(nuy);
                 break;
             }
+
         }
     }
-    bubbles[id]->setRank(ranking[id]);
+
+
+    bubbles[id]->setRank(ranking[id],nucursor);
 
 
 
@@ -698,7 +708,7 @@ void module4::playVideo(int videoId)
 
     vp->move(width(),0);
     vp->show();
-        vp->raise();
+    vp->raise();
     vp->loadFile(videoName);
 
     videoSlide->setStartValue(vp->pos());
@@ -775,8 +785,6 @@ void bubbleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     td.drawContents(painter);
 
 }
-
-
 
 
 //skill tabs
