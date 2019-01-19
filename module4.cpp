@@ -165,7 +165,7 @@ void module4::init()
 {
 
     for (auto k:keyboard)
-        k->show();
+        k->hide();
 
     score2.resize(5,0);
     score1.resize(9,-1);

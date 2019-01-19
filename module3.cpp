@@ -15,6 +15,12 @@ module3::module3(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 
     loadStats();
 
+    goHomeTimer = new QTimer(this);
+    goHomeTimer->setInterval(15*1000);
+    goHomeTimer->setSingleShot(true);
+    connect(goHomeTimer,SIGNAL(timeout()),this,SIGNAL(goHome()));
+    connect(this,SIGNAL(goHome()),goHomeTimer,SLOT(stop()));
+
 
     q = new question(this,PATH);
     connect(q,SIGNAL(result(int,int)),this,SLOT(getResult(int,int)));
@@ -51,7 +57,8 @@ void module3::init()
 
     answers.clear();
 
-    showQuestion(1);
+   showQuestion(1);
+
 }
 
 
@@ -94,7 +101,7 @@ void module3::insertData()
     }
 
 
-   // getData();
+    // getData();
 }
 
 void module3::getData()
@@ -202,14 +209,25 @@ void module3::displayResults()
     painter.setPen(QPen(Qt::black, 2));
 
     QFontMetrics fm(font);
-
+ QString percent,text;
 
     int W;
     for(int i = 0;i<answers.size();i++)
     {
-        QString percent = QString::number(questionStats[i][answers[i]])+"%";
-        W = fm.width(answersTxt[answers[i]]);
-        painter.drawText(QRectF(2160-W/2,255+i*129,width(),height()),answersTxt[answers[i]]);
+        if(answers[i]==10)//skipped
+        {
+            percent = "-";
+            text = "skipped";
+        }
+        else
+        {
+            percent = QString::number(questionStats[i][answers[i]])+"%";
+            text = answersTxt[answers[i]];
+        }
+
+
+        W = fm.width(text);
+        painter.drawText(QRectF(2160-W/2,255+i*129,width(),height()),text);
         W = fm.width(percent);
         painter.drawText(QRectF(3050-W/2,255+i*129,width(),height()),percent);
     }
@@ -217,6 +235,8 @@ void module3::displayResults()
     results->setPixmap(pix);
 
     results->show();
+
+    goHomeTimer->start();
 
 
 }
@@ -254,6 +274,10 @@ question::question(QLabel *parent, QString PATH):QLabel(parent),PATH(PATH)
     colors.push_back(QColor::fromRgb(0xB7,0x47,0xB5));
     colors.push_back(QColor::fromRgb(0x8E,0x32,0x8B));
     colors.push_back(QColor::fromRgb(0x89,0x8E,0x91));
+
+    skipButton = new picButton(this,200,PATH+"skip.png",PATH+"skipon.png","");
+    connect(skipButton,SIGNAL(clicked(QString)),this,SLOT(skip()));
+    skipButton->move(1920*2-skipButton->width()-20,2*1080-skipButton->height()-20);
 
 
 
@@ -323,17 +347,23 @@ question::question(QLabel *parent, QString PATH):QLabel(parent),PATH(PATH)
 
 
 
+void question::skip()
+{
+
+    emit result(id,10);//10 is skip
+}
+
 
 
 
 
 void question::showChoice(int choice)
 {
-    answerId = choice;
+    answerId = choice;skipButton->show();
     disconnect(vp,SIGNAL(videoOver()),0,0);
     for (auto b:buttons)
         b->hide();
-
+    skipButton->hide();
     connect(vp,SIGNAL(videoOver()),this,SLOT(provideResults()));
     vp->loadFile(PATH+"question"+QString::number(id)+"stats.mp4");
 
@@ -447,9 +477,18 @@ void question::showQuestion(int nuid)
     {
         b->hide();
         if(!((nuid>5)&&(b==buttons[6])))
-        connect(vp,SIGNAL(videoOver()),b,SLOT(show()));
+            connect(vp,SIGNAL(videoOver()),b,SLOT(show()));
     }
+    skipButton->hide();
+    connect(vp,SIGNAL(videoOver()),skipButton,SLOT(show()));
+    connect(vp,SIGNAL(videoOver()),skipButton,SLOT(raise()));
+
+
     vp->loadFile(PATH+"question"+QString::number(id)+".mp4");
+
+
+
+
 
     show();
 }

@@ -4,17 +4,17 @@
 
 
 const int bubbleX[4][5] = {
-    {80,1180,1900,2700,3120},
-    {350,870,1600,2450,3400},
+    {50,1180,2000,2700,3120},
+    {400,770,1600,2350,3450},
     {100,1200,1675,2750,3450},
-    {400,830,1980,2530,3150}
+    {400,830,1980,2350,3150}
 };
 
 const int bubbleY[4][5] = {
-    {870,1300,900,1300,1160},
-    {950,1300,1000,950,980},
-    {1370,900,1200,1000,1200},
-    {1280,950,1140,1300,950}
+    {870,1300,900,1300,1260},
+    {950,1300,850,950,900},
+    {1370,900,1300,1000,1300},
+    {1280,950,1250,1300,950}
 };
 
 
@@ -259,13 +259,16 @@ void module2::loadExploreCountries()
             
             
             
-            circleButton *b = new circleButton(this,colors[colorCode],count,QString::number(countryValue)+" "+countryName);
+            circleButton *b = new circleButton(this,colors[colorCode],count,QString::number(countryValue)+" "+countryName,true);
             exploreBubbles.push_back(b);
             countryNames.push_back(countryName);
             connect(b,SIGNAL(clicked(int)),this,SLOT(showVideo(int)));
             b->resize(QSize(countrySize,countrySize));
             b->move(posX,posY);
             b->show();
+
+
+
             count ++;
         }
         file.close();
@@ -512,7 +515,7 @@ countryIcon::countryIcon(QLabel *parent, QString PATH,QString name, QColor color
 countryBubble::countryBubble(QWidget *parent, QColor color, uint score,QString name): QLabel(parent),color(color),score(score),name(name)
 {
     
-    double r = (double)qSqrt(2000*score);
+    double r = (double)qSqrt(1500*score);
     
     
     if(r<50)

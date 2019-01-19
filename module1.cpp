@@ -44,14 +44,14 @@ module1::module1(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     setPixmap(QPixmap(PATH+"background.png").scaled(width(),height()));
     
 
-    b1 = new picButton(this,0,PATH+"button1.png",PATH+"button1on.png","1");
+    b1 = new picButton2(this,0,PATH+"button1.png",PATH+"button1on.png","1");
     b1->move((width()-b1->width())/3,height()/2);
     b1->show();
 
 
 
 
-    b2 = new picButton(this,0,PATH+"button2.png",PATH+"button2on.png","2");
+    b2 = new picButton2(this,0,PATH+"button2.png",PATH+"button2on.png","2");
     b2->move(2*(width()-b2->width())/3,height()/2);
     b2->show();
 

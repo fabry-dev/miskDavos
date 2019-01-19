@@ -18,7 +18,7 @@
 #include "qstylefactory.h"
 #include "qpropertyanimation.h"
 #include "QGraphicsOpacityEffect"
-
+#include "picbutton2.h"
 
 class module1 : public QLabel
 {
@@ -31,7 +31,8 @@ private:
     mpvWidget *vp,*vp2;
     picButton *home;
     QPropertyAnimation *videoSlide;
-    picButton *b1,*b2,*skip,*skip2;
+    picButton2 *b1,*b2;
+    picButton *skip,*skip2;
     QPropertyAnimation *animVp;
 private slots:
     void showVideo(QString video);

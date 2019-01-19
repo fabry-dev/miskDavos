@@ -33,7 +33,7 @@ private:
     circleButton * cb0,*cb1,*cb2,*cb3,*cb4,*cb5,*cb6,*cb7;
 
     std::vector<QColor> colors;
-
+    picButton *skipButton;
 protected:
 
     void resizeEvent(QResizeEvent *);
@@ -42,9 +42,11 @@ protected:
 public slots:
     void showQuestion(int nuid);
 
+
 private slots:
     void showChoice(int);
     void provideResults();
+    void skip();
 
 signals:
     void result(int questionid,int result);
@@ -76,8 +78,9 @@ private:
     void displayResults();
     std::vector<QString> questionNames;
     std::vector<std::vector<int>> questionStats;
-
     QLabel *results;
+    QTimer *goHomeTimer;
+
 
 private slots:
     void getResult(int questionId,int answer);

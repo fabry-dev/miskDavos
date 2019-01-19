@@ -13,7 +13,7 @@ class circleButton : public QWidget
 {
     Q_OBJECT
 public:
-    explicit circleButton(QWidget *parent = nullptr, QColor color=Qt::red, int id=0, QString txt="");
+    explicit circleButton(QWidget *parent = nullptr, QColor color=Qt::red, int id=0, QString txt="", bool animate=false);
     void setColor(QColor nuColor)
     {
         color = nuColor;
@@ -27,6 +27,7 @@ private:
     QPropertyAnimation *trans;
     QRectF initialGeometry;
     bool isClicked;
+     QPropertyAnimation *anim1,*anim2;
 
 public slots:
 

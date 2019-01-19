@@ -1,6 +1,6 @@
 #include "circlebutton.h"
 
-circleButton::circleButton(QWidget *parent,QColor color,int id,QString txt) : QWidget(parent),color(color),id(id),txt(txt)
+circleButton::circleButton(QWidget *parent,QColor color,int id,QString txt,bool animate) : QWidget(parent),color(color),id(id),txt(txt)
 {
 
 
@@ -9,6 +9,14 @@ circleButton::circleButton(QWidget *parent,QColor color,int id,QString txt) : QW
     trans = new QPropertyAnimation(this, "geometry");
     trans->setDuration(80);
     trans->setEasingCurve(QEasingCurve::InCurve);
+
+
+
+    if(animate)
+    {
+
+        //anim1->start();
+    }
 }
 
 
@@ -18,6 +26,8 @@ void circleButton::resizeEvent(QResizeEvent *)
 
 
 }
+
+
 
 void circleButton::paintEvent(QPaintEvent *event)
 {
