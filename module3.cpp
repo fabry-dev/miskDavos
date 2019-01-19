@@ -333,7 +333,7 @@ question::question(QLabel *parent, QString PATH):QLabel(parent),PATH(PATH)
     target.hide();
     target2.setParent(this);
     //target2.hide();
-    target2.setText("percentage of youth who agree with you");
+    target2.setText("percentage of youth that agree with you");
     target2.setFont(QFont("Arial",30));
     target2.adjustSize();
     target2.setStyleSheet("QLabel {color : white; }");
