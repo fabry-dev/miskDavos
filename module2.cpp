@@ -32,10 +32,8 @@ module2::module2(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     vp->setProperty("pause", false);
     vp->setProperty("keep-open",true);
 
-
     
     vp->hide();
-
 
 
     connect(vp,SIGNAL(clicked(QPoint)),this,SLOT(getVideoClicked(QPoint)));
