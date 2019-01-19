@@ -133,7 +133,7 @@ void module2::init()
 {
     compareButton->hide();
     exploreButton->hide();
-    goCompare();
+    goExplore();
 }
 
 
@@ -145,7 +145,7 @@ void module2::goCompare()
         b->hide();
     
     setPixmap(QPixmap(PATH+"compareBackground.png").scaled(width(),height()));
-    
+    combo->setEnabled(true);
     combo->show();
 }
 
