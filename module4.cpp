@@ -347,8 +347,11 @@ void module4::bubbleMoved(int id, QPointF pos)
             {
                 ranking[id] = i;
 
-                double nux = cursor().pos().x()-x1;
-                double nuy = cursor().pos().y()-y1;
+                /*double nux = cursor().pos().x()-x1;
+                double nuy = cursor().pos().y()-y1;*/
+                double nux = targets[i]->x()+targets[i]->width()/2;
+                double nuy = targets[i]->y()-targets[i]->height()/2;
+
                 //cursor().setPos(QPoint(nux,nuy));
                 nucursor.setX(nux);
                 nucursor.setY(nuy);

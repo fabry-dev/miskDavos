@@ -108,9 +108,10 @@ public:
         //cursor().setPos(QPoint(nux,nuy));
        if((rank!=nurank)&&(nurank!=-1))
        {
-           hasToMove = true;
-            cursor().setPos(nucursor);
+            hasToMove = true;
+            goTo = nucursor;
         }
+       else hasToMove = false;
 
 
         rank = nurank;
@@ -135,6 +136,12 @@ protected:
             // value is the new position.
             QPointF newPos = value.toPointF();
 
+            if((hasToMove)&&(goTo!=QPointF(0,0)))
+            {
+                hasToMove = false;
+                return goTo;
+            }
+
             //qDebug()<<"1:"<<newPos.x();
             QRectF rect = scene()->sceneRect();
             if(newPos.x()+boundingRect().width()/2>rect.width())
@@ -149,13 +156,13 @@ protected:
 
             QPointF distance = newPos-pos();
 
-            if((rank!=-1)&&(distance.manhattanLength()<100)&&(!hasToMove))
+            if((rank!=-1)&&(distance.manhattanLength()<120))
             {
-               // qDebug()<<"too close";
                 return pos();
             }
-            hasToMove = false;
+
             communicator.sendMoved(id,newPos);
+
             return newPos;
         }
 
