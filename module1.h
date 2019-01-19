@@ -17,7 +17,7 @@
 #include "qlineedit.h"
 #include "qstylefactory.h"
 #include "qpropertyanimation.h"
-
+#include "QGraphicsOpacityEffect"
 
 
 class module1 : public QLabel
@@ -28,11 +28,11 @@ public:
     void init();
 private:
     QString PATH;
-    mpvWidget *vp;
+    mpvWidget *vp,*vp2;
     picButton *home;
     QPropertyAnimation *videoSlide;
-    picButton *b1,*b2,*skip;
-
+    picButton *b1,*b2,*skip,*skip2;
+    QPropertyAnimation *animVp;
 private slots:
     void showVideo(QString video);
     void hideVideo();

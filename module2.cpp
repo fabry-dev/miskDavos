@@ -31,10 +31,27 @@ module2::module2(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     vp->setLoop(false);
     vp->setProperty("pause", false);
     vp->setProperty("keep-open",true);
+
+
     
     vp->hide();
+
+
+
     connect(vp,SIGNAL(clicked(QPoint)),this,SLOT(getVideoClicked(QPoint)));
     
+    videoCaption = new QLabel(vp);
+
+    videoCaption->setText(  "If you would like to know more, visit GYI.Miskglobalforum.com");
+    videoCaption->setFont(QFont("Arial",25));
+    videoCaption->adjustSize();
+    videoCaption->move(vp->width()*0.5+20,vp->height()-videoCaption->height()-30);
+    videoCaption->setStyleSheet("QLabel {color : black; }");
+    videoCaption->show();
+    videoCaption->raise();
+
+
+
     
     videoSlide = new QPropertyAnimation(vp,"pos");
     videoSlide->setDuration(500);
@@ -108,7 +125,7 @@ module2::module2(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 
     connect(combo,SIGNAL(activated(QString)),this,SLOT(addNewCountry(QString)));
     
-    
+
     
     // goCompare();
 }

@@ -40,6 +40,16 @@ module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 
 
 
+    vp = new mpvWidget(this);
+    vp->resize(size());
+    vp->setLoop(false);
+    vp->setProperty("pause", false);
+    vp->setProperty("keep-open",true);
+
+    vp->hide();
+
+
+
     mainScene = new QGraphicsScene(this);
     mainScene->setSceneRect(QRect(0,0,SCENE_x1-SCENE_x0,SCENE_y1-SCENE_y0));
 
@@ -80,6 +90,13 @@ module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     nextButton2->hide();
     connect(nextButton2,SIGNAL(clicked(QString)),this,SLOT(showNextQuestion()));
 
+    nextButton3 = new picButton(vp,0,PATH+"next.png",PATH+"next2.png","next");
+    nextButton3->move(3400,2000);
+    nextButton3->raise();
+    nextButton3->hide();
+    connect(nextButton3,SIGNAL(clicked(QString)),this,SLOT(goKeyboard()));
+    connect(vp,SIGNAL(videoOver()),nextButton3,SLOT(show()));
+   connect(vp,SIGNAL(videoOver()),nextButton3,SLOT(raise()));
 
     cs = new customSlider(this,PATH,geometry());
 
@@ -99,7 +116,7 @@ module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     for(int i = 0;i<4;i++)
     {
         inputs.push_back(new lineEdit2(this));
-        inputs[i]->show();
+        inputs[i]->hide();
         inputs[i]->setFont(QFont("Arial",40));
         connect( inputs[i],SIGNAL(clicked(lineEdit2*)),this,SLOT(selectInput(lineEdit2*)));
     }
@@ -124,8 +141,14 @@ module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     exps.push_back(QRegularExpression("^[0-9a-zA-Z]+([0-9a-zA-Z]*[-._+])*[0-9a-zA-Z]+@[0-9a-zA-Z]+([-.][0-9a-zA-Z]+)*([0-9a-zA-Z]*[.])[a-zA-Z]{2,6}$"));
 
 
+    pdf = new QLabel(this);
+    pdf->resize(size());
+    pdf->hide();
 
 
+    videoSlide = new QPropertyAnimation(vp,"pos");
+    videoSlide->setDuration(500);
+    videoSlide->setEasingCurve(QEasingCurve::InCurve);
 
 
 
@@ -197,6 +220,8 @@ void module4::goSecondPart()
 void module4::goKeyboard()
 {
 
+
+
     for(auto in:inputs)
         in->show();
 
@@ -221,14 +246,9 @@ void module4::goKeyboard()
     for (auto k:keyboard)
         k->show();
 
+    vp->raise();
+hideVideo();
 
-    int totalScore = 0;
-    for(auto i:score2)
-        totalScore += i/5;
-
-
-    qDebug()<<"mongolo score: "<<totalScore;
-    //culture remixer ; climate changer ; contestant ; the authentic self ; global citizen ; startup artist ; transitionist ; eco maker ; speedrunner
 }
 
 void module4::selectInput(lineEdit2* ln)
@@ -248,8 +268,22 @@ void module4::showNextQuestion()
 
     if(activeQuestion>=5)
     {
-        qDebug()<<"score2 "<<score2;
-        goKeyboard();
+        nextButton2->hide();
+        int totalScore = 0;
+        for(auto i:score2)
+            totalScore += i/5;
+
+
+        qDebug()<<"mongolo score: "<<totalScore;
+
+        int id = 1+(totalScore/11);
+        if(id<1) id=1;
+        if(id>9) id=9;
+
+        playVideo(id);
+
+        //culture remixer ; climate changer ; contestant ; the authentic self ; global citizen ; startup artist ; transitionist ; eco maker ; speedrunner
+
         return;
     }
     nextButton2->show();
@@ -502,7 +536,7 @@ void module4::getKey(QString txt)
 
     if(txt=="enter")
     {
-       /* if((nameEdit->text()>3)&&(emailEdit->text()>3))
+        /* if((nameEdit->text()>3)&&(emailEdit->text()>3))
         {
             validateData();
         }*/
@@ -516,7 +550,7 @@ void module4::getKey(QString txt)
     }
     else
     {
-       // activeInput->setText();
+        // activeInput->setText();
         QString buf = activeInput->text()+txt;
 
 
@@ -547,19 +581,144 @@ void module4::submitInputs()
 
     for(int i = 0;i<inputs.size();i++)
     {
-            QRegularExpressionMatch match = exps[i].match(inputs[i]->text(), 0, QRegularExpression::PartialPreferCompleteMatch);
-            if( !(match.hasMatch()))
-                return;
+        QRegularExpressionMatch match = exps[i].match(inputs[i]->text(), 0, QRegularExpression::PartialPreferCompleteMatch);
+        if( !(match.hasMatch()))
+            return;
     }
 
 
-for(auto input:inputs)
-    qDebug()<<input->text();
+    for(auto input:inputs)
+        qDebug()<<input->text();
+
+
+    emit goHome();
 }
 
 
+void module4::showPdf(QString name,int age_i)
+{
+    double W,H;
+
+    QString age = QString::number(age_i+11);
+    QString skillset = name+"'s skillset";
+
+    QPixmap pix=QPixmap(PATH+"pdf1.png").scaledToHeight(height());
+    pdf->resize(pix.size());
+    pdf->move((width()-pix.width())/2,0);
 
 
+    QPainter painter(&pix);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+
+
+
+
+    QFont font = QFont("Arial",30);
+
+
+
+    W = (QFontMetrics(font)).width(name);
+    int W0 = 300;
+    if(W>W0)
+    {
+        font.setPointSizeF(font.pointSizeF()*W0/W);
+        W = W0;
+    }
+    H = (QFontMetrics(font)).height();
+
+
+
+
+    painter.setPen(QPen(QColor::fromRgb(142,208,237), 0));
+    painter.setFont(font);
+    painter.drawText(1325-W/2,220-H/2,name);
+
+
+
+    font =  QFont("Arial",25);
+    W = (QFontMetrics(font)).width(skillset);
+    W0 = 375;
+    if(W>W0)
+    {
+        font.setPointSizeF(font.pointSizeF()*W0/W);
+        W = W0;
+    }
+    painter.setFont(font);
+    painter.drawText(1275-W/2,630,skillset);
+
+
+    font =  QFont("Arial",25,QFont::Bold);
+    painter.setFont(font);
+    painter.setPen(QPen((Qt::black), 0));
+    painter.drawText(1387,263,age);
+    pdf->setPixmap(pix);
+    pdf->show();
+
+
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName(PATH+"buf.pdf");
+    printer.setFullPage(true);
+
+    double xscale = printer.pageRect().width()/double(pix.width());
+    double yscale = printer.pageRect().height()/double(pix.height());
+
+    double scale = qMin(xscale, yscale);
+
+    QPainter painter2(&printer);
+
+    painter2.scale(scale, scale);
+
+    painter2.drawPixmap(0,0,pix.width(),pix.height(),pix);
+}
+
+void module4::playVideo(int videoId)
+{
+
+
+    /*mainView->hide();
+    for(int i = 0;i<skillList.size();i++)
+    {
+        bubbles[i]->hide();
+        targets[i]->hide();
+    }
+
+    cs->hide();
+    nextButton2->hide();
+    nextButton->hide();
+    nextButton3->hide();*/
+
+
+    disconnect(videoSlide,0,0,0);
+
+
+
+    QString videoName = PATH+"video"+QString::number(videoId)+".mp4";
+
+    vp->move(width(),0);
+    vp->show();
+        vp->raise();
+    vp->loadFile(videoName);
+
+    videoSlide->setStartValue(vp->pos());
+    videoSlide->setEndValue(QPoint(0,0));
+
+    QTimer::singleShot(200,videoSlide,SLOT(start()));
+    //videoSlide->start();
+
+}
+
+
+void module4::hideVideo()
+{
+
+    disconnect(videoSlide,0,0,0);
+    videoSlide->setStartValue(vp->pos());
+    videoSlide->setEndValue(QPoint(width(),0));
+    connect(videoSlide,SIGNAL(finished()),vp,SLOT(hide()));
+    videoSlide->start();
+
+}
 
 //skill bubbles
 void bubbleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)

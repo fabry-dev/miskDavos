@@ -26,7 +26,10 @@
 #include <QtSql>
 #include <QSqlQuery>
 #include "QLineEdit"
-
+#include "QtPrintSupport/qprinter.h"
+#include "QtPrintSupport/QPrintDialog"
+#include "QtPrintSupport/QPrinterInfo"
+#include "QtPrintSupport/QPrintPreviewDialog"
 
 
 
@@ -42,7 +45,7 @@ protected:
     {
 
     }*/
-    bool eventFilter(QObject *object, QEvent *event)
+    bool eventFilter(QObject *, QEvent *event)
     {
         if (event->type() == QEvent::FocusIn)
         {
@@ -171,7 +174,7 @@ private:
 
     QGraphicsView *mainView;
     QGraphicsScene *mainScene;
-    picButton *nextButton,*nextButton2;
+    picButton *nextButton,*nextButton2,*nextButton3;
     customSlider *cs;
     int activeQuestion;
     std::vector<QPixmap> bgPixS;
@@ -190,6 +193,11 @@ private:
 
     picButton *home;
 
+    QLabel *pdf;
+    QPropertyAnimation *videoSlide;
+    mpvWidget *vp;
+
+
 
 private slots:
     void bubbleMoved(int id,QPointF pos);
@@ -199,7 +207,9 @@ private slots:
     void getKey(QString key);
     void selectInput(lineEdit2* ln);
     void submitInputs();
-
+    void showPdf(QString name, int age_i);
+    void playVideo(int videoId);
+    void hideVideo();
 protected:
     void mousePressEvent(QMouseEvent *ev);
 

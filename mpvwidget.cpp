@@ -74,7 +74,14 @@ void mpvWidget::loadFile(QString videoFile)
     setProperty("pause",false);
 }
 
+void mpvWidget::loadFilePaused(QString videoFile)
+{
+    QByteArray ba = videoFile.toLatin1();
+    //command(QStringList() << "loadfile" << videoFile<<"append-play");
+    setProperty("pause",true);
+    command(QStringList() << "loadfile" << videoFile);
 
+}
 
 
 void mpvWidget::stop()

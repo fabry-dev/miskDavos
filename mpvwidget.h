@@ -20,6 +20,7 @@ public:
     void setLoop(bool looping);
     void stop();
     void setCrop();
+    void loadFilePaused(QString videoFile);
 Q_SIGNALS:
     void durationChanged(int value);
     void positionChanged(int value);

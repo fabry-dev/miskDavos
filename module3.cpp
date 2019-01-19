@@ -307,6 +307,13 @@ question::question(QLabel *parent, QString PATH):QLabel(parent),PATH(PATH)
 
     target.setParent(this);
     target.hide();
+    target2.setParent(this);
+    //target2.hide();
+    target2.setText("percentage of youth who agree with you");
+    target2.setFont(QFont("Arial",30));
+    target2.adjustSize();
+    target2.setStyleSheet("QLabel {color : white; }");
+    target2.hide();
 
 
     show();
@@ -342,15 +349,19 @@ void question::showTarget(uint choice)
 
     target.resize(2.3*d0,2.3*d0);
 
+
     //compute corresponding circle center
     int x0 = buttons[choice]->x()+buttons[choice]->width()/2;
     int y0 = buttons[choice]->y()+buttons[choice]->height()/2;
 
     target.move(x0-target.width()/2,y0-target.height()/2);
 
+    target2.move(target.x()+target.width()/2-target2.width()/2,target.y()+target.height()+70);
+
     target.setPixmap(QPixmap(PATH+"target.png").scaledToHeight(target.height()));
 
     target.show();
+    target2.show();
 }
 
 
@@ -358,6 +369,7 @@ void question::showQuestion(int nuid)
 {
 
     target.hide();
+    target2.hide();
     id = nuid;
 
     disconnect(vp,SIGNAL(videoOver()),0,0);

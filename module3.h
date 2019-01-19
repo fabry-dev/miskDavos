@@ -27,7 +27,7 @@ private:
     mpvWidget *vp;
     std::vector<circleButton*> buttons;
 
-    QLabel target;
+    QLabel target,target2;
     void showTarget(uint choice);
 
     circleButton * cb0,*cb1,*cb2,*cb3,*cb4,*cb5,*cb6,*cb7;
