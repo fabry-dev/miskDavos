@@ -9,7 +9,11 @@ module1::module1(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     // showFullScreen();
     resize(3840,2160);
     
-    
+    goHomeTimer = new QTimer(this);
+    goHomeTimer->setInterval(60*1000);
+    goHomeTimer->setSingleShot(true);
+    connect(goHomeTimer,SIGNAL(timeout()),this,SIGNAL(goHome()));
+    connect(this,SIGNAL(goHome()),goHomeTimer,SLOT(stop()));
     
     vp = new mpvWidget(this);
     vp->resize(size());
@@ -26,7 +30,7 @@ module1::module1(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     vp2->hide();
 
     connect(vp,SIGNAL(videoOver()),this,SLOT(hideVideo()));
-     connect(vp2,SIGNAL(videoOver()),this,SLOT(hideVideo()));
+    connect(vp2,SIGNAL(videoOver()),this,SLOT(hideVideo()));
     /*   videoSlide = new QPropertyAnimation(vp,"geometry");
     videoSlide->setDuration(500);
     videoSlide->setEasingCurve(QEasingCurve::InCurve);
@@ -77,7 +81,7 @@ module1::module1(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 
 void module1::init()
 {
-
+    goHomeTimer->start();
 }
 
 
@@ -85,7 +89,7 @@ void module1::init()
 void module1::showVideo(QString video)
 {
     // disconnect(videoSlide,0,0,0);
-    
+    goHomeTimer->stop();
     QString videoName = PATH+"video"+video+".mp4";
 
     /* vp->move(-width(),0);
@@ -148,7 +152,7 @@ void module1::hideVideo()
     vp2->move(-width(),0);
     b1->show();
     b2->show();
-
+    init();
 }
 
 void module1::mousePressEvent(QMouseEvent *ev)

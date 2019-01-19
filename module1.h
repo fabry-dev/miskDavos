@@ -34,6 +34,7 @@ private:
     picButton2 *b1,*b2;
     picButton *skip,*skip2;
     QPropertyAnimation *animVp;
+        QTimer *goHomeTimer;
 private slots:
     void showVideo(QString video);
     void hideVideo();

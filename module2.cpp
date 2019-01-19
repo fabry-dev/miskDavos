@@ -172,8 +172,12 @@ void module2::goExplore()
 
 void module2::goRank()
 {
+
+
+
     rankLbl->move(-width(),0);
     rankLbl->show();
+    rankLbl->raise();
 
 
     disconnect(rankAnim,0,0,0);
