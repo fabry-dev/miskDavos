@@ -359,11 +359,11 @@ void question::skip()
 
 void question::showChoice(int choice)
 {
-    answerId = choice;skipButton->show();
+    answerId = choice;
     disconnect(vp,SIGNAL(videoOver()),0,0);
     for (auto b:buttons)
         b->hide();
-    skipButton->hide();
+  skipButton->hide();
     connect(vp,SIGNAL(videoOver()),this,SLOT(provideResults()));
     vp->loadFile(PATH+"question"+QString::number(id)+"stats.mp4");
 
@@ -479,15 +479,14 @@ void question::showQuestion(int nuid)
         if(!((nuid>5)&&(b==buttons[6])))
             connect(vp,SIGNAL(videoOver()),b,SLOT(show()));
     }
-    skipButton->hide();
-    connect(vp,SIGNAL(videoOver()),skipButton,SLOT(show()));
-    connect(vp,SIGNAL(videoOver()),skipButton,SLOT(raise()));
+
 
 
     vp->loadFile(PATH+"question"+QString::number(id)+".mp4");
 
 
-
+    skipButton->show();
+    skipButton->raise();
 
 
     show();

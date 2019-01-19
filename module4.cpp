@@ -91,7 +91,7 @@ module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     connect(nextButton2,SIGNAL(clicked(QString)),this,SLOT(showNextQuestion()));
 
     nextButton3 = new picButton(vp,0,PATH+"next.png",PATH+"next2.png","next");
-    nextButton3->move(3400,2000);
+    nextButton3->move(width()-nextButton3->width()-10,height()-nextButton3->height()-10);
     nextButton3->raise();
     nextButton3->hide();
     connect(nextButton3,SIGNAL(clicked(QString)),this,SLOT(goKeyboard()));
