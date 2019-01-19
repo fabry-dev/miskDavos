@@ -164,7 +164,8 @@ module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 void module4::init()
 {
 
-
+    for (auto k:keyboard)
+        k->show();
 
     score2.resize(5,0);
     score1.resize(9,-1);
