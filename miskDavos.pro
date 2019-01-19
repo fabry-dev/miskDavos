@@ -26,7 +26,8 @@ SOURCES += main.cpp \
     customslider.cpp \
     module0.cpp \
     mainScreen.cpp \
-    module1.cpp
+    module1.cpp \
+    picbutton2.cpp
 
 
 HEADERS  += \
@@ -39,7 +40,8 @@ HEADERS  += \
     customslider.h \
     module0.h \
     mainScreen.h \
-    module1.h
+    module1.h \
+    picbutton2.h
 
 
 FORMS    +=

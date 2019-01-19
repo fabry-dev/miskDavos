@@ -1,6 +1,6 @@
 #include "picbutton.h"
 
-picButton::picButton(QWidget *parent, uint w, QString file, QString clickFile, QString msg):QLabel(parent),msg(msg)
+picButton::picButton(QWidget *parent, uint w, QString file, QString clickFile, QString msg,bool animate):QLabel(parent),msg(msg),animate(animate)
 {
     pic.load(file);
     if(clickFile!="")
@@ -19,19 +19,34 @@ picButton::picButton(QWidget *parent, uint w, QString file, QString clickFile, Q
 
     enable();
 
+
 }
+
+
+void picButton::moveEvent(QMoveEvent *event)
+{
+
+}
+
+
+void picButton::animationOver()
+{
+
+}
+
+
 
 
 void picButton::enable()
 {
-enabled = true;
+    enabled = true;
 
 }
 
 void picButton::disable()
 {
 
-enabled = false;
+    enabled = false;
 }
 
 void picButton::resetClick()

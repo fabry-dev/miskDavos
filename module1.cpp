@@ -25,12 +25,12 @@ module1::module1(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     vp2->setProperty("keep-open",true);
     vp2->hide();
 
-    
-    
+    connect(vp,SIGNAL(videoOver()),this,SLOT(hideVideo()));
+     connect(vp2,SIGNAL(videoOver()),this,SLOT(hideVideo()));
     /*   videoSlide = new QPropertyAnimation(vp,"geometry");
     videoSlide->setDuration(500);
     videoSlide->setEasingCurve(QEasingCurve::InCurve);
-    connect(vp,SIGNAL(videoOver()),this,SLOT(hideVideo()));
+
 
     */
     home = new picButton(this,0,PATH+"home.png",PATH+"homeOn.png","");
@@ -47,6 +47,9 @@ module1::module1(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     b1 = new picButton(this,0,PATH+"button1.png",PATH+"button1on.png","1");
     b1->move((width()-b1->width())/3,height()/2);
     b1->show();
+
+
+
 
     b2 = new picButton(this,0,PATH+"button2.png",PATH+"button2on.png","2");
     b2->move(2*(width()-b2->width())/3,height()/2);

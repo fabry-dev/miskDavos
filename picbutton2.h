@@ -1,5 +1,5 @@
-#ifndef PICBUTTON_H
-#define PICBUTTON_H
+#ifndef picButton2_H
+#define picButton2_H
 
 #include "qobject.h"
 #include "qlabel.h"
@@ -9,31 +9,39 @@
 #include "qpalette.h"
 #include "qtimer.h"
 #include "qpropertyanimation.h"
-class picButton : public QLabel
+
+
+
+
+
+
+class picButton2 : public QLabel
 {
     Q_OBJECT
 public:
-    picButton(QWidget *parent, uint w, QString file, QString clickFile="", QString msg="", bool animate=false);
+    picButton2(QWidget *parent, uint w, QString file, QString clickFile="", QString msg="");
 
 private:
     QPixmap pic,onpic;
     QString msg;
     bool enabled;
-    bool animate;
-     QPropertyAnimation *anim;
+      QLabel *button;
+     QPropertyAnimation *anim1,*anim2;
+     bool on;
 
 protected:
     void mousePressEvent( QMouseEvent* ev );
     void mouseReleaseEvent(QMouseEvent * event);
     void moveEvent(QMoveEvent *event);
+    void resizeEvent(QResizeEvent *event);
 signals:
     void clicked(QString msg);
 private slots:
     void resetClick();
-    void animationOver();
+
 public slots:
     void enable();
     void disable();
 };
 
-#endif // PICBUTTON_H
+#endif // picButton2_H

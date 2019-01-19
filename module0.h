@@ -10,7 +10,7 @@
 #include "QDirIterator"
 #include "qcolor.h"
 #include "qcombobox.h"
-
+#include "picbutton2.h"
 #include "circlebutton.h"
 #include "picbutton.h"
 #include "qmath.h"
@@ -25,7 +25,8 @@ public:
     void init();
 private:
     QString PATH;
-    picButton *b1,*b2,*b3,*b4;
+    picButton2 *b2,*b3,*b4;
+    picButton2 *b1;
     QPropertyAnimation * goawayTransition;
 
 
