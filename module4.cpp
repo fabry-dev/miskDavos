@@ -162,7 +162,7 @@ module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 
 
 
-    sendEmail("fred","frederic.abry@gmail.com",33,4);
+    //sendEmail("fred","frederic.abry@gmail.com",33,4);
      /*getData();
      getData2();*/
 }
