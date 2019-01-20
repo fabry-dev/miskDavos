@@ -34,6 +34,7 @@ private:
 
     std::vector<QColor> colors;
     picButton *skipButton;
+    QTimer *goHomeTimer;
 protected:
 
     void resizeEvent(QResizeEvent *);
@@ -45,6 +46,7 @@ public slots:
 
 private slots:
     void showChoice(int);
+    void preProvideResults();
     void provideResults();
     void skip();
 

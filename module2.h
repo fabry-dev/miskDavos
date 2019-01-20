@@ -88,6 +88,7 @@ std::vector<QString> activeCountries;
     QPropertyAnimation *rankAnim;
 
     QLabel *videoCaption;
+    QTimer *goHomeTimer;
 private slots:
     void showVideo(int countryId);
     void getVideoClicked(QPoint pos);

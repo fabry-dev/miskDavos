@@ -231,7 +231,7 @@ private:
 
     int archetypeId;
 
-
+    QTimer *goHomeTimer;
 
 private slots:
     void bubbleMoved(int id,QPointF pos);

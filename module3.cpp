@@ -9,17 +9,14 @@ QStringList answersTxt2 = QStringList() << "Not important at all" << "Somewhat i
 module3::module3(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 {
 
+
     showFullScreen();
     resize(3840,2160);
     initDb();
 
     loadStats();
 
-    goHomeTimer = new QTimer(this);
-    goHomeTimer->setInterval(15*1000);
-    goHomeTimer->setSingleShot(true);
-    connect(goHomeTimer,SIGNAL(timeout()),this,SIGNAL(goHome()));
-    connect(this,SIGNAL(goHome()),goHomeTimer,SLOT(stop()));
+
 
 
     q = new question(this,PATH);
@@ -47,12 +44,21 @@ module3::module3(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     home2->show();
     home2->raise();
 
+
+    goHomeTimer = new QTimer(this);
+    goHomeTimer->setInterval(60*1000);
+    goHomeTimer->setSingleShot(true);
+    connect(goHomeTimer,SIGNAL(timeout()),this,SIGNAL(goHome()));
+    connect(this,SIGNAL(goHome()),goHomeTimer,SLOT(stop()));
+
+
+
 }
 
 
 void module3::init()
 {
-
+    goHomeTimer->start();
     results->hide();
     answers.clear();
     showQuestion(1)   ;
@@ -120,6 +126,7 @@ void module3::getData()
 
 void module3::getResult(int questionId, int answer)
 {
+    goHomeTimer->start();
     qDebug()<<questionId<<answer;
     answers.push_back(answer);
     q->hide();
@@ -140,6 +147,7 @@ void module3::getResult(int questionId, int answer)
 
 void module3::showQuestion(int id)
 {
+    goHomeTimer->start();
     q->showQuestion(id);
 }
 
@@ -195,7 +203,7 @@ void module3::loadStats()
 void module3::displayResults()
 {
 
-
+    goHomeTimer->start();
     QPixmap pix = QPixmap(PATH+"results.png");
 
     QPainter painter(&pix);
@@ -241,7 +249,7 @@ void module3::displayResults()
 
 void module3::mousePressEvent(QMouseEvent *ev)
 {
-
+goHomeTimer->start();
     qDebug()<<ev->pos();
 }
 
@@ -359,7 +367,7 @@ void question::showChoice(int choice)
     for (auto b:buttons)
         b->hide();
     skipButton->hide();
-    connect(vp,SIGNAL(videoOver()),this,SLOT(provideResults()));
+    connect(vp,SIGNAL(videoOver()),this,SLOT(preProvideResults()));
     vp->loadFile(PATH+"question"+QString::number(id)+"stats.mp4");
 
     showTarget(choice);
@@ -489,6 +497,11 @@ void question::showQuestion(int nuid)
 
 
     show();
+}
+
+void question::preProvideResults()
+{
+    QTimer::singleShot(5000,this,SLOT(provideResults()));
 }
 
 void question::provideResults()

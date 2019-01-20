@@ -153,6 +153,13 @@ module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 
 
 
+    goHomeTimer = new QTimer(this);
+    goHomeTimer->setInterval(60*1000);
+    goHomeTimer->setSingleShot(true);
+    connect(goHomeTimer,SIGNAL(timeout()),this,SIGNAL(goHome()));
+    connect(this,SIGNAL(goHome()),goHomeTimer,SLOT(stop()));
+
+
     setupKeyboard();
     initDb();
     //  nextButton->show();
@@ -163,13 +170,13 @@ module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 
 
     //sendEmail("fred","frederic.abry@gmail.com",33,4);
-     /*getData();
+    /*getData();
      getData2();*/
 }
 
 void module4::init()
 {
-
+    goHomeTimer->start();
     for (auto k:keyboard)
         k->hide();
 
@@ -206,7 +213,7 @@ void module4::init()
 void module4::goSecondPart()
 {
 
-
+    goHomeTimer->start();
     insertData();
     nextButton->hide();
     mainView->hide();
@@ -227,7 +234,7 @@ void module4::goSecondPart()
 void module4::goKeyboard()
 {
 
-
+    goHomeTimer->start();
 
     for(auto in:inputs)
     {
@@ -262,12 +269,15 @@ void module4::goKeyboard()
 
 void module4::selectInput(lineEdit2* ln)
 {
+    goHomeTimer->start();
     ln->setFocus();
     activeInput = ln;
 }
 
 void module4::showNextQuestion()
 {
+    goHomeTimer->start();
+
     activeQuestion++;
 
     if(activeQuestion>0)
@@ -334,11 +344,13 @@ void module4::loadSkillList()
 
 void module4::mousePressEvent(QMouseEvent *ev)
 {
+    goHomeTimer->start();
     qDebug()<<ev->pos();
 }
 
 void module4::bubbleMoved(int id, QPointF pos)
 {
+    goHomeTimer->start();
     QPoint nucursor = QPoint(0,0);
 
     ranking[id] = -1;
@@ -621,6 +633,8 @@ void module4::getData()
 
 void module4::getKey(QString txt)
 {
+
+    goHomeTimer->start();
     QRegularExpression exp;
 
     if(txt=="enter")
@@ -667,7 +681,7 @@ void module4::getKey(QString txt)
 
 void module4::submitInputs()
 {
-
+    goHomeTimer->start();
     for(int i = 0;i<inputs.size();i++)
     {
         QRegularExpressionMatch match = exps[i].match(inputs[i]->text(), 0, QRegularExpression::PartialPreferCompleteMatch);
@@ -810,7 +824,7 @@ void module4::buildPdf(QString name,int age_i,int mongoloId)
 
 void module4::sendEmail(QString name,QString email, int age, int mongoloCode)
 {
-
+    goHomeTimer->start();
     buildPdf(name,age,mongoloCode);
 
 
@@ -879,7 +893,7 @@ void module4::sendEmail(QString name,QString email, int age, int mongoloCode)
 void module4::playVideo(int videoId)
 {
 
-
+    goHomeTimer->start();
     archetypeId = videoId;
 
 
@@ -905,7 +919,7 @@ void module4::playVideo(int videoId)
 
 void module4::hideVideo()
 {
-
+    goHomeTimer->start();
     disconnect(videoSlide,0,0,0);
     videoSlide->setStartValue(vp->pos());
     videoSlide->setEndValue(QPoint(width(),0));

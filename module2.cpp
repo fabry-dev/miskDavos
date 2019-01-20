@@ -25,6 +25,13 @@ module2::module2(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     resize(3840,2160);
     
     
+    goHomeTimer = new QTimer(this);
+    goHomeTimer->setInterval(60*1000);
+    goHomeTimer->setSingleShot(true);
+    connect(goHomeTimer,SIGNAL(timeout()),this,SIGNAL(goHome()));
+    connect(this,SIGNAL(goHome()),goHomeTimer,SLOT(stop()));
+
+
     
     vp = new mpvWidget(this);
     vp->resize(size());
@@ -139,6 +146,8 @@ void module2::init()
 
 void module2::goCompare()
 {
+    goHomeTimer->start();
+
     compareButton->hide();
     exploreButton->show();
     for (auto b:exploreBubbles)
@@ -151,6 +160,8 @@ void module2::goCompare()
 
 void module2::goExplore()
 {
+    goHomeTimer->start();
+
     exploreButton->hide();
     compareButton->show();
     setPixmap(QPixmap(PATH+"exploreBackground.png").scaled(width(),height()));
@@ -173,7 +184,7 @@ void module2::goExplore()
 void module2::goRank()
 {
 
-
+    goHomeTimer->start();
 
     rankLbl->move(-width(),0);
     rankLbl->show();
@@ -195,7 +206,7 @@ void module2::goRank()
 void module2::goMap()
 {
 
-
+    goHomeTimer->start();
 
     disconnect(rankAnim,0,0,0);
 
@@ -282,11 +293,11 @@ void module2::loadExploreCountries()
 }
 
 void module2::showVideo(int countryId)
-
 {
     if(countryId>=countryNames.size())
         return;
     
+    goHomeTimer->start();
     
     disconnect(videoSlide,0,0,0);
     
@@ -307,6 +318,7 @@ void module2::showVideo(int countryId)
 
 void module2::hideVideo()
 {
+    goHomeTimer->start();
     disconnect(videoSlide,0,0,0);
     videoSlide->setStartValue(vp->pos());
     videoSlide->setEndValue(QPoint(width(),0));
@@ -422,6 +434,8 @@ void module2::organiseCountries()
 {
     int spacing = 50;
     
+    goHomeTimer->start();
+
     for(auto b:countryBubbles)
         b->deleteLater();
     countryBubbles.clear();
@@ -562,6 +576,7 @@ void countryIcon::mousePressEvent(QMouseEvent *ev)
 {
     if(ev->pos().x()>width()*7/10)
         emit deleteClicked();
+
 }
 
 
@@ -569,5 +584,5 @@ void countryIcon::mousePressEvent(QMouseEvent *ev)
 void module2::mousePressEvent(QMouseEvent *ev)
 {
     qDebug()<<ev->pos();
-    
+    goHomeTimer->start();
 }
