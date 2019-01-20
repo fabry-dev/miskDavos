@@ -26,6 +26,7 @@ int ys[]={0,1,2,1,0,-1,-2,-1,-0};
 
 module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 {
+
     qsrand(QTime::currentTime().msecsSinceStartOfDay());
 
     showFullScreen();
@@ -157,10 +158,13 @@ module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     //  nextButton->show();
     init();
 
-   // sendEmail("Fred","contact@fabry-dev.net", 33, 1);
 
-    // goKeyboard();
 
+
+
+    sendEmail("fred","frederic.abry@gmail.com",33,4);
+     /*getData();
+     getData2();*/
 }
 
 void module4::init()
@@ -226,8 +230,10 @@ void module4::goKeyboard()
 
 
     for(auto in:inputs)
+    {
+        in->clear();
         in->show();
-
+    }
     activeInput = inputs[0];
 
     nextButton->hide();
@@ -475,20 +481,7 @@ void module4::setupKeyboard()
 
 void  module4::initDb()
 {
-    /*
-    const QString DRIVER("QSQLITE");
-    QSqlDatabase db = QSqlDatabase::addDatabase(DRIVER);
-    db.setHostName("hostname");
-    db.setDatabaseName(PATH+"module4_1");
-    db.setUserName("user");
-    db.setPassword("password");
 
-    if(!db.open())
-        qWarning() << "ERROR: " << db.lastError();
-
-    qDebug()<<db.tables();
-
-*/
     QSqlQuery query("CREATE TABLE module4 (id INTEGER PRIMARY KEY AUTOINCREMENT, q1 INTEGER, q2 INTEGER, q3 INTEGER, q4 INTEGER, q5 INTEGER, q6 INTEGER, q7 INTEGER, q8 INTEGER, q9 INTEGER, date TIMESTAMP)");
 
     bool success = query.exec();
@@ -499,6 +492,17 @@ void  module4::initDb()
     }
     else qDebug() << "table created";
 
+
+
+    QSqlQuery query2("CREATE TABLE module42 (id INTEGER PRIMARY KEY AUTOINCREMENT, firstname TEXT, lastname TEXT, email TEXT, age INTEGER, archetype INTEGER, date TIMESTAMP)");
+
+    success = query2.exec();
+
+    if(!success)
+    {
+        qDebug() << query2.lastError();
+    }
+    else qDebug() << "table2 created";
 }
 
 void module4::insertData()
@@ -527,6 +531,66 @@ void module4::insertData()
     // getData();
 }
 
+
+void module4::insertData2(QString firstName, QString lastName, QString email, int age,int archetype)
+{
+
+
+
+    QDateTime timestamp = QDateTime::currentDateTime();
+
+    QSqlQuery query;
+    query.prepare("INSERT INTO module42 (firstname,lastname,email, age,archetype,date) VALUES (:firstname,:lastname,:email,:age,:archetype,:datetime)");
+
+
+    query.bindValue(":firstname", firstName);
+    query.bindValue(":lastname", lastName);
+    query.bindValue(":email", email);
+    query.bindValue(":age", age);
+    query.bindValue(":archetype", archetype);
+    query.bindValue(":datetime", timestamp.toString("yyyy-MM-dd hh:mm:ss"));
+
+
+    bool success = query.exec();
+    if(!success)
+    {
+        qDebug() << query.lastError();
+    }
+
+
+
+}
+
+
+
+
+void module4::getData2()
+{
+
+    QSqlQuery query;
+    query.prepare("SELECT id,firstname,lastname,email,age,archetype, date FROM module42");
+    query.exec();
+
+    std::vector<int> buf;
+    buf.resize(9,-1);
+
+    int id,archetype;QDateTime date;int age;QString firstName,lastName,email;
+
+    while (query.next()) {
+
+        id = query.value(0).toInt();
+        firstName = query.value(1).toString();
+        lastName = query.value(2).toString();
+        email = query.value(3).toString();
+        age = query.value(4).toInt();
+        archetype = query.value(5).toInt();
+        date = query.value(6).toDateTime();
+
+        qDebug()<<id<<date<<firstName<<lastName<<email<<age<<archetype;
+    }
+}
+
+
 void module4::getData()
 {
 
@@ -545,6 +609,15 @@ void module4::getData()
         qDebug()<<date<<buf;
     }
 }
+
+
+
+
+
+
+
+
+
 
 void module4::getKey(QString txt)
 {
@@ -606,6 +679,14 @@ void module4::submitInputs()
     for(auto input:inputs)
         qDebug()<<input->text();
 
+    QString firstname = inputs[0]->text();
+    QString lastname = inputs[1]->text();
+    insertData2(firstname,lastname,inputs[3]->text(),inputs[2]->text().toInt(), archetypeId);
+
+    firstname.replace(0, 1, firstname[0].toUpper());
+    lastname.replace(0, 1, lastname[0].toUpper());
+
+    sendEmail(firstname+" "+lastname,inputs[3]->text(), inputs[2]->text().toInt(), archetypeId);
 
     emit goHome();
 }
@@ -638,9 +719,8 @@ void module4::buildPdf(QString name,int age_i,int mongoloId)
     QString age = QString::number(age_i+11);
     QString skillset = name+"'s skillset";
 
-    QPixmap pix=QPixmap(PATH+"A"+QString::number(mongoloId)+".png").scaledToHeight(height());
-    pdf->resize(pix.size());
-    pdf->move((width()-pix.width())/2,0);
+    QPixmap pix=QPixmap(PATH+"A"+QString::number(mongoloId)+".png");
+
 
 
     QPainter painter(&pix);
@@ -667,7 +747,7 @@ void module4::buildPdf(QString name,int age_i,int mongoloId)
 
     painter.setPen(QPen(cs[mongoloId-1], 0));
     painter.setFont(font);
-    painter.drawText(1325-W/2,220-H/2,name);
+    painter.drawText(1260-W/2,230-H/2,name);
 
 
 
@@ -680,13 +760,13 @@ void module4::buildPdf(QString name,int age_i,int mongoloId)
         W = W0;
     }
     painter.setFont(font);
-    painter.drawText(1275-W/2,600,skillset);
+    painter.drawText(1220-W/2,550,skillset);
 
 
     font =  QFont("Arial",25,QFont::Bold);
     painter.setFont(font);
     painter.setPen(QPen((Qt::black), 0));
-    painter.drawText(1387,263,age);
+    painter.drawText(1327,252,age);
     /*pdf->setPixmap(pix);
     pdf->show();
     pdf->raise();*/
@@ -711,22 +791,22 @@ void module4::buildPdf(QString name,int age_i,int mongoloId)
 }
 
 
-
+/*
 #define FROM "youth.misk@gmail.com"
 #define SMTPSERVER  "smtp.gmail.com"
 #define SMTPPORT    465
 #define SMTPUSER    "youth.misk@gmail.com"
 #define SMTPPASS    "MGF_2019"
 
+*/
 
 
-/*
 #define FROM "research@miskglobalforum.com"
 #define SMTPSERVER  "smtp.gmail.com"
 #define SMTPPORT    465
-#define SMTPUSER    NULL//"research@miskglobalforum.com"
-#define SMTPPASS    NULL
-*/
+#define SMTPUSER    "research@miskglobalforum.com"
+#define SMTPPASS    "gvlysqnzsoabzepj"
+
 
 void module4::sendEmail(QString name,QString email, int age, int mongoloCode)
 {
@@ -800,17 +880,7 @@ void module4::playVideo(int videoId)
 {
 
 
-    /*mainView->hide();
-    for(int i = 0;i<skillList.size();i++)
-    {
-        bubbles[i]->hide();
-        targets[i]->hide();
-    }
-
-    cs->hide();
-    nextButton2->hide();
-    nextButton->hide();
-    nextButton3->hide();*/
+    archetypeId = videoId;
 
 
     disconnect(videoSlide,0,0,0);

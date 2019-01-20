@@ -215,7 +215,8 @@ private:
     void initDb();
     void getData();
     void insertData();
-
+    void insertData2(QString firstName, QString lastName, QString email, int age, int archetype);
+    void getData2();
     std::vector<lineEdit2*> inputs;
     lineEdit2* activeInput;
 
@@ -227,6 +228,8 @@ private:
     QLabel *pdf;
     QPropertyAnimation *videoSlide;
     mpvWidget *vp;
+
+    int archetypeId;
 
 
 
