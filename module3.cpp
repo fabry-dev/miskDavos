@@ -54,11 +54,8 @@ void module3::init()
 {
 
     results->hide();
-
     answers.clear();
-
-   showQuestion(1);
-
+    showQuestion(1)   ;
 }
 
 
@@ -66,8 +63,6 @@ void module3::init()
 
 void  module3::initDb()
 {
-
-
     QSqlQuery query("CREATE TABLE module3 (id INTEGER PRIMARY KEY AUTOINCREMENT, q1 INTEGER, q2 INTEGER, q3 INTEGER, q4 INTEGER, q5 INTEGER, q6 INTEGER, q7 INTEGER, q8 INTEGER, q9 INTEGER, q10 INTEGER, q11 INTEGER, q12 INTEGER, q13 INTEGER, q14 INTEGER,date TIMESTAMP)");
 
     bool success = query.exec();
@@ -209,7 +204,7 @@ void module3::displayResults()
     painter.setPen(QPen(Qt::black, 2));
 
     QFontMetrics fm(font);
- QString percent,text;
+    QString percent,text;
 
     int W;
     for(int i = 0;i<answers.size();i++)
@@ -333,7 +328,7 @@ question::question(QLabel *parent, QString PATH):QLabel(parent),PATH(PATH)
     target.hide();
     target2.setParent(this);
     //target2.hide();
-    target2.setText("percentage of youth that agree with you");
+    target2.setText("% of youth that agree with you");
     target2.setFont(QFont("Arial",30));
     target2.adjustSize();
     target2.setStyleSheet("QLabel {color : white; }");
@@ -363,7 +358,7 @@ void question::showChoice(int choice)
     disconnect(vp,SIGNAL(videoOver()),0,0);
     for (auto b:buttons)
         b->hide();
-  skipButton->hide();
+    skipButton->hide();
     connect(vp,SIGNAL(videoOver()),this,SLOT(provideResults()));
     vp->loadFile(PATH+"question"+QString::number(id)+"stats.mp4");
 
@@ -386,7 +381,11 @@ void question::showTarget(uint choice)
 
     target.move(x0-target.width()/2,y0-target.height()/2);
 
-    target2.move(target.x()+target.width()/2-target2.width()/2,target.y()+target.height()+70);
+    qDebug()<<"id"<<id;
+    if(id == 6)
+        target2.move(target.x()+target.width()/2-target2.width()/2,target.y()+target.height()+160);
+    else
+        target2.move(target.x()+target.width()/2-target2.width()/2,target.y()+target.height()+100);
 
     target.setPixmap(QPixmap(PATH+"target.png").scaledToHeight(target.height()));
 

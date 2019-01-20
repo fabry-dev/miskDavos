@@ -33,6 +33,8 @@
 
 #include "QMouseEvent"
 #include "qevent.h"
+#include "quickmail.h"
+
 
 class lineEdit2: public QLineEdit
 {
@@ -236,9 +238,10 @@ private slots:
     void getKey(QString key);
     void selectInput(lineEdit2* ln);
     void submitInputs();
-    void showPdf(QString name, int age_i);
+    void buildPdf(QString name, int age_i, int mongoloId);
     void playVideo(int videoId);
     void hideVideo();
+    void sendEmail(QString name,QString email, int age, int mongoloCode);
 protected:
     void mousePressEvent(QMouseEvent *ev);
 

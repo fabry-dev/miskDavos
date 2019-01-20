@@ -157,6 +157,8 @@ module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     //  nextButton->show();
     init();
 
+   // sendEmail("Fred","contact@fabry-dev.net", 33, 1);
+
     // goKeyboard();
 
 }
@@ -609,14 +611,34 @@ void module4::submitInputs()
 }
 
 
-void module4::showPdf(QString name,int age_i)
+void module4::buildPdf(QString name,int age_i,int mongoloId)
 {
+
+    for(auto p:keyboard)
+        p->hide();
+
     double W,H;
+
+    if((mongoloId<1)||(mongoloId>9))
+        return;
+    std::vector<QColor> cs;
+
+
+
+    cs.push_back(QColor::fromRgb(159,158,204));
+    cs.push_back(QColor::fromRgb(0,184,156));
+    cs.push_back(QColor::fromRgb(249,189,50));
+    cs.push_back(QColor::fromRgb(142,208,237));
+    cs.push_back(QColor::fromRgb(211,109,107));
+    cs.push_back(QColor::fromRgb(211,109,107));
+    cs.push_back(QColor::fromRgb(0,184,156));
+    cs.push_back(QColor::fromRgb(173,204,61));
+    cs.push_back(QColor::fromRgb(159,158,204));
 
     QString age = QString::number(age_i+11);
     QString skillset = name+"'s skillset";
 
-    QPixmap pix=QPixmap(PATH+"pdf1.png").scaledToHeight(height());
+    QPixmap pix=QPixmap(PATH+"A"+QString::number(mongoloId)+".png").scaledToHeight(height());
     pdf->resize(pix.size());
     pdf->move((width()-pix.width())/2,0);
 
@@ -643,7 +665,7 @@ void module4::showPdf(QString name,int age_i)
 
 
 
-    painter.setPen(QPen(QColor::fromRgb(142,208,237), 0));
+    painter.setPen(QPen(cs[mongoloId-1], 0));
     painter.setFont(font);
     painter.drawText(1325-W/2,220-H/2,name);
 
@@ -658,20 +680,21 @@ void module4::showPdf(QString name,int age_i)
         W = W0;
     }
     painter.setFont(font);
-    painter.drawText(1275-W/2,630,skillset);
+    painter.drawText(1275-W/2,600,skillset);
 
 
     font =  QFont("Arial",25,QFont::Bold);
     painter.setFont(font);
     painter.setPen(QPen((Qt::black), 0));
     painter.drawText(1387,263,age);
-    pdf->setPixmap(pix);
+    /*pdf->setPixmap(pix);
     pdf->show();
+    pdf->raise();*/
 
 
     QPrinter printer(QPrinter::HighResolution);
     printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setOutputFileName(PATH+"buf.pdf");
+    printer.setOutputFileName(PATH+"archetype.pdf");
     printer.setFullPage(true);
 
     double xscale = printer.pageRect().width()/double(pix.width());
@@ -684,7 +707,94 @@ void module4::showPdf(QString name,int age_i)
     painter2.scale(scale, scale);
 
     painter2.drawPixmap(0,0,pix.width(),pix.height(),pix);
+
 }
+
+
+
+#define FROM "youth.misk@gmail.com"
+#define SMTPSERVER  "smtp.gmail.com"
+#define SMTPPORT    465
+#define SMTPUSER    "youth.misk@gmail.com"
+#define SMTPPASS    "MGF_2019"
+
+
+
+/*
+#define FROM "research@miskglobalforum.com"
+#define SMTPSERVER  "smtp.gmail.com"
+#define SMTPPORT    465
+#define SMTPUSER    NULL//"research@miskglobalforum.com"
+#define SMTPPASS    NULL
+*/
+
+void module4::sendEmail(QString name,QString email, int age, int mongoloCode)
+{
+
+    buildPdf(name,age,mongoloCode);
+
+
+    qDebug()<<"sending email to: "<<email;
+
+
+
+
+    quickmail_initialize();
+    quickmail mailobj = quickmail_create(FROM, "Misk Global Forum");
+    quickmail_add_to(mailobj, email.toStdString().c_str());
+
+    quickmail_add_header(mailobj, "Importance: Low");
+    quickmail_add_header(mailobj, "X-Priority: 5");
+    quickmail_add_header(mailobj, "X-MSMail-Priority: Low");
+
+
+    QString body =  "";
+
+    QFile f(PATH+"email.txt");
+    if (f.open(QFile::ReadOnly | QFile::Text))
+    {
+        QTextStream in(&f);
+        body=in.readAll();
+    }
+    f.close();
+
+
+    qDebug()<<body;
+
+
+    QByteArray body1 = body.toLatin1();
+    char *body2 = body1.data();
+    quickmail_add_body_memory(mailobj, "text/html", body2, body.size(), 0);
+
+    QString at = PATH+"archetype.pdf";
+    QByteArray at1 = at.toLatin1();
+    char *at2  = at1.data();
+    quickmail_add_attachment_file(mailobj, at2, NULL);
+
+
+    const char* errmsg;
+    quickmail_set_debug_log(mailobj, stderr);
+    qDebug()<<"test send";
+
+    if ((errmsg = quickmail_send_secure(mailobj, SMTPSERVER, SMTPPORT, SMTPUSER, SMTPPASS)) != NULL)
+    {
+
+        qDebug()<< "Error sending e-mail: "<<stderr ;
+
+    }
+    else
+    {
+        qDebug()<<"Email sent.";
+
+    }
+
+    quickmail_destroy(mailobj);
+    quickmail_cleanup();
+
+    qDebug()<<"email cleaned up";
+}
+
+
 
 void module4::playVideo(int videoId)
 {

@@ -46,3 +46,5 @@ HEADERS  += \
 
 FORMS    +=
 
+LIBS += -lquickmail
+
