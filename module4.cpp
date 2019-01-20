@@ -169,7 +169,7 @@ module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 
 
 
-    //sendEmail("fred","frederic.abry@gmail.com",33,4);
+  //  sendEmail("Fred ABRY","frederic.abry@gmail.com",33,4);
     /*getData();
      getData2();*/
 }
@@ -852,7 +852,7 @@ void module4::sendEmail(QString name,QString email, int age, int mongoloCode)
     }
     f.close();
 
-
+    body = body.replace("$user",name);
     qDebug()<<body;
 
 
