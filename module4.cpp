@@ -11,6 +11,9 @@ QStringList keyboardStr = (QStringList)"@"<<"1"<<"2"<<"3"<<"4"<<"5"<<"6"<<"7"<<"
 
 
 
+QStringList archetypes =  (QStringList)"The Culture Remixer"<<"The Climate Changer"<<"The Contestant"<<"The Authentic Self"<<"The Global Citizen"<<"The Startup Artist"<<"The Transitionist"<<"The Eco Maker"<<"The Speedrunner";
+
+
 int xspacing = 300;
 int yspacing = 300;
 
@@ -853,6 +856,8 @@ void module4::sendEmail(QString name,QString email, int age, int mongoloCode)
     f.close();
 
     body = body.replace("$user",name);
+    body = body.replace("$archetype",archetypes[mongoloCode-1]);
+
     qDebug()<<body;
 
 
