@@ -19,10 +19,6 @@ module0::module0(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     connect(b1,SIGNAL(clicked(QString)),this,SLOT(disableButtons()));
     b1->show();
 
-
-
-
-
     b2 = new picButton2(this,0,PATH+"button2.png",PATH+"button2on.png","2");
     b2->move(2*width()/5-b2->width()/2,height()/2-y0);
     connect(b2,SIGNAL(clicked(QString)),this,SIGNAL(goModule2()));
@@ -47,6 +43,7 @@ module0::module0(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
 
 void module0::disableButtons()
 {
+   // qDebug()<<"disable buttons";
     b1->disable();
     b2->disable();
     b3->disable();
@@ -56,6 +53,7 @@ void module0::disableButtons()
 
 void module0::init()
 {
+    //qDebug()<<"enable buttons";
     b1->enable();
     b2->enable();
     b3->enable();

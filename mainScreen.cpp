@@ -92,6 +92,9 @@ mainScreen::mainScreen(QLabel *parent,QString PATH,bool DEBUG) : QLabel(parent),
     connect(md3,SIGNAL(goHome()),this,SLOT(goModule0()));
     connect(md4,SIGNAL(goHome()),this,SLOT(goModule0()));
 
+
+
+
 }
 
 
@@ -120,6 +123,8 @@ void mainScreen::initDb()
 void mainScreen::goModule0()
 {
 
+    md0->disableButtons();
+
     QLabel *md = (QLabel*) QObject::sender();
 
 
@@ -134,8 +139,9 @@ void mainScreen::goModule0()
     come->setTargetObject(md0);
     come->setStartValue(pos());
     come->setEndValue(QPoint(0,0));
+    connect(come,SIGNAL(finished()),md0,SLOT(init()));
 
-    md0->init();
+
     md0->move(width(),0);
     md0->show();
 

@@ -22,7 +22,7 @@ class module0 : public QLabel
     Q_OBJECT
 public:
     explicit module0(QLabel *parent = nullptr, QString PATH="");
-    void init();
+
 private:
     QString PATH;
     picButton2 *b2,*b3,*b4;
@@ -30,9 +30,9 @@ private:
     QPropertyAnimation * goawayTransition;
 
 
-private slots:
+public slots:
     void disableButtons();
-
+        void init();
 signals:
     void goModule1();
     void goModule2();
