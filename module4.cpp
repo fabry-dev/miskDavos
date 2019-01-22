@@ -159,8 +159,8 @@ module4::module4(QLabel *parent, QString PATH) : QLabel(parent),PATH(PATH)
     goHomeTimer = new QTimer(this);
     goHomeTimer->setInterval(60*1000);
     goHomeTimer->setSingleShot(true);
-    connect(goHomeTimer,SIGNAL(timeout()),this,SIGNAL(goHome()));
-    connect(this,SIGNAL(goHome()),goHomeTimer,SLOT(stop()));
+  //  connect(goHomeTimer,SIGNAL(timeout()),this,SIGNAL(goHome()));
+  //  connect(this,SIGNAL(goHome()),goHomeTimer,SLOT(stop()));
 
 
     setupKeyboard();
